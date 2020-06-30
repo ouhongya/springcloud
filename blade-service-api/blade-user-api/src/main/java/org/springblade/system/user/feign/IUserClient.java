@@ -30,9 +30,9 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author Chill
  */
-@FeignClient(
-	value = AppConstant.APPLICATION_USER_NAME
-)
+	@FeignClient(
+		value = AppConstant.APPLICATION_USER_NAME
+	)
 public interface IUserClient {
 
 	String API_PREFIX = "/client";

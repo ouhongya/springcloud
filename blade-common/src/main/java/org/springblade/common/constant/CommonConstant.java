@@ -56,6 +56,11 @@ public interface CommonConstant {
 	String SENTINEL_TEST_ADDR = "192.168.1.80:8858";
 
 	/**
+	 * Fee 模块名称
+	 */
+	String APPLICATION_FEE_NAME = "fee";
+
+	/**
 	 * sword 系统名
 	 */
 	String SWORD_NAME = "sword";

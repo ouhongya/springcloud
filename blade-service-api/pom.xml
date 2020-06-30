@@ -21,6 +21,7 @@
         <module>blade-scope-api</module>
         <module>blade-system-api</module>
         <module>blade-user-api</module>
+        <module>fee-api</module>
     </modules>
 
     <dependencies>

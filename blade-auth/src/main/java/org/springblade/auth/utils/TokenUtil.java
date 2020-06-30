@@ -108,7 +108,7 @@ public class TokenUtil {
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.MILLISECOND, 0);
-		return (int) (cal.getTimeInMill	is() - System.currentTimeMillis()) / 1000;
+		return (int) (cal.getTimeInMillis() - System.currentTimeMillis()) / 1000;
 	}
 
 	/**

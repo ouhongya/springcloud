@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.fee.mapper.FeeMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="FeeResultMap" type="org.springblade.fee.vo.Fee">
+        <result column="request_id" property="requestId"/>
+        <result column="item_id" property="itemId"/>
+        <result column="item_type" property="itemType"/>
+        <result column="item_count" property="itemCount"/>
+        <result column="fee_item" property="feeItem"/>
+        <result column="fee_favor" property="feeFavor"/>
+        <result column="fee_final" property="feeFinal"/>
+        <result column="favor_channel_id" property="favorChannelId"/>
+        <result column="favor_channel" property="favorChannel"/>
+        <result column="execute_dept_id" property="executeDeptId"/>
+        <result column="status" property="status"/>
+        <result column="refund_reason" property="refundReason"/>
+        <result column="patient_id" property="patientId"/>
+        <result column="request_type" property="requestType"/>
+        <result column="charge_id" property="chargeId"/>
+        <result column="dept_id" property="deptId"/>
+        <result column="doctor_id" property="doctorId"/>
+    </resultMap>
+    <select id="selectFeeList" resultMap="FeeResultMap">
+       select u.request_id,u.item_id,u.item_type,u.item_count,u.fee_item,u.fee_favor,u.fee_final,u.favor_channel_id,u.favor_channel,
+       u.execute_dept_id, u.status,u.refund_reason,c.patient_id,c.request_type,c.charge_id,c.dept_id,c.doctor_id
+       from request_detail u left join charge_request c   on  c.request_id  = u.request_id WHERE u.request_id IN
+        <foreach collection="list" item="request_id" index="index" open="(" close=")" separator=",">
+            #{request_id}
+        </foreach>
+
+    </select>
+    <select id="selectDicRequestTypeById" resultType="org.springblade.fee.vo.DicRequestType">
+        select id,u.text,enabled from dic_request wherinte id = #{id}
+    </select>
+</mapper>

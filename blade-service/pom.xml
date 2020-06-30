@@ -21,6 +21,7 @@
         <module>blade-desk</module>
         <module>blade-system</module>
         <module>blade-user</module>
+        <module>fee</module>
     </modules>
 
     <dependencies>
