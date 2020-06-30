@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.or g/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.receipt.mapper.ReceiptMapper">
+
+    <select id="queryReceipt" parameterType="java.lang.String" resultType="org.springblade.receipt.entity.ReceiptList">
+        SELECT charge_receipt.charge_id as id,dict_request_type.`text`,charge_request.dept_id ,charge_request.doctor_id,
+        IFNULL(request_detail.fee_favor,0)+IFNULL(request_detail.fee_final,0) AS totalMoney,IFNULL(SUM(request_detail.fee_favor),0) discountMoney,IFNULL(SUM(request_detail.fee_favor),0) totalDiscountMoney,IFNULL(request_detail.fee_final,0)AS money
+        FROM request_detail
+        LEFT JOIN charge_request ON request_detail.`request_id`=charge_request.`request_id`
+        LEFT JOIN dict_request_type ON charge_request.`request_id`=dict_request_type.`id` AND dict_request_type.`enabled`=0
+        LEFT JOIN record_charge ON charge_request.`patient_id`=record_charge.`patient_id`
+        LEFT JOIN charge_receipt ON record_charge.`id`=charge_receipt.`charge_id`
+        where
+        charge_receipt.id=#{receiptId}
+        or
+        charge_request.request_id=#{requestId}
+    </select>
+
+    <select id="queryReceiptRequestDetail" parameterType="java.lang.String" resultType="org.springblade.receipt.entity.ReceiptList">
+        SELECT * FROM request_detail
+        LEFT JOIN charge_request ON request_detail.`request_id` = charge_request.`request_id`
+        LEFT JOIN record_charge ON charge_request.`patient_id`  = record_charge.`patient_id`
+        LEFT JOIN charge_receipt ON record_charge.`id` = charge_receipt.`charge_id`
+        WHERE
+        charge_receipt.`charge_id`= #{receiptId}
+    </select>
+
+    <update id="updateReceiptStatus" parameterType="java.lang.String">
+        update charge_receipt set charge_receipt.status = #{4} where charge_receipt.charge_id = #{requestId}
+    </update>
+
+    <insert id="createdReceipt" parameterType="org.springblade.receipt.entity.ChargeReceipt">
+        insert into
+    </insert>
+</mapper>
