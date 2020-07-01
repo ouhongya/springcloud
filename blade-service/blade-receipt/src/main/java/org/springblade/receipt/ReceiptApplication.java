@@ -10,6 +10,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients(AppConstant.BASE_PACKAGES)
 public class ReceiptApplication {
 	public static void main(String[] args) {
-		BladeApplication.run(CommonConstant.APPLICATION_RECEIPT_NAME, ReceiptApplication.class, args);
+		BladeApplication.run("blade-receipt", ReceiptApplication.class, args);
 	}
 }
