@@ -16,7 +16,7 @@ public interface IChargeStatusService extends IService<DictChargeStatus> {
 
 	int delById(Long id);
 
-	DictChargeStatus updateByIds(DictChargeStatus dictChargeStatus);
+	int updateByIds(DictChargeStatus dictChargeStatus);
 
 	int insert(DictChargeStatus dictChargeStatus);
 }
