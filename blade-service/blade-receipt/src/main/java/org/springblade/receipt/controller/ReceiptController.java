@@ -50,4 +50,11 @@ public class ReceiptController {
 		String username = "操作人名字";
 		return R.status(receiptService.printInvoice(receiptId,requestId,username));
 	}
+
+	@GetMapping("/refund")
+	@ApiOperation(value = "退款",notes = "退款")
+	public R Refund(@ApiParam(value = "申请单号") String requestId,@ApiParam(value = "退款理由")String reason){
+		String username = "";
+		return R.data(receiptService.refund(requestId,username,reason));
+	}
 }
