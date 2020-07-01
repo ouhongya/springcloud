@@ -1,7 +1,7 @@
 package org.springblade.sysettings.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.springblade.dictchargestatus.DictChargeStatus;
+import org.springblade.dictionary.DictChargeStatus;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  * @Author create by yaodan
  * @date 2020/7/1-11:25
  */
-public interface SysettingMapper extends BaseMapper<DictChargeStatus> {
+public interface ChargeStatusMapper extends BaseMapper<DictChargeStatus> {
 	DictChargeStatus selectByPrimaryKey(Long id);
 
 

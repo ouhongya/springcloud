@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.or g/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.springblade.sysettings.mapper.SysettingMapper">
-    <resultMap id="BaseResultMap" type="org.springblade.dictchargestatus.DictChargeStatus">
+<mapper namespace="org.springblade.sysettings.mapper.ChargeStatusMapper">
+    <resultMap id="BaseResultMap" type="org.springblade.dictionary.DictChargeStatus">
         <id column="id" jdbcType="TINYINT" property="id"/>
         <result column="text" jdbcType="VARCHAR" property="text"/>
     </resultMap>
@@ -15,7 +15,7 @@
         from dict_charge_status
         where id = #{id,jdbcType=TINYINT}
     </select>
-    <select id="selectAll" resultType="org.springblade.dictchargestatus.DictChargeStatus">
+    <select id="selectAll" resultType="org.springblade.dictionary.DictChargeStatus">
         select * from dict_charge_status
     </select>
 
@@ -24,7 +24,7 @@
         where id = #{id,jdbcType=TINYINT}
     </delete>
 
-    <update id="updateByIds" parameterType="org.springblade.dictchargestatus.DictChargeStatus">
+    <update id="updateByIds" parameterType="org.springblade.dictionary.DictChargeStatus">
         update dict_charge_status
         <set>
             <if test="id != null">
@@ -36,7 +36,7 @@
         </set>
         where 1=1 and id = #{id,jdbcType=TINYINT}
     </update>
-    <insert id="add" parameterType="org.springblade.dictchargestatus.DictChargeStatus">
+    <insert id="add" parameterType="org.springblade.dictionary.DictChargeStatus">
         insert into dict_charge_status (id, text)
         values (#{id,jdbcType=TINYINT}, #{text,jdbcType=VARCHAR})
     </insert>

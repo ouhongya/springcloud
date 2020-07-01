@@ -3,9 +3,9 @@ package org.springblade.sysettings.service.impl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.core.mp.base.BaseServiceImpl;
-import org.springblade.dictchargestatus.DictChargeStatus;
-import org.springblade.sysettings.mapper.SysettingMapper;
-import org.springblade.sysettings.service.ISysettingService;
+import org.springblade.dictionary.DictChargeStatus;
+import org.springblade.sysettings.mapper.ChargeStatusMapper;
+import org.springblade.sysettings.service.IChargeStatusService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,32 +23,32 @@ import java.util.List;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class SysettingServiceImpl extends BaseServiceImpl<SysettingMapper, DictChargeStatus> implements ISysettingService {
-	private SysettingMapper sysettingMapper;
+public class ChargeStatusServiceImpl extends BaseServiceImpl<ChargeStatusMapper, DictChargeStatus> implements IChargeStatusService {
+	private ChargeStatusMapper chargeStatusMapper;
 
 	@Override
 	public List<DictChargeStatus> selectAll() {
-		return  sysettingMapper.selectAll();
+		return  chargeStatusMapper.selectAll();
 	}
 
 	@Override
 	public DictChargeStatus selectById(Long id) {
-		return sysettingMapper.selectByPrimaryKey(id);
+		return chargeStatusMapper.selectByPrimaryKey(id);
 	}
 
 	@Override
 	public int delById(Long id) {
-		return sysettingMapper.delById(id);
+		return chargeStatusMapper.delById(id);
 	}
 
 	@Override
 	public DictChargeStatus updateByIds(DictChargeStatus dictChargeStatus) {
-		return sysettingMapper.updateByIds(dictChargeStatus);
+		return chargeStatusMapper.updateByIds(dictChargeStatus);
 	}
 
 	@Override
 	public int insert(DictChargeStatus dictChargeStatus) {
-		return sysettingMapper.add(dictChargeStatus);
+		return chargeStatusMapper.add(dictChargeStatus);
 	}
 
 
