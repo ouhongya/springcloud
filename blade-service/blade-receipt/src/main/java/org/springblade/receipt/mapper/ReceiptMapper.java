@@ -3,7 +3,7 @@ package org.springblade.receipt.mapper;
 
 import org.springblade.receipt.entity.ChargeReceipt;
 import org.springblade.receipt.entity.ReceiptList;
-
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import java.util.List;
 
 public interface ReceiptMapper extends BaseMapper<ChargeReceipt> {
