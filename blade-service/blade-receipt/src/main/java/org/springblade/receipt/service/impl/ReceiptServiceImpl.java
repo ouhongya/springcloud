@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springblade.core.mp.base.BaseServiceImpl;
 import org.springblade.receipt.entity.ChargeReceipt;
 import org.springblade.receipt.entity.ReceiptList;
+import org.springblade.receipt.entity.RefundProject;
+import org.springblade.receipt.fegin.ChargePayClient;
 import org.springblade.receipt.mapper.ReceiptMapper;
 import org.springblade.receipt.service.ReceiptService;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 
 	private ReceiptMapper receiptMapper;
 
+	private ChargePayClient chargePayClient;
 	/**
 	 * 查询发票列表
 	 * @param receiptId
@@ -52,6 +55,24 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 		ChargeReceipt chargeReceipt = new ChargeReceipt();
 		receiptMapper.createdReceipt(chargeReceipt);
 		return true;
+	}
+
+	/**
+	 * 退款操作
+	 * @param requestId 申请单号
+	 * @param userName 操作人
+	 * @return
+	 */
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public String refund(String requestId, String userName) {
+		//查询支付记录&判断状态
+		RefundProject refundProject = receiptMapper.queryRefundProject(requestId);
+		//远程调用进行退款
+		chargePayClient.refundService();
+		//退款成功改状态
+		receiptMapper.updatePayStatus(requestId,5);
+		return "退款成功";
 	}
 
 }

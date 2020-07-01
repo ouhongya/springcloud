@@ -11,4 +11,6 @@ public interface ReceiptService extends IService<ChargeReceipt> {
 	List<ReceiptList> receiptList(String receiptId,String requestId);
 
 	boolean printInvoice(String requestId,String receiptId,String username);
+
+	String refund(String requestId,String userName);
 }
