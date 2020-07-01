@@ -23,6 +23,7 @@
         <module>blade-user</module>
         <module>fee</module>
         <module>blade-receipt</module>
+        <module>blade-sysettings</module>
     </modules>
 
     <dependencies>
