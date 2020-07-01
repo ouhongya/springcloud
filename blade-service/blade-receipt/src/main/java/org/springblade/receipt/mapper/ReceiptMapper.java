@@ -1,6 +1,6 @@
 package org.springblade.receipt.mapper;
 
-
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springblade.receipt.entity.ChargeReceipt;
 import org.springblade.receipt.entity.ReceiptList;
 

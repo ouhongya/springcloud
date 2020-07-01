@@ -37,4 +37,46 @@ public class ChargeReceipt extends BaseEntity implements Serializable {
 	 */
 	@ApiModelProperty(value = "发票状态: 0：未启用 1：已启用 2：已开票 3：已退票 4：已作废")
 	private Integer status;
+
+	public Long getChargeId() {
+		return chargeId;
+	}
+
+	public void setChargeId(Long chargeId) {
+		this.chargeId = chargeId;
+	}
+
+	public char getReceiptType() {
+		return receiptType;
+	}
+
+	public void setReceiptType(char receiptType) {
+		this.receiptType = receiptType;
+	}
+
+	public char getReceiptNumber() {
+		return receiptNumber;
+	}
+
+	public void setReceiptNumber(char receiptNumber) {
+		this.receiptNumber = receiptNumber;
+	}
+
+	public BigDecimal getFee() {
+		return fee;
+	}
+
+	public void setFee(BigDecimal fee) {
+		this.fee = fee;
+	}
+
+	@Override
+	public Integer getStatus() {
+		return status;
+	}
+
+	@Override
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 }

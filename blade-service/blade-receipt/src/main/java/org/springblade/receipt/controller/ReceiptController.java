@@ -11,14 +11,11 @@ import org.springblade.receipt.entity.ChargeReceipt;
 import org.springblade.receipt.service.ReceiptService;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-
-
 /**
  * 发票业务
  */
 @Api(value = "发票接口", tags = "发票接口")
-@RequestMapping("api")
+@RequestMapping("/api")
 @RestController
 @AllArgsConstructor
 public class ReceiptController {

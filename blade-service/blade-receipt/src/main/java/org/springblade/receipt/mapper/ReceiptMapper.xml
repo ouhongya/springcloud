@@ -16,7 +16,7 @@
         charge_request.request_id=#{requestId}
     </select>
 
-    <select id="queryReceiptRequestDetail" parameterType="java.lang.String" resultType="org.springblade.receipt.entity.ReceiptList">
+    <select id="queryReceiptRequestDetail" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT * FROM request_detail
         LEFT JOIN charge_request ON request_detail.`request_id` = charge_request.`request_id`
         LEFT JOIN record_charge ON charge_request.`patient_id`  = record_charge.`patient_id`
