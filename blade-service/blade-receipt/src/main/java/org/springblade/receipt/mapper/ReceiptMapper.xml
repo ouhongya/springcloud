@@ -37,7 +37,7 @@
         update charge_receipt set charge_receipt.status = #{4} where charge_receipt.charge_id = #{requestId}
     </update>
     <update id="updatePayStatus">
-        update request_detail set status=#{status} where request_id=#{requestId}
+        update request_detail set status=#{status} , refund_reason=#{reason} where request_id=#{requestId}
     </update>
 
     <insert id="createdReceipt" parameterType="org.springblade.receipt.entity.ChargeReceipt">

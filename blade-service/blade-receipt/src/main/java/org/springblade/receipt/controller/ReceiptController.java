@@ -53,8 +53,8 @@ public class ReceiptController {
 
 	@GetMapping("/refund")
 	@ApiOperation(value = "退款",notes = "退款")
-	public R Refund(@ApiParam(value = "申请单号") String requestId){
+	public R Refund(@ApiParam(value = "申请单号") String requestId,@ApiParam(value = "退款理由")String reason){
 		String username = "";
-		return R.data(receiptService.refund(requestId,username));
+		return R.data(receiptService.refund(requestId,username,reason));
 	}
 }

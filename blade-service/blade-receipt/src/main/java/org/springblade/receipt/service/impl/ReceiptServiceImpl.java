@@ -61,17 +61,18 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 	 * 退款操作
 	 * @param requestId 申请单号
 	 * @param userName 操作人
+	 * @param reason 退费理由
 	 * @return
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public String refund(String requestId, String userName) {
+	public String refund(String requestId, String userName,String reason) {
 		//查询支付记录&判断状态
 		RefundProject refundProject = receiptMapper.queryRefundProject(requestId);
 		//远程调用进行退款
 		chargePayClient.refundService();
 		//退款成功改状态
-		receiptMapper.updatePayStatus(requestId,5);
+		receiptMapper.updatePayStatus(requestId,5,reason);
 		return "退款成功";
 	}
 
