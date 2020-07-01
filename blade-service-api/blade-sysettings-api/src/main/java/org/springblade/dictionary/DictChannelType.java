@@ -29,5 +29,5 @@ public class DictChannelType extends BaseEntity implements Serializable {
 	/**
 	 * 是否启用
 	 */
-	private Integer enabled;
+	private Integer enabled=0;
 }

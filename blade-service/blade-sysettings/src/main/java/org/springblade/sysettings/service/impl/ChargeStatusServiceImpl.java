@@ -42,7 +42,7 @@ public class ChargeStatusServiceImpl extends BaseServiceImpl<ChargeStatusMapper,
 	}
 
 	@Override
-	public DictChargeStatus updateByIds(DictChargeStatus dictChargeStatus) {
+	public int updateByIds(DictChargeStatus dictChargeStatus) {
 		return chargeStatusMapper.updateByIds(dictChargeStatus);
 	}
 

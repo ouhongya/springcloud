@@ -17,7 +17,7 @@ public interface ChargeStatusMapper extends BaseMapper<DictChargeStatus> {
 
 	int delById(Long id);
 
-	DictChargeStatus updateByIds(DictChargeStatus dictChargeStatus);
+	int updateByIds(DictChargeStatus dictChargeStatus);
 
 	int add(DictChargeStatus dictChargeStatus);
 }
