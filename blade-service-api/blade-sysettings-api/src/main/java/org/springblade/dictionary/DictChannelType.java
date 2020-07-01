@@ -1,4 +1,4 @@
-package org.springblade.dictchargestatus;
+package org.springblade.dictionary;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,24 +8,26 @@ import org.springblade.core.mp.base.BaseEntity;
 import java.io.Serializable;
 
 /**
- * [支付状态字典表--dict_charge_status]
  *
+ * [支付渠道字典表]
  * @Author create by yaodan
- * @date 2020/7/1-10:23
+ * @date 2020/7/1-15:40
  */
 @Data
-@TableName("dict_charge_status")
-public class DictChargeStatus extends BaseEntity implements Serializable {
-
+@TableName("dict_channel_type")
+public class DictChannelType extends BaseEntity implements Serializable {
 	/**
 	 * 状态代码
 	 */
-	@ApiModelProperty(value = "状态代码：0:待支付 1:支付完成,2:部分支付,3:可退款,4:有退款,5:作废")
+	@ApiModelProperty(value = "状态代码：1:现金 2:微信,3:支付宝,4:社保,5:银行卡")
 	private Long id;
 	/**
 	 * 状态名称
 	 */
 	@ApiModelProperty(value = "状态名称")
 	private String text;
-
+	/**
+	 * 是否启用
+	 */
+	private Integer enabled;
 }
