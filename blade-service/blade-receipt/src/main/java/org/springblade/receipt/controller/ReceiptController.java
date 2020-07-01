@@ -25,7 +25,7 @@ public class ReceiptController {
 	@PostMapping("/createdReceipt")
 	@ApiOperation(value = "创建发票", notes = "创建发票")
 	public R createdReceipt(@RequestBody ChargeReceipt chargeReceipt) {
-		chargeReceipt.setChargeId(Long.parseLong(CommonUtil.generateShortUuid()));
+		chargeReceipt.setChargeId(Long.parseLong(""));
 		return R.status(receiptService.save(chargeReceipt));
 	}
 
