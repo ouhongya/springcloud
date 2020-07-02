@@ -11,13 +11,17 @@ public interface ReceiptMapper extends BaseMapper<ChargeReceipt> {
 
 	List<ReceiptList> queryReceipt(String receiptId, String requestId);
 
+	String queryReceiptById(String id);
+
 	String queryReceiptRequestDetail(String receiptId);
 
 	void updateReceiptStatus(String requestId);
 
 	void createdReceipt(ChargeReceipt createdReceipt);
 
-	RefundProject queryRefundProject(String requestId);
+	ChargeReceipt queryReceiptByIds(String id);
+
+ 	RefundProject queryRefundProject(String requestId);
 
 	void updatePayStatus(String requestId,Integer status,String reason);
 }

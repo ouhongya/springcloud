@@ -3,17 +3,20 @@
 <mapper namespace="org.springblade.receipt.mapper.ReceiptMapper">
 
     <select id="queryReceipt" parameterType="java.lang.String" resultType="org.springblade.receipt.entity.ReceiptList">
-        SELECT charge_receipt.charge_id as id,dict_request_type.`text`,charge_request.dept_id ,charge_request.doctor_id,
-        IFNULL(request_detail.fee_favor,0)+IFNULL(request_detail.fee_final,0) AS totalMoney,IFNULL(SUM(request_detail.fee_favor),0) discountMoney,IFNULL(SUM(request_detail.fee_favor),0) totalDiscountMoney,IFNULL(request_detail.fee_final,0)AS money
+        SELECT charge_receipt.charge_id as id,dict_request_type.`text`,charge_request.dept_id as deptId,charge_request.doctor_id as doctorId
         FROM request_detail
         LEFT JOIN charge_request ON request_detail.`request_id`=charge_request.`request_id`
         LEFT JOIN dict_request_type ON charge_request.`request_id`=dict_request_type.`id` AND dict_request_type.`enabled`=0
         LEFT JOIN record_charge ON charge_request.`patient_id`=record_charge.`patient_id`
         LEFT JOIN charge_receipt ON record_charge.`id`=charge_receipt.`charge_id`
         where
-        charge_receipt.id=#{receiptId}
+        charge_receipt.receipt_number=#{receiptId}
         or
         charge_request.request_id=#{requestId}
+    </select>
+
+    <select id="queryReceiptById" parameterType="java.lang.String" resultType="java.lang.String">
+        select receipt_number as id from charge_receipt where charge_id = #{id}
     </select>
 
     <select id="queryReceiptRequestDetail" parameterType="java.lang.String" resultType="java.lang.String">
@@ -34,13 +37,25 @@
     </select>
 
     <update id="updateReceiptStatus" parameterType="java.lang.String">
-        update charge_receipt set charge_receipt.status = #{4} where charge_receipt.charge_id = #{requestId}
+        update charge_receipt set charge_receipt.status = 4 where charge_receipt.receipt_number = #{requestId}
     </update>
     <update id="updatePayStatus">
         update request_detail set status=#{status} , refund_reason=#{reason} where request_id=#{requestId}
     </update>
 
     <insert id="createdReceipt" parameterType="org.springblade.receipt.entity.ChargeReceipt">
-        insert into
+        insert into charge_receipt values (#{id},#{chargeId},#{receiptType},#{receiptNumber},#{fee},#{status})
     </insert>
+
+    <resultMap id="receiptMap" type="org.springblade.receipt.entity.ChargeReceipt">
+        <result column="id" property="id"/>
+        <result column="charge_id" property="chargeId"/>
+        <result column="receipt_type" property="receiptType"/>
+        <result column="receipt_number" property="receiptNumber"/>
+        <result column="fee" property="fee"/>
+        <result column="status" property="status"/>
+    </resultMap>
+    <select id="queryReceiptByIds" parameterType="java.lang.String" resultMap="receiptMap">
+        select * from charge_receipt where receipt_number =#{id}
+    </select>
 </mapper>

@@ -26,17 +26,24 @@ public class ChargeReceipt extends BaseEntity implements Serializable {
 	 * 发票号码 (复合主键3)
 	 */
 	@ApiModelProperty(value = "发票号码 (复合主键3)")
-	private char receiptNumber;
+	private String receiptNumber;
 	/**
 	 * 发票金额
 	 */
 	@ApiModelProperty(value = "发票金额")
-		private BigDecimal fee;
+	private BigDecimal fee;
+
 	/**
 	 * 发票状态: 0：未启用 1：已启用 2：已开票 3：已退票 4：已作废
 	 */
 	@ApiModelProperty(value = "发票状态: 0：未启用 1：已启用 2：已开票 3：已退票 4：已作废")
 	private Integer status;
+
+	/**
+	 * 项目Id集合
+	 */
+	@ApiModelProperty(value = "项目Id集合")
+	private String requestIds;
 
 	public Long getChargeId() {
 		return chargeId;
@@ -54,11 +61,11 @@ public class ChargeReceipt extends BaseEntity implements Serializable {
 		this.receiptType = receiptType;
 	}
 
-	public char getReceiptNumber() {
+	public String getReceiptNumber() {
 		return receiptNumber;
 	}
 
-	public void setReceiptNumber(char receiptNumber) {
+	public void setReceiptNumber(String receiptNumber) {
 		this.receiptNumber = receiptNumber;
 	}
 

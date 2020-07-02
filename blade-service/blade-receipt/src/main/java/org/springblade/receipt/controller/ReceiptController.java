@@ -8,8 +8,11 @@ import lombok.AllArgsConstructor;
 import org.springblade.common.utils.CommonUtil;
 import org.springblade.core.tool.api.R;
 import org.springblade.receipt.entity.ChargeReceipt;
+import org.springblade.receipt.entity.ReceiptVo;
 import org.springblade.receipt.service.ReceiptService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 发票业务
@@ -22,11 +25,10 @@ public class ReceiptController {
 
 	private ReceiptService receiptService;
 
-	@PostMapping("/createdReceipt")
-	@ApiOperation(value = "创建发票", notes = "创建发票")
-	public R createdReceipt(@RequestBody ChargeReceipt chargeReceipt) {
-		chargeReceipt.setChargeId(Long.parseLong(""));
-		return R.status(receiptService.save(chargeReceipt));
+	@PostMapping("/queryRequestDetailReceipt")
+	@ApiOperation(value = "发票号列表", notes = "发票号列表")
+	public R queryRequestDetailReceipt(@ApiParam(value = "发票号集合") @RequestBody List<String> requestIds) {
+		return R.data(receiptService.queryRequestDetailReceipt(requestIds));
 	}
 
 	@GetMapping("/updateReceipt")
@@ -44,11 +46,11 @@ public class ReceiptController {
 		return R.data(receiptService.receiptList(receiptId,requestId));
 	}
 
-	@GetMapping("/printInvoice")
-	@ApiOperation(value = "单号打印", notes = "单号打印")
-	public R printInvoice(@ApiParam(value = "旧单号")String requestId, @ApiParam(value = "新单号")String receiptId){
+	@PostMapping("/printInvoice")
+	@ApiOperation(value = "保存并打印发票", notes = "发票打印")
+	public R printInvoice(@RequestBody  List<ReceiptVo> receiptVo){
 		String username = "操作人名字";
-		return R.status(receiptService.printInvoice(receiptId,requestId,username));
+		return R.status(receiptService.printInvoice(receiptVo,username));
 	}
 
 	@GetMapping("/refund")
