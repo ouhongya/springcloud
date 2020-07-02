@@ -24,6 +24,7 @@
         <module>fee-api</module>
         <module>blade-receipt-api</module>
         <module>blade-sysettings-api</module>
+        <module>blade-report-api</module>
     </modules>
 
     <dependencies>

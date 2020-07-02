@@ -24,6 +24,7 @@
         <module>fee</module>
         <module>blade-receipt</module>
         <module>blade-sysettings</module>
+        <module>blade-report</module>
     </modules>
 
     <dependencies>
