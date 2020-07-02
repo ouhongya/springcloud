@@ -27,9 +27,6 @@
     <update id="updateByIds" parameterType="org.springblade.dictionary.DictChargeStatus">
         update dict_charge_status
         <set>
-            <if test="id != null">
-                id = #{id,jdbcType=TINYINT},
-            </if>
             <if test="text != null">
                 text = #{text,jdbcType=VARCHAR},
             </if>
