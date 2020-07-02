@@ -4,33 +4,59 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="FeeResultMap" type="org.springblade.fee.vo.Fee">
         <result column="request_id" property="requestId"/>
-        <result column="item_id" property="itemId"/>
-        <result column="item_type" property="itemType"/>
-        <result column="item_count" property="itemCount"/>
-        <result column="fee_item" property="feeItem"/>
-        <result column="fee_favor" property="feeFavor"/>
-        <result column="fee_final" property="feeFinal"/>
-        <result column="favor_channel_id" property="favorChannelId"/>
-        <result column="favor_channel" property="favorChannel"/>
-        <result column="execute_dept_id" property="executeDeptId"/>
-        <result column="status" property="status"/>
-        <result column="refund_reason" property="refundReason"/>
         <result column="patient_id" property="patientId"/>
-        <result column="request_type" property="requestType"/>
-        <result column="charge_id" property="chargeId"/>
+        <result column="request_type_id" property="requestTypeId"/>
         <result column="dept_id" property="deptId"/>
         <result column="doctor_id" property="doctorId"/>
     </resultMap>
+
+    <resultMap id="FeedetailResultMap" type="org.springblade.fee.vo.Feedetail">
+        <result column="request_id" property="requestId"/>
+        <result column="item_type_id" property="itemTypeId"/>
+        <result column="item_count" property="itemCount"/>
+        <result column="item_id" property="itemId"/>
+    </resultMap>
+
     <select id="selectFeeList" resultMap="FeeResultMap">
-       select u.request_id,u.item_id,u.item_type,u.item_count,u.fee_item,u.fee_favor,u.fee_final,u.favor_channel_id,u.favor_channel,
-       u.execute_dept_id, u.status,u.refund_reason,c.patient_id,c.request_type,c.charge_id,c.dept_id,c.doctor_id
-       from request_detail u left join charge_request c   on  c.request_id  = u.request_id WHERE u.request_id IN
+        select u.request_id,u.patient_id,u.request_type_id,c.dept_id,c.doctor_id from request_detail u left join charge_request c   on  c.request_id  = u.request_id WHERE u.request_id IN
         <foreach collection="list" item="request_id" index="index" open="(" close=")" separator=",">
             #{request_id}
         </foreach>
-
     </select>
-    <select id="selectDicRequestTypeById" resultType="org.springblade.fee.vo.DicRequestType">
-        select id,u.text,enabled from dic_request wherinte id = #{id}
+    <select id="selectFeeDetail" resultMap="FeedetailResultMap">
+        select request_id,item_type_id,item_count,item_id from request_charge_info where request_id =  #{request_id}
+    </select>
+    <insert id="insertItemCount" parameterType="org.springblade.fee.entity.ItemCount">
+        INSERT INTO `request_charge_info`(`item_id`, `item_type_id`, `item_count`, `request_id`)
+        VALUES (#{item_id},#{item_type_id},#{item_count},#{request_id})
+    </insert>
+    <insert id="insertRequestChargeInfo" parameterType="org.springblade.fee.entity.RequestChargeInfo">
+        INSERT INTO `request_detail`(`request_id`, `patient_id`, `request_type_id`)
+        VALUES (#{request_id},#{patient_id},#{request_type_id})
+    </insert>
+    <update id="updateItemCount" parameterType="org.springblade.fee.entity.ItemCount">
+        update request_charge_info SET item_id=#{item_id},item_type_id=#{item_type_id},item_count=#{item_count} where request_id=#{request_id}
+    </update>
+    <update id="updateRequestChargeInfo" parameterType="org.springblade.fee.entity.RequestChargeInfo">
+        update request_detail SET patient_id=#{patient_id},request_type_id=#{request_type_id} where request_id=#{request_id}
+    </update>
+    <delete id="deleteItemCount" parameterType="java.lang.Long">
+        delete from request_charge_info where request_id = #{request_id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteRequestChargeInfo" parameterType="java.lang.Long">
+        delete from request_detail where request_id = #{request_id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insertChargeRequest" parameterType="org.springblade.fee.entity.ChargeRequest">
+        INSERT INTO `charge_request`(`patient_id`, `request_id`, `request_type_id`, `dept_id`,`doctor_id`)
+        VALUES (#{patient_id},#{request_id},#{request_type_id},#{dept_id},#{doctor_id})
+    </insert>
+    <update id="updateChargeRequest" parameterType="org.springblade.fee.entity.ChargeRequest">
+        update charge_request SET patient_id=#{patient_id},request_type_id=#{request_type_id},dept_id=#{dept_id},doctor_id=#{doctor_id} where request_id=#{request_id}
+    </update>
+    <delete id="deleteChargeRequest" parameterType="java.lang.Long">
+        delete from charge_request where request_id = #{request_id,jdbcType=BIGINT}
+    </delete>
+    <select id="selectDicRequestType" resultType="org.springblade.fee.vo.DicRequestType" parameterType="java.lang.Integer">
+        select text,enabled from dict_request_type where id =  #{id}
     </select>
 </mapper>

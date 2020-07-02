@@ -19,7 +19,6 @@ package org.springblade.fee;
 import org.springblade.common.constant.CommonConstant;
 import org.springblade.core.cloud.feign.EnableBladeFeign;
 import org.springblade.core.launch.BladeApplication;
-import org.springblade.core.launch.constant.AppConstant;
 import org.springframework.cloud.client.SpringCloudApplication;
 
 /**

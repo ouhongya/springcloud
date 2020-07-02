@@ -1,17 +1,27 @@
 package org.springblade.fee.service;
 
 
-import org.springblade.core.launch.constant.AppConstant;
+
 import org.springblade.core.mp.base.BaseService;
-import org.springblade.fee.entity.Applicationfrom;
+import org.springblade.fee.entity.ItemCount;
+import org.springblade.fee.entity.RequestChargeInfo;
 import org.springblade.fee.vo.Fee;
-import org.springblade.fee.vo.PatientBriefData;
-import org.springframework.cloud.openfeign.FeignClient;
+import org.springblade.fee.vo.Feedetail;
 
 import java.util.List;
-public interface FeeService extends BaseService<Applicationfrom> {
 
-	PatientBriefData queryPatientBriefData(Long  patient_id);
+public interface FeeService extends BaseService<RequestChargeInfo> {
+
+
 	List<Fee>  queryapplicationfrom(List<Long> request_id_list);
+
+	List<Feedetail> queryapplication(Long request_id);
+
+	boolean submit(RequestChargeInfo requestChargeInfo);
+
+	boolean updateApplicationfrom(RequestChargeInfo requestChargeInfo);
+
+	boolean removeApplicationfrom(List<Long> request_id_list);
+
 
 }
