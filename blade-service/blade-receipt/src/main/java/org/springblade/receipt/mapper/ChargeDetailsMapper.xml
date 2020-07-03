@@ -50,5 +50,8 @@
             AND
             record_charge.toll_collector_id=#{id}
         </if>
+        <if test="hospitalizedDate != null and hospitalizedDate != ''">
+            and record_charge.paid_time=#{hospitalizedDate}
+        </if>
     </select>
 </mapper>
