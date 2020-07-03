@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.springblade.receipt.entity.ChargeReceipt;
 import org.springblade.receipt.entity.ReceiptList;
 import org.springblade.receipt.entity.ReceiptVo;
+import org.springblade.receipt.entity.RefundVo;
 
 import java.util.List;
 
@@ -15,5 +16,5 @@ public interface ReceiptService extends IService<ChargeReceipt> {
 
 	boolean printInvoice(List<ReceiptVo> receiptVo,String username);
 
-	String refund(String requestId,String userName,String reason);
+	String refund(List<RefundVo> refundVo, String userName, String reason);
 }

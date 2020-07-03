@@ -2,9 +2,12 @@ package org.springblade.receipt.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springblade.receipt.entity.ChargeReceipt;
+import org.springblade.receipt.entity.DecimalMoney;
 import org.springblade.receipt.entity.ReceiptList;
 import org.springblade.receipt.entity.RefundProject;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public interface ReceiptMapper extends BaseMapper<ChargeReceipt> {
@@ -23,5 +26,9 @@ public interface ReceiptMapper extends BaseMapper<ChargeReceipt> {
 
  	RefundProject queryRefundProject(String requestId);
 
-	void updatePayStatus(String requestId,Integer status,String reason);
+	DecimalMoney queryRefundMoey(String requestId);
+
+	void updatePayStatus(String requestId, Date date, Integer status, String userName, String reason);
+
+	void updateChargePay(String requestId, Date date,BigDecimal FeePaid,BigDecimal money, Integer status, String userName, String reason);
 }

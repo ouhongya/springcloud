@@ -4,17 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.common.utils.CommonUtil;
 import org.springblade.core.mp.base.BaseServiceImpl;
-import org.springblade.receipt.entity.ChargeReceipt;
-import org.springblade.receipt.entity.ReceiptList;
-import org.springblade.receipt.entity.ReceiptVo;
-import org.springblade.receipt.entity.RefundProject;
+import org.springblade.receipt.entity.*;
 import org.springblade.receipt.fegin.ChargePayClient;
 import org.springblade.receipt.mapper.ReceiptMapper;
 import org.springblade.receipt.service.ReceiptService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -89,21 +88,22 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 
 	/**
 	 * 退款操作
-	 *
-	 * @param requestId 申请单号
-	 * @param userName  操作人
-	 * @param reason    退费理由
+	 * @param refundVo 退款Id
+	 * @param userName 操作人
+	 * @param reason 退款原因
 	 * @return
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public String refund(String requestId, String userName, String reason) {
-		//查询支付记录&判断状态
-		RefundProject refundProject = baseMapper.queryRefundProject(requestId);
+	public String refund(List<RefundVo> refundVo, String userName, String reason) {
 		//远程调用进行退款
 		chargePayClient.refundService();
 		//退款成功改状态
-		baseMapper.updatePayStatus(requestId, 5, reason);
+		for (RefundVo vo : refundVo) {
+			DecimalMoney decimal = baseMapper.queryRefundMoey(vo.getRequestId());
+			baseMapper.updatePayStatus(vo.getRequestId(), new Date(),4,userName, reason);
+			baseMapper.updateChargePay(vo.getRequestId(), new Date(),decimal.getFeePaid().subtract(vo.getMoney()),decimal.getFeeRefund().add(vo.getMoney()),4,userName, reason);
+		}
 		return "退款成功";
 	}
 }

@@ -36,11 +36,18 @@
         GROUP BY record_charge.`id`
     </select>
 
+    <select id="queryRefundMoey" resultType="org.springblade.receipt.entity.DecimalMoney">
+        select fee_refund,fee_paid from charge_pay where charge_id = #{requestId}
+    </select>
+
     <update id="updateReceiptStatus" parameterType="java.lang.String">
         update charge_receipt set charge_receipt.status = 4 where charge_receipt.receipt_number = #{requestId}
     </update>
     <update id="updatePayStatus">
-        update request_detail set status=#{status} , refund_reason=#{reason} where request_id=#{requestId}
+       update record_charge set refund_time = #{date}, status=#{status}, toll_collector_id=#{userName}  where id =#{requestId}
+    </update>
+    <update id="updateChargePay">
+        update charge_pay set refund_time = #{date},fee_paid=#{FeePaid}, fee_refund = #{money}, status=#{status}, toll_collector_id=#{userName}  where charge_id =#{requestId}
     </update>
 
     <insert id="createdReceipt" parameterType="org.springblade.receipt.entity.ChargeReceipt">
