@@ -35,6 +35,9 @@ public class RequestDetailReceiptVo {
 	@ApiModelProperty(value = "发票号码")
 	private String invoiceId;
 
+	@ApiModelProperty(value = "住院时间")
+	private String hospitalizedDate;
+
 	public Date getData() {
 		return data;
 	}

@@ -29,7 +29,12 @@
         </if>
     </select>
     <select id="queryHospitalizedList" resultType="org.springblade.receipt.entity.HospitalizedVo">
-        SELECT charge_request.request_id,charge_pay.fee_paid, record_charge.paid_time FROM input_advance_pay
+        SELECT
+        charge_request.request_id,charge_pay.fee_paid, record_charge.paid_time,
+        IFNULL(SUM(amount),0) AS totalMoney,
+        IFNULL(SUM(input_advance_pay.consumed),0) AS payMoney,
+        IFNULL(IFNULL(SUM(amount),0)-IFNULL(SUM(input_advance_pay.consumed),0),0) AS remainingMoney
+        FROM input_advance_pay
         LEFT JOIN charge_request ON input_advance_pay.`patient_id`=charge_request.`patient_id`
         LEFT JOIN record_charge  ON charge_request.`patient_id`=charge_request.`patient_id`
         LEFT JOIN charge_pay     ON record_charge.`id`=charge_pay.`charge_id`
