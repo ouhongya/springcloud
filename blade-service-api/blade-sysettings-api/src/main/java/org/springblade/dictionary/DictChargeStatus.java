@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * [支付状态字典表--dict_charge_status]
  *
- * @Author create by yaodan
+ * @Author create by
  * @date 2020/7/1-10:23
  */
 @Data

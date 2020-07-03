@@ -6,15 +6,13 @@ import org.springblade.dictionary.DictChannelType;
 import java.util.List;
 
 /**
- * @Author create by yaodan
+ * @Author create by
  * @date 2020/7/1-10:56
  */
 public interface IChannelTypeService extends IService<DictChannelType> {
 	List<DictChannelType> selectAll();
 
 	DictChannelType selectById(Integer id);
-
-	int delById(Integer id);
 
 	int updateByIds(DictChannelType dictChannelType);
 

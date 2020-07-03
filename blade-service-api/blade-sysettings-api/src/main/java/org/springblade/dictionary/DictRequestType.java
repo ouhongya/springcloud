@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  *
  * [申请单类别字典表---]
- * @Author create by yaodan
+ * @Author create by
  * @date 2020/7/1-15:40
  */
 @Data

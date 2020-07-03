@@ -15,14 +15,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * @Author create by yaodan
+ * @Author create by
  * @date 2020/7/1-16:24
  */
 
 /**
  * 服务实现类
  *
- * @author Chill
+ * @author
  */
 @Slf4j
 @Service
@@ -38,11 +38,6 @@ public class RequestTypeServiceImpl extends BaseServiceImpl<RequestTypeMapper, D
 	@Override
 	public DictRequestType selectById(Integer id) {
 		return requestTypeMapper.selectByPrimaryKey(id);
-	}
-
-	@Override
-	public int delById(Integer id) {
-		return requestTypeMapper.delById(id);
 	}
 
 	@Override

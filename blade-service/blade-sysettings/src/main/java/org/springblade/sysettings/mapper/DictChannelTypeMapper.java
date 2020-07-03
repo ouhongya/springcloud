@@ -15,8 +15,6 @@ public interface DictChannelTypeMapper extends BaseMapper<DictChannelType> {
 
 	List<DictChannelType> selectAll();
 
-	int delById(Integer id);
-
 	int updateByIds(DictChannelType dictChannelType);
 
 	int add(DictChannelType dictChannelType);

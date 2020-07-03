@@ -6,17 +6,13 @@ import org.springblade.dictionary.DictChargeStatus;
 import java.util.List;
 
 /**
- * @Author create by yaodan
+ * @Author create by
  * @date 2020/7/1-10:56
  */
 public interface IChargeStatusService extends IService<DictChargeStatus> {
 	List<DictChargeStatus> selectAll();
 
 	DictChargeStatus selectById(Long id);
-
-	int delById(Long id);
-
-	int updateByIds(DictChargeStatus dictChargeStatus);
 
 	int insert(DictChargeStatus dictChargeStatus);
 }

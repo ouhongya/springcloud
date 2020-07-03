@@ -15,8 +15,6 @@ public interface RequestTypeMapper extends BaseMapper<DictRequestType> {
 
 	List<DictRequestType> selectAll();
 
-	int delById(Integer id);
-
 	int updateByIds(DictRequestType dictRequestType);
 
 	int add(DictRequestType dictRequestType);

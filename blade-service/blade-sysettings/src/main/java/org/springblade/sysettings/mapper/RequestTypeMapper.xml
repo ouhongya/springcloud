@@ -19,22 +19,8 @@
     <select id="selectAll" resultType="org.springblade.dictionary.DictRequestType">
         select * from dict_request_type
     </select>
-
-    <delete id="delById" parameterType="java.lang.Integer">
-        delete from dict_request_type
-        where id = #{id,jdbcType=TINYINT}
-    </delete>
-
     <update id="updateByIds" parameterType="org.springblade.dictionary.DictRequestType">
-        update dict_request_type
-        <set>
-            <if test="text != null">
-                text = #{text,jdbcType=VARCHAR},
-            </if>
-            <if test="enabled != null">
-                enabled = #{enabled,jdbcType=INTEGER},
-            </if>
-        </set>
+        update dict_request_type set enabled = #{enabled,jdbcType=INTEGER}
         where 1=1 and id = #{id,jdbcType=INTEGER}
     </update>
     <insert id="add" parameterType="org.springblade.dictionary.DictRequestType">
