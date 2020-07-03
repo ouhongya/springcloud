@@ -3,7 +3,8 @@
 <mapper namespace="org.springblade.receipt.mapper.ChargeDetailsMapper">
 
 
-    <select id="queryRequestDetailReceipt" parameterType="org.springblade.receipt.entity.RequestDetailReceiptVo" resultType="org.springblade.receipt.entity.RequestDetailsReceiptRes">
+    <select id="queryRequestDetailReceipt" parameterType="org.springblade.receipt.entity.RequestDetailReceiptVo"
+            resultType="org.springblade.receipt.entity.RequestDetailsReceiptRes">
         SELECT
         request_detail.`request_id`,request_charge_info.item_id,request_charge_info.`item_type_id`,
         request_charge_info.`item_count`,charge_receipt.`status`,
@@ -12,9 +13,9 @@
         IFNULL(SUM(charge_pay.fee_paid),0)AS payMoney
         FROM request_detail
         LEFT JOIN request_charge_info ON request_detail.`request_id`=request_charge_info.`request_id`
-        LEFT JOIN record_charge       ON request_charge_info.`request_id`=record_charge.`id`
-        LEFT JOIN charge_receipt      ON record_charge.id=charge_receipt.`charge_id`
-        LEFT JOIN `charge_pay`        ON charge_pay.`charge_id`=record_charge.`id`
+        LEFT JOIN record_charge ON request_charge_info.`request_id`=record_charge.`id`
+        LEFT JOIN charge_receipt ON record_charge.id=charge_receipt.`charge_id`
+        LEFT JOIN `charge_pay` ON charge_pay.`charge_id`=record_charge.`id`
         WHERE
         <if test="status != null and status != ''">
             charge_receipt.`status`=#{status}
@@ -36,8 +37,8 @@
         IFNULL(IFNULL(SUM(amount),0)-IFNULL(SUM(input_advance_pay.consumed),0),0) AS remainingMoney
         FROM input_advance_pay
         LEFT JOIN charge_request ON input_advance_pay.`patient_id`=charge_request.`patient_id`
-        LEFT JOIN record_charge  ON charge_request.`patient_id`=charge_request.`patient_id`
-        LEFT JOIN charge_pay     ON record_charge.`id`=charge_pay.`charge_id`
+        LEFT JOIN record_charge ON charge_request.`patient_id`=charge_request.`patient_id`
+        LEFT JOIN charge_pay ON record_charge.`id`=charge_pay.`charge_id`
         WHERE
         <if test="status != null and status != ''">
             record_charge.`status`=#{status}
