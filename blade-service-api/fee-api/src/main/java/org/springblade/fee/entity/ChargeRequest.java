@@ -24,6 +24,9 @@ public class ChargeRequest extends TenantEntity implements Serializable {
 	//申请单类别id
 	private int request_type_id;
 
+	//收费记录id
+	private long charge_id;
+
 	//开单科室ID
 	private int dept_id;
 

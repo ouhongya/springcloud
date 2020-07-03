@@ -26,7 +26,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
  *
  * @author Chill
  */
-@EnableBladeFeign
+@EnableBladeFeign("org.springblade.system.user.service")
 @SpringCloudApplication
 public class FeeApplication {
 

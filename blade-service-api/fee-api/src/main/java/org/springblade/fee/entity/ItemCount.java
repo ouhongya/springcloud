@@ -11,7 +11,6 @@ import java.io.Serializable;
 @TableName("request_charge_info")
 public class ItemCount extends TenantEntity implements Serializable {
 
-
 	private static final long serialVersionUID = 1897326014230091879L;
 
 	//收费项目id
@@ -25,6 +24,23 @@ public class ItemCount extends TenantEntity implements Serializable {
 
 	//申请单id
 	private long request_id;
+
+	//优惠id
+	private int favor_id;
+
+	//优惠渠道名称
+	private String favor_name;
+
+	//优惠费用
+	private String fee_favor;
+
+
+
+
+
+
+
+
 }
 
 

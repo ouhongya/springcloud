@@ -1,20 +1,22 @@
 package org.springblade.fee.service.impl;
 
-
-
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.swagger.models.auth.In;
 import org.springblade.core.mp.base.BaseServiceImpl;
-import org.springblade.fee.entity.ChargeRequest;
-import org.springblade.fee.entity.ItemCount;
-import org.springblade.fee.entity.RequestChargeInfo;
+import org.springblade.core.tool.api.R;
+import org.springblade.fee.entity.*;
+import org.springblade.fee.feign.IFeeClient;
 import org.springblade.fee.mapper.FeeMapper;
 import org.springblade.fee.service.FeeService;
 import org.springblade.fee.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -25,6 +27,11 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 
 	@Autowired
 	private RedisTemplate redisTemplate;
+
+//	@Autowired
+	private IFeeClient iFeeClient;
+
+
 
 
 	/**
@@ -52,11 +59,12 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 
 	@Override
 	public List<Feedetail> queryapplication(Long request_id) {
-
 		List<Feedetail> feedetail = baseMapper.selectFeeDetail(request_id);
+		ChargeRequest chargeRequest = baseMapper.selectChargeRequest(request_id);
+		for(Feedetail feedtail:feedetail){
+			feedtail.setDept_id(chargeRequest.getDept_id());
+		}
 		return  feedetail;
-
-
 	}
 
 	/**
@@ -68,10 +76,21 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 	@Override
 	public boolean submit(RequestChargeInfo requestChargeInfo) {
 		try{
+			long patient_id=requestChargeInfo.getPatient_id();
+			List<Integer> item_ids=new ArrayList<>();
 			List<ItemCount> item_list = requestChargeInfo.getItem_list();
 			for(ItemCount itemCount:item_list){
 				itemCount.setRequest_id(requestChargeInfo.getRequest_id());
+				item_ids.add(itemCount.getItem_id());
 				baseMapper.insertItemCount(itemCount);
+			}
+			Integer[] itemids = new Integer[item_ids.size()];
+			item_ids.toArray(itemids);
+			R<FavorItemBrief> favorItemBriefR = iFeeClient.item_favor(patient_id, itemids);
+			FavorItemBrief data = favorItemBriefR.getData();
+			List<ItemFavor> favor_list = data.getFavor_list();
+			for(ItemFavor itemFavor:favor_list){
+				baseMapper.updateItemCountItemFavor(itemFavor);
 			}
 			baseMapper.insertRequestChargeInfo(requestChargeInfo);
 			Claims claims;
@@ -92,12 +111,64 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 			chargeRequest.setPatient_id(requestChargeInfo.getPatient_id());
 			chargeRequest.setRequest_type_id(requestChargeInfo.getRequest_type_id());
 			baseMapper.insertChargeRequest(chargeRequest);
-			DicRequestType dicRequestType = baseMapper.selectDicRequestType(requestChargeInfo.getRequest_type_id());
-			redisTemplate.opsForValue().set(String.valueOf(requestChargeInfo.getRequest_id()),dicRequestType.getText());
+			DicRequestType dicRequestype = baseMapper.selectDicRequestType(requestChargeInfo.getRequest_type_id());
+			redisTemplate.opsForValue().set(String.valueOf(requestChargeInfo.getRequest_id()),dicRequestype.getText());
 			return true;
 		}catch (Exception e){
 			e.printStackTrace();
 			return false;
+		}
+
+	}
+
+	/**
+	 * 新增收费记录
+	 * @param
+	 * @return
+	 */
+
+	@Override
+	public Long submitrecordcharge(RecordChargeRequest recordChargeRequest) {
+		try{
+			Claims claims;
+			try {
+				claims = Jwts.parser()
+					.setSigningKey(recordChargeRequest.getSecret())
+					.parseClaimsJws(recordChargeRequest.getToken())
+					.getBody();
+			} catch (Exception e) {
+				claims = null;
+			}
+			Long id = Long.valueOf(claims.get("ID").toString());
+			int dept_id =Integer.valueOf(claims.get("Dept_id").toString());
+			int Doctor_id =Integer.valueOf(claims.get("Doctor_id").toString());
+			RecordCharge recordCharge = recordChargeRequest.getRecordCharge();
+			recordCharge.setToll_collector_id(id);
+			recordCharge.setCreate_time(new Date());
+			long patient_id = recordCharge.getPatient_id();
+			R<FavorPatientBrief> favorPatientBriefR = iFeeClient.patient_favor(patient_id);
+			FavorPatientBrief data = favorPatientBriefR.getData();
+			recordCharge.setFavor_channel_id(data.getFavor_id());
+			recordCharge.setFavor_channel(data.getFavor_name());
+			recordCharge.setFavor_fee(new BigDecimal(data.getFee_favor()));
+            baseMapper.insertRecordCharge(recordCharge);
+			List<Long> request_id_list = recordCharge.getRequest_id_list();
+            for(Long request_id:request_id_list){
+				ChargeRequest chargeRequest=new ChargeRequest();
+				chargeRequest.setDoctor_id(Doctor_id);
+				chargeRequest.setDept_id(dept_id);
+				chargeRequest.setRequest_id(request_id);
+				chargeRequest.setPatient_id(recordCharge.getPatient_id());
+				RequestChargeInfo requestChargeInfo = baseMapper.selectRequestChargeInfo(request_id);
+				chargeRequest.setRequest_type_id(requestChargeInfo.getRequest_type_id());
+				chargeRequest.setCharge_id(recordCharge.getId());
+				baseMapper.updateChargeRequest(chargeRequest);
+			}
+
+			return recordCharge.getId();
+		}catch (Exception e){
+			e.printStackTrace();
+			return null;
 		}
 
 	}
@@ -137,7 +208,6 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 			baseMapper.updateChargeRequest(chargeRequest);
 			DicRequestType dicRequestType = baseMapper.selectDicRequestType(requestChargeInfo.getRequest_type_id());
 			redisTemplate.opsForValue().set(String.valueOf(requestChargeInfo.getRequest_id()),dicRequestType.getText());
-
 			return true;
 		}catch (Exception e){
 			e.printStackTrace();

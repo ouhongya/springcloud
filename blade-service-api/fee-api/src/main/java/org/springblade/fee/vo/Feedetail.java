@@ -21,4 +21,7 @@ public class Feedetail implements Serializable {
 
 	//数量
 	private int itemCount;
+
+	//开单科室ID
+	private int dept_id;
 }

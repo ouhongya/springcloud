@@ -3,6 +3,7 @@ package org.springblade.fee.controller;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.springblade.core.tool.api.R;
+import org.springblade.fee.entity.RecordChargeRequest;
 import org.springblade.fee.entity.RequestChargeInfo;
 import org.springblade.fee.service.FeeService;
 import org.springblade.fee.vo.Fee;
@@ -37,14 +38,16 @@ public class FeeController {
 	@ApiOperationSupport(order = 2)
 	@ApiOperation(value = "项目明细", notes = "传入申请单列表id request_id")
 	@PostMapping("/queryapplication")
-	public List<Feedetail> queryapplication(Long request_id) {
+	public R<List<Feedetail>> queryapplication(Long request_id) {
 		List<Feedetail> queryapplication = feeService.queryapplication(request_id);
-		return queryapplication;
+		return R.data(queryapplication);
 
 	}
 
+
+
 	/**
-	 * 新增
+	 * 新增申请单
 	 */
 	@PostMapping("/submitapplicationform")
 	@ApiOperationSupport(order = 3)
@@ -75,6 +78,31 @@ public class FeeController {
 	}
 
 
+
+	/**
+	 * 新增收费记录
+	 */
+	@PostMapping("/submitrecordchargelist")
+	@ApiOperationSupport(order = 6)
+	@ApiOperation(value = "新增收费记录", notes = "传入RecordCharge(数组)")
+	public R<Long> submitrecordcharge(@RequestBody RecordChargeRequest recordChargeRequest) {
+		Long submitrecordcharge = feeService.submitrecordcharge(recordChargeRequest);
+		return  R.data(submitrecordcharge);
+
+	}
+
+
+//	/**
+//	 * 收费列表
+//	 */
+//	@ApiOperationSupport(order = 7)
+//	@ApiOperation(value = "收费列表", notes = "传入收费记录id")
+//	@PostMapping("/queryapplication")
+//	public R<List<Feedetail>> queryapplication(Long request_id) {
+//		List<Feedetail> queryapplication = feeService.queryapplication(request_id);
+//		return R.data(queryapplication);
+//
+//	}
 
 
 }

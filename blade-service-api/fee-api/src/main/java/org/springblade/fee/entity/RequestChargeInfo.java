@@ -27,7 +27,7 @@ public class RequestChargeInfo extends TenantEntity implements Serializable {
 	//token
 	private String token;
 
-	//token
+	//secret
 	private String secret;
 
 
