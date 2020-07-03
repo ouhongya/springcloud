@@ -6,10 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.core.mp.base.BaseServiceImpl;
 import org.springblade.receipt.entity.ChargeReceipt;
+import org.springblade.receipt.entity.HospitalizedVo;
 import org.springblade.receipt.entity.RequestDetailReceiptVo;
 import org.springblade.receipt.entity.RequestDetailsReceiptRes;
 import org.springblade.receipt.mapper.ChargeDetailsMapper;
-import org.springblade.receipt.mapper.ReceiptMapper;
 import org.springblade.receipt.service.ChargeDetailsService;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +35,28 @@ public class ChargeDetailsServiceImpl extends BaseServiceImpl<ChargeDetailsMappe
 		PageHelper.startPage(requestDetailReceiptVo.getPage(),requestDetailReceiptVo.getSize());
 		List<RequestDetailsReceiptRes> receiptResList= baseMapper.queryRequestDetailReceipt(requestDetailReceiptVo);
 		return new PageInfo<>(receiptResList);
+	}
+
+	/**
+	 * 住院预交金
+	 * @param requestDetailReceiptVo
+	 * @return
+	 */
+	@Override
+	public PageInfo queryHospitalizedList(RequestDetailReceiptVo requestDetailReceiptVo) {
+		PageHelper.startPage(requestDetailReceiptVo.getPage(),requestDetailReceiptVo.getSize());
+		List<HospitalizedVo> receiptResList= baseMapper.queryHospitalizedList(requestDetailReceiptVo);
+		return new PageInfo<>(receiptResList);
+	}
+
+	/**
+	 * 发票列表
+	 * @param requestDetailReceiptVo
+	 * @return
+	 */
+	@Override
+	public PageInfo queryInvoiceList(RequestDetailReceiptVo requestDetailReceiptVo) {
+		PageHelper.startPage(requestDetailReceiptVo.getPage(),requestDetailReceiptVo.getSize());
+		return null;
 	}
 }

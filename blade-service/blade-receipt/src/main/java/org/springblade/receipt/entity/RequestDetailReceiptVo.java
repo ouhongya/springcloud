@@ -23,6 +23,18 @@ public class RequestDetailReceiptVo {
 	@ApiModelProperty(value = "每页显示多少条")
 	private Integer size;
 
+	@ApiModelProperty(value = "收费类别")
+	private String type;
+
+	@ApiModelProperty(value = "医疗证号")
+	private String MedicalId;
+
+	@ApiModelProperty(value = "开单医生")
+	private String dockerId;
+
+	@ApiModelProperty(value = "发票号码")
+	private String invoiceId;
+
 	public Date getData() {
 		return data;
 	}
@@ -61,5 +73,37 @@ public class RequestDetailReceiptVo {
 
 	public void setSize(Integer size) {
 		this.size = size;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getMedicalId() {
+		return MedicalId;
+	}
+
+	public void setMedicalId(String medicalId) {
+		MedicalId = medicalId;
+	}
+
+	public String getDockerId() {
+		return dockerId;
+	}
+
+	public void setDockerId(String dockerId) {
+		this.dockerId = dockerId;
+	}
+
+	public String getInvoiceId() {
+		return invoiceId;
+	}
+
+	public void setInvoiceId(String invoiceId) {
+		this.invoiceId = invoiceId;
 	}
 }

@@ -20,5 +20,17 @@ public class ChargeDetailsController {
 	@ApiOperation(value = "费用明细查询", notes = "费用明细查询")
 	public R queryRequestDetailReceipt(RequestDetailReceiptVo requestDetailReceiptVo) {
 		return R.data(chargeDetailsService.queryRequestDetailReceipt(requestDetailReceiptVo));
-	};
+	}
+
+	@GetMapping("/queryHospitalizedList")
+	@ApiOperation(value = "住院预交金查询", notes = "住院预交金查询")
+	public R queryHospitalizedList(RequestDetailReceiptVo requestDetailReceiptVo) {
+		return R.data(chargeDetailsService.queryHospitalizedList(requestDetailReceiptVo));
+	}
+
+	@GetMapping("/queryInvoiceList")
+	@ApiOperation(value = "发票列表", notes = "发票列表")
+	public R queryInvoiceList(RequestDetailReceiptVo requestDetailReceiptVo) {
+		return R.data(chargeDetailsService.queryInvoiceList(requestDetailReceiptVo));
+	}
 }

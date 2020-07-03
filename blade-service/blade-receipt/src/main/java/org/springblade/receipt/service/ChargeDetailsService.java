@@ -9,4 +9,8 @@ import java.util.List;
 public interface ChargeDetailsService extends IService<ChargeReceipt> {
 
 	PageInfo queryRequestDetailReceipt(RequestDetailReceiptVo requestDetailReceiptVo);
+
+	PageInfo queryHospitalizedList(RequestDetailReceiptVo requestDetailReceiptVo);
+
+	PageInfo queryInvoiceList(RequestDetailReceiptVo requestDetailReceiptVo);
 }
