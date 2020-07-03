@@ -5,10 +5,12 @@ import io.swagger.annotations.ApiOperation;
 
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
+import oracle.jdbc.proxy.annotation.Post;
 import org.springblade.common.utils.CommonUtil;
 import org.springblade.core.tool.api.R;
 import org.springblade.receipt.entity.ChargeReceipt;
 import org.springblade.receipt.entity.ReceiptVo;
+import org.springblade.receipt.entity.RefundVo;
 import org.springblade.receipt.service.ReceiptService;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,11 +55,11 @@ public class ReceiptController {
 		return R.status(receiptService.printInvoice(receiptVo,username));
 	}
 
-	@GetMapping("/refund")
+	@PostMapping("/refund")
 	@ApiOperation(value = "退款",notes = "退款")
-	public R Refund(@ApiParam(value = "申请单号") String requestId,@ApiParam(value = "退款理由")String reason){
+	public R Refund(@RequestBody List<RefundVo> refundVo,String reason){
 		String username = "";
-		return R.data(receiptService.refund(requestId,username,reason));
+		return R.data(receiptService.refund(refundVo,username,reason));
 	}
 
 
