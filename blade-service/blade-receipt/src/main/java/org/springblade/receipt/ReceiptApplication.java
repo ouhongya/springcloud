@@ -11,4 +11,5 @@ public class ReceiptApplication {
 	public static void main(String[] args) {
 		BladeApplication.run("blade-receipt", ReceiptApplication.class, args);
 	}
+
 }

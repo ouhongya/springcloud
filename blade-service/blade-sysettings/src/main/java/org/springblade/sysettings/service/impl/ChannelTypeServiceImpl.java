@@ -12,13 +12,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * @Author create by yaodan
+ * @Author create by
  * @date 2020/7/1-16:24
  */
 /**
  * 服务实现类
  *
- * @author Chill
+ * @author
  */
 @Slf4j
 @Service
@@ -34,11 +34,6 @@ public class ChannelTypeServiceImpl extends BaseServiceImpl<DictChannelTypeMappe
 	@Override
 	public DictChannelType selectById(Integer id) {
 		return channelTypeMapper.selectByPrimaryKey(id);
-	}
-
-	@Override
-	public int delById(Integer id) {
-		return channelTypeMapper.delById(id);
 	}
 
 	@Override

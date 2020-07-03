@@ -19,20 +19,6 @@
         select * from dict_charge_status
     </select>
 
-    <delete id="delById" parameterType="java.lang.Long">
-        delete from dict_charge_status
-        where id = #{id,jdbcType=TINYINT}
-    </delete>
-
-    <update id="updateByIds" parameterType="org.springblade.dictionary.DictChargeStatus">
-        update dict_charge_status
-        <set>
-            <if test="text != null">
-                text = #{text,jdbcType=VARCHAR},
-            </if>
-        </set>
-        where 1=1 and id = #{id,jdbcType=TINYINT}
-    </update>
     <insert id="add" parameterType="org.springblade.dictionary.DictChargeStatus">
         insert into dict_charge_status (id, text)
         values (#{id,jdbcType=TINYINT}, #{text,jdbcType=VARCHAR})

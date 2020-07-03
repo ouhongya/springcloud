@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * @Author create by yaodan
+ * @Author create by
  * @date 2020/7/1-10:57
  */
 
@@ -36,15 +36,6 @@ public class ChargeStatusServiceImpl extends BaseServiceImpl<ChargeStatusMapper,
 		return chargeStatusMapper.selectByPrimaryKey(id);
 	}
 
-	@Override
-	public int delById(Long id) {
-		return chargeStatusMapper.delById(id);
-	}
-
-	@Override
-	public int updateByIds(DictChargeStatus dictChargeStatus) {
-		return chargeStatusMapper.updateByIds(dictChargeStatus);
-	}
 
 	@Override
 	public int insert(DictChargeStatus dictChargeStatus) {

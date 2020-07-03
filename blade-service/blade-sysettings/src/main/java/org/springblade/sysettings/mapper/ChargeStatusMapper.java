@@ -6,7 +6,7 @@ import org.springblade.dictionary.DictChargeStatus;
 import java.util.List;
 
 /**
- * @Author create by yaodan
+ * @Author create by
  * @date 2020/7/1-11:25
  */
 public interface ChargeStatusMapper extends BaseMapper<DictChargeStatus> {
@@ -14,10 +14,6 @@ public interface ChargeStatusMapper extends BaseMapper<DictChargeStatus> {
 
 
 	List<DictChargeStatus> selectAll();
-
-	int delById(Long id);
-
-	int updateByIds(DictChargeStatus dictChargeStatus);
 
 	int add(DictChargeStatus dictChargeStatus);
 }

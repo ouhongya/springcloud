@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * [支付渠道字典表--dict_channel_type]
  *
- * @Author create by yaodan
+ * @Author create by
  * @date 2020/7/1-15:40
  */
 @Data

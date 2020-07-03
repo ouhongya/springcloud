@@ -17,11 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class RequestTypeController {
 	private IRequestTypeService iRequestTypeService;
 
-	@GetMapping("info")
-	public String info(String name) {
-		return "Hello, My Name Is: " + name;
-	}
-
 	/**
 	 * [查询所有]
 	 *
@@ -45,17 +40,6 @@ public class RequestTypeController {
 		return R.data(iRequestTypeService.selectById(id));
 	}
 
-	/**
-	 * [根据id删除]
-	 *
-	 * @param id
-	 * @return
-	 */
-	@GetMapping("/delById")
-	@ApiOperation(value = "申请单类别字典表", notes = "申请单类别字典表")
-	public R delById(@ApiParam(value = "状态代码") Integer id) {
-		return R.data(iRequestTypeService.delById(id));
-	}
 
 	/**
 	 * [根据id修改]

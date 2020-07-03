@@ -15,11 +15,6 @@ import org.springframework.web.bind.annotation.*;
 public class ChargeStatusController {
 	private IChargeStatusService iChargeStatusService;
 
-	@GetMapping("info")
-	public String info(String name) {
-		return "Hello, My Name Is: " + name;
-	}
-
 	/**
 	 * [查询所有]
 	 *
@@ -41,30 +36,6 @@ public class ChargeStatusController {
 	@ApiOperation(value = "支付状态字典表", notes = "支付状态字典表")
 	public R selectById(@ApiParam(value = "状态代码") Long id) {
 		return R.data(iChargeStatusService.selectById(id));
-	}
-
-	/**
-	 * [根据id删除]
-	 *
-	 * @param id
-	 * @return
-	 */
-	@GetMapping("/delById")
-	@ApiOperation(value = "支付状态字典表", notes = "支付状态字典表")
-	public R delById(@ApiParam(value = "状态代码") Long id) {
-		return R.data(iChargeStatusService.delById(id));
-	}
-
-	/**
-	 * [根据id修改]
-	 *
-	 * @param dictChargeStatus
-	 * @return
-	 */
-	@GetMapping("/updateById")
-	@ApiOperation(value = "支付状态字典表", notes = "支付状态字典表")
-	public R updateById(@ApiParam(value = "状态代码") DictChargeStatus dictChargeStatus) {
-		return R.data(iChargeStatusService.updateByIds(dictChargeStatus));
 	}
 
 	/**
