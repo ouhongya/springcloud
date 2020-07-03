@@ -5,11 +5,16 @@
 
     <select id="queryRequestDetailReceipt" parameterType="org.springblade.receipt.entity.RequestDetailReceiptVo" resultType="org.springblade.receipt.entity.RequestDetailsReceiptRes">
         SELECT
-        request_detail.`request_id`,request_charge_info.item_id,request_charge_info.`item_type_id`,request_charge_info.`item_count`,charge_receipt.`status`
+        request_detail.`request_id`,request_charge_info.item_id,request_charge_info.`item_type_id`,
+        request_charge_info.`item_count`,charge_receipt.`status`,
+        IFNULL(IFNULL(SUM(charge_pay.fee_paid),0)+IFNULL(SUM(fee_refund),0),0) AS totalMoney,
+        IFNULL(SUM(fee_refund),0) AS refundMoney,
+        IFNULL(SUM(charge_pay.fee_paid),0)AS payMoney
         FROM request_detail
         LEFT JOIN request_charge_info ON request_detail.`request_id`=request_charge_info.`request_id`
-        LEFT JOIN record_charge ON request_charge_info.`request_id`=record_charge.`id`
-        LEFT JOIN charge_receipt ON record_charge.id=charge_receipt.`charge_id`
+        LEFT JOIN record_charge       ON request_charge_info.`request_id`=record_charge.`id`
+        LEFT JOIN charge_receipt      ON record_charge.id=charge_receipt.`charge_id`
+        LEFT JOIN `charge_pay`        ON charge_pay.`charge_id`=record_charge.`id`
         WHERE
         <if test="status != null and status != ''">
             charge_receipt.`status`=#{status}

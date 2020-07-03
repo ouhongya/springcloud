@@ -3,6 +3,8 @@ package org.springblade.receipt.entity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class RequestDetailsReceiptRes {
 	@ApiModelProperty(value = "申请单号Id")
@@ -15,6 +17,36 @@ public class RequestDetailsReceiptRes {
 	private String itemCount;
 	@ApiModelProperty(value = "发票状态: 0：未启用 1：已启用 2：已开票 3：已退票 4：已作废")
 	private String status;
+	@ApiModelProperty(value = "总金额")
+	private BigDecimal totalMoney;
+	@ApiModelProperty(value = "退费金额")
+	private BigDecimal refundMoney;
+	@ApiModelProperty(value = "支付金额")
+	private BigDecimal payMoney;
+
+	public BigDecimal getTotalMoney() {
+		return totalMoney;
+	}
+
+	public void setTotalMoney(BigDecimal totalMoney) {
+		this.totalMoney = totalMoney;
+	}
+
+	public BigDecimal getRefundMoney() {
+		return refundMoney;
+	}
+
+	public void setRefundMoney(BigDecimal refundMoney) {
+		this.refundMoney = refundMoney;
+	}
+
+	public BigDecimal getPayMoney() {
+		return payMoney;
+	}
+
+	public void setPayMoney(BigDecimal payMoney) {
+		this.payMoney = payMoney;
+	}
 
 	public String getRequestId() {
 		return requestId;
