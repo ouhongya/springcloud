@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.or g/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.sysettings.mapper.CategoryMapper">
+    <resultMap id="BaseResultMap" type="org.springblade.dictionary.Category">
+        <id column="category_id" jdbcType="TINYINT" property="categoryId"/>
+        <result column="text" jdbcType="VARCHAR" property="text"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        category_id, text
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from CategoryMapper
+        where category_id = #{categoryId,jdbcType=TINYINT}
+    </select>
+    <select id="selectAll" resultType="org.springblade.dictionary.Category">
+        select * from category
+    </select>
+
+    <insert id="add" parameterType="org.springblade.dictionary.Category">
+        insert into category (category_id, text)
+        values (#{categoryId,jdbcType=TINYINT}, #{text,jdbcType=VARCHAR})
+    </insert>
+
+</mapper>
