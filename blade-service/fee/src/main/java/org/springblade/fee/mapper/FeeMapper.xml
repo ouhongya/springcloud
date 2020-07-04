@@ -15,6 +15,17 @@
         <result column="item_type_id" property="itemTypeId"/>
         <result column="item_count" property="itemCount"/>
         <result column="item_id" property="itemId"/>
+        <result column="favor_id" property="favorId"/>
+        <result column="favor_name" property="favorName"/>
+        <result column="fee_favor" property="feeFavor"/>
+        <result column="fee_item" property="feeItem"/>
+        <result column="fee_final" property="feeFinal"/>
+        <result column="favor_channel_id" property="favorChannelId"/>
+        <result column="favor_channe" property="favorChanne"/>
+        <result column="execute_dept_id" property="executeDeptId"/>
+        <result column="refund_reason" property="refundReason"/>
+        <result column="status" property="status"/>
+
     </resultMap>
 
     <select id="selectFeeList" resultMap="FeeResultMap">
@@ -24,7 +35,7 @@
         </foreach>
     </select>
     <select id="selectFeeDetail" resultMap="FeedetailResultMap">
-        select request_id,item_type_id,item_count,item_id from request_charge_info where request_id =  #{request_id}
+        select request_id,item_type_id,item_count,item_id,favor_id,favor_name,fee_favor,fee_item,fee_final,favor_channel_id,favor_channe,execute_dept_id,refund_reason,status from request_charge_info where request_id =  #{request_id}
     </select>
     <insert id="insertItemCount" parameterType="org.springblade.fee.entity.ItemCount">
         INSERT INTO `request_charge_info`(`item_id`, `item_type_id`, `item_count`, `request_id`)
@@ -48,14 +59,14 @@
     </delete>
     <insert id="insertChargeRequest" parameterType="org.springblade.fee.entity.ChargeRequest">
         INSERT INTO `charge_request`(`patient_id`, `request_id`, `request_type`, `charge_id`,`dept_id`,`doctor_id`)
-        VALUES (#{patient_id},#{request_id},#{request_type_id},#{charge_id},#{dept_id},#{doctor_id})
+        VALUES (#{patient_id},#{request_id},#{request_type},#{charge_id},#{dept_id},#{doctor_id})
     </insert>
     <insert id="insertRecordCharge" parameterType="org.springblade.fee.entity.RecordCharge" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO `record_charge`(`patient_id`, `create_time`, `paid_time`, `refund_time`,`favor_channel_id`,`favor_channel`,`favor_fee`,`status`,`toll_collector_id`)
         VALUES (#{patient_id},#{create_time},#{paid_time},#{refund_time},#{favor_channel_id},#{favor_channel},#{favor_fee},#{status},#{toll_collector_id})
     </insert>
     <update id="updateChargeRequest" parameterType="org.springblade.fee.entity.ChargeRequest">
-        update charge_request SET patient_id=#{patient_id},request_type=#{request_type_id},charge_id=#{charge_id},dept_id=#{dept_id},doctor_id=#{doctor_id} where request_id=#{request_id}
+        update charge_request SET patient_id=#{patient_id},request_type=#{request_type},charge_id=#{charge_id},dept_id=#{dept_id},doctor_id=#{doctor_id} where request_id=#{request_id}
     </update>
     <update id="updateItemCountItemFavor" parameterType="org.springblade.fee.vo.ItemFavor">
         update request_charge_info SET favor_id=#{favor_id},favor_name=#{favor_name},fee_favor=#{fee_favor} where item_id=#{item_id}
@@ -74,5 +85,8 @@
     </select>
     <select id="selectRecordCharge" resultType="org.springblade.fee.entity.RecordCharge" parameterType="java.lang.Long">
         select patient_id,create_time,paid_time,refund_time,favor_channel_id,favor_channel,favor_fee,status,toll_collector_id  from record_charge where id =  #{id}
+    </select>
+    <select id="selectChargeRequestList" resultType="org.springblade.fee.entity.ChargeRequest" parameterType="java.lang.Long">
+        select patient_id,request_id,request_type,dept_id,doctor_id from charge_request where charge_id =  #{charge_id}
     </select>
 </mapper>

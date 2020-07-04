@@ -2,7 +2,6 @@ package org.springblade.fee.service.impl;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.swagger.models.auth.In;
 import org.springblade.core.mp.base.BaseServiceImpl;
 import org.springblade.core.tool.api.R;
 import org.springblade.fee.entity.*;
@@ -13,12 +12,8 @@ import org.springblade.fee.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
+import java.util.*;
 
 
 @Service
@@ -68,6 +63,22 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 	}
 
 	/**
+	 * 收费列表
+	 */
+
+	@Override
+	public Map<Long,List<Feedetail>> querychargefeedetail(Long charge_id) {
+		List<ChargeRequest> chargeRequests = baseMapper.selectChargeRequestList(charge_id);
+		Map<Long,List<Feedetail>> result=new HashMap<>();
+		for(ChargeRequest chargeRequest:chargeRequests){
+			long request_id = chargeRequest.getRequest_id();
+			List<Feedetail> feedetails = baseMapper.selectFeeDetail(request_id);
+			result.put(request_id,feedetails);
+		}
+		return result;
+	}
+
+	/**
 	 * 新增申请单
 	 * @param
 	 * @return
@@ -109,7 +120,7 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 			chargeRequest.setDept_id(dept_id);
 			chargeRequest.setRequest_id(requestChargeInfo.getRequest_id());
 			chargeRequest.setPatient_id(requestChargeInfo.getPatient_id());
-			chargeRequest.setRequest_type_id(requestChargeInfo.getRequest_type_id());
+			chargeRequest.setRequest_type(requestChargeInfo.getRequest_type_id());
 			baseMapper.insertChargeRequest(chargeRequest);
 			DicRequestType dicRequestype = baseMapper.selectDicRequestType(requestChargeInfo.getRequest_type_id());
 			redisTemplate.opsForValue().set(String.valueOf(requestChargeInfo.getRequest_id()),dicRequestype.getText());
@@ -160,7 +171,7 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 				chargeRequest.setRequest_id(request_id);
 				chargeRequest.setPatient_id(recordCharge.getPatient_id());
 				RequestChargeInfo requestChargeInfo = baseMapper.selectRequestChargeInfo(request_id);
-				chargeRequest.setRequest_type_id(requestChargeInfo.getRequest_type_id());
+				chargeRequest.setRequest_type(requestChargeInfo.getRequest_type_id());
 				chargeRequest.setCharge_id(recordCharge.getId());
 				baseMapper.updateChargeRequest(chargeRequest);
 			}
@@ -204,7 +215,7 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 			chargeRequest.setDept_id(dept_id);
 			chargeRequest.setRequest_id(requestChargeInfo.getRequest_id());
 			chargeRequest.setPatient_id(requestChargeInfo.getPatient_id());
-			chargeRequest.setRequest_type_id(requestChargeInfo.getRequest_type_id());
+			chargeRequest.setRequest_type(requestChargeInfo.getRequest_type_id());
 			baseMapper.updateChargeRequest(chargeRequest);
 			DicRequestType dicRequestType = baseMapper.selectDicRequestType(requestChargeInfo.getRequest_type_id());
 			redisTemplate.opsForValue().set(String.valueOf(requestChargeInfo.getRequest_id()),dicRequestType.getText());

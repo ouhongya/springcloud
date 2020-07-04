@@ -9,6 +9,7 @@ import org.springblade.fee.vo.Fee;
 import org.springblade.fee.vo.Feedetail;
 
 import java.util.List;
+import java.util.Map;
 
 public interface FeeService extends BaseService<RequestChargeInfo> {
 
@@ -16,6 +17,8 @@ public interface FeeService extends BaseService<RequestChargeInfo> {
 	List<Fee>  queryapplicationfrom(List<Long> request_id_list);
 
 	List<Feedetail> queryapplication(Long request_id);
+
+	Map<Long,List<Feedetail>> querychargefeedetail(Long charge_id);
 
 	boolean submit(RequestChargeInfo requestChargeInfo);
 
