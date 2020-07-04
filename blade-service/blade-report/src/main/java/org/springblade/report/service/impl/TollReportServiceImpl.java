@@ -3,6 +3,7 @@ package org.springblade.report.service.impl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.report.ChargestsList;
+import org.springblade.report.ReportDetail;
 import org.springblade.report.mapper.TollReportMapper;
 import org.springblade.report.service.ITollReportService;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,8 @@ public class TollReportServiceImpl implements ITollReportService {
 	private TollReportMapper tollReportMapper;
 
 	@Override
-	public Object rptdetail(Integer toll_collector_id) {
-		return null;
+	public List<ReportDetail> rptdetail(ReportDetail reportDetail) {
+		return tollReportMapper.rptdetail(reportDetail);
 	}
 
 	@Override

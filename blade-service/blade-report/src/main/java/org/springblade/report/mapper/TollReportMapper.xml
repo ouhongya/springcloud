@@ -27,4 +27,40 @@
         AND p.STATUS = 1
         ) b
     </select>
+    <select id="rptdetail" resultType="org.springblade.report.ReportDetail">
+        SELECT
+        c.text AS costCategory, drt.text AS requestType, r.create_time AS createTime, r.paid_time AS paidTime,
+        rci.chargeable, rci.discountCost, rci.actuallyPay, r.toll_collector_id AS tollCollectorId,
+        cr.dept_id AS deptId, GROUP_CONCAT( dct.text ) AS paymentMethod
+        FROM
+        record_charge r
+        LEFT JOIN category c ON c.category_id = r.category_id
+        LEFT JOIN charge_request cr ON cr.charge_id = r.id
+        LEFT JOIN dict_request_type drt ON drt.id = cr.request_type
+        LEFT JOIN charge_pay p ON p.charge_id = r.id
+        LEFT JOIN dict_channel_type dct ON dct.id = p.channel_type_id
+        LEFT JOIN request_detail rd ON rd.request_id = cr.request_id
+        LEFT JOIN (
+        SELECT
+        request_id, sum( fee_item ) AS chargeable,
+        sum( fee_favor ) AS discountCost, sum( fee_final ) AS actuallyPay
+        FROM
+        request_charge_info
+        GROUP BY request_id ) rci
+        ON rci.request_id = rd.request_id
+        WHERE 1 = 1
+        <if test="paidTime != null">
+            AND
+            r.paid_time=#{paidTime}
+        </if>
+        <if test="tollCollectorId != null and tollCollectorId != ''">
+            AND
+            r.toll_collector_id=#{tollCollectorId}
+        </if>
+        <if test="turnStatus != null and turnStatus != ''">
+            AND
+            AND r.turn_status =#{turnStatus}
+        </if>
+        GROUP BY r.id
+    </select>
 </mapper>
