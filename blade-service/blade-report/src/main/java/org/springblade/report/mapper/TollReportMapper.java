@@ -2,6 +2,7 @@ package org.springblade.report.mapper;
 
 import org.apache.ibatis.annotations.Param;
 import org.springblade.report.ChargestsList;
+import org.springblade.report.ReportDetail;
 
 import java.util.List;
 
@@ -12,4 +13,6 @@ import java.util.List;
 public interface TollReportMapper {
 
 	List<ChargestsList> chargeStatistics(@Param("toll_collector_id") Integer toll_collector_id);
+
+    List<ReportDetail> rptdetail(ReportDetail reportDetail);
 }
