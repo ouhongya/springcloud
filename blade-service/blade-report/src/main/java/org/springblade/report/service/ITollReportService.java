@@ -1,6 +1,7 @@
 package org.springblade.report.service;
 
 import org.springblade.report.ChargestsList;
+import org.springblade.report.RecordCharge;
 import org.springblade.report.ReportDetail;
 
 import java.util.List;
@@ -15,4 +16,7 @@ public interface ITollReportService {
 
 	List<ChargestsList> chargeStatistics(Integer toll_collector_id);
 
+	RecordCharge selectById(Integer id);
+
+	String updateTurnStatus(Integer[] ids);
 }

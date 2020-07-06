@@ -2,7 +2,6 @@
     "http://mybatis.or g/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.springblade.report.mapper.TollReportMapper">
 
-
     <select id="chargeStatistics" resultType="org.springblade.report.ChargestsList">
         SELECT * FROM
         (SELECT
@@ -51,16 +50,36 @@
         WHERE 1 = 1
         <if test="paidTime != null">
             AND
-            r.paid_time=#{paidTime}
+            r.paid_time &lt;= #{paidTime}
         </if>
         <if test="tollCollectorId != null and tollCollectorId != ''">
             AND
             r.toll_collector_id=#{tollCollectorId}
         </if>
         <if test="turnStatus != null and turnStatus != ''">
-            AND
             AND r.turn_status =#{turnStatus}
         </if>
         GROUP BY r.id
     </select>
+
+
+    <resultMap id="BaseResultMap" type="org.springblade.report.RecordCharge">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="patient_id" jdbcType="BIGINT" property="patientId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="paid_time" jdbcType="TIMESTAMP" property="paidTime"/>
+        <result column="refund_time" jdbcType="TIMESTAMP" property="refundTime"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="toll_collector_id" jdbcType="BIGINT" property="tollCollectorId"/>
+        <result column="turn_status" jdbcType="INTEGER" property="turnStatus"/>
+        <result column="category_id" jdbcType="TINYINT" property="categoryId"/>
+    </resultMap>
+    <select id="selectById" resultMap="BaseResultMap">
+        select * from record_charge where 1=1 and id=#{id}
+    </select>
+
+    <update id="updateTurnStatus">
+        update record_charge set turn_status = 1 where id=#{id}
+    </update>
+
 </mapper>

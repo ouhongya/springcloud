@@ -14,6 +14,12 @@ import java.util.Date;
 public class ReportDetail {
 
 	/**
+	 * 收费记录id
+	 */
+	@ApiModelProperty(value = "收费记录id")
+	private Integer id;
+
+	/**
 	 * 费用类别
 	 */
 	@ApiModelProperty(value = "费用类别")
