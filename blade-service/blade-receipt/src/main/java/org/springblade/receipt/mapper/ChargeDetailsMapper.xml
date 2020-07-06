@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.or g/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.springblade.receipt.mapper.ChargeDetailsMapper">
-
-
     <select id="queryRequestDetailReceipt" parameterType="org.springblade.receipt.entity.RequestDetailReceiptVo"
             resultType="org.springblade.receipt.entity.RequestDetailsReceiptRes">
+
         SELECT
         request_detail.`request_id`,request_charge_info.item_id,request_charge_info.`item_type_id`,
         request_charge_info.`item_count`,charge_receipt.`status`,
@@ -17,19 +16,27 @@
         LEFT JOIN charge_receipt ON record_charge.id=charge_receipt.`charge_id`
         LEFT JOIN `charge_pay` ON charge_pay.`charge_id`=record_charge.`id`
         WHERE
+
         <if test="status != null and status != ''">
+
             charge_receipt.`status`=#{status}
+
         </if>
         <if test="data != null">
+
             AND
             record_charge.paid_time=#{data}
+
         </if>
         <if test="id != null and id != ''">
+
             AND
             record_charge.toll_collector_id=#{id}
+
         </if>
     </select>
     <select id="queryHospitalizedList" resultType="org.springblade.receipt.entity.HospitalizedVo">
+
         SELECT
         charge_request.request_id,charge_pay.fee_paid, record_charge.paid_time,
         IFNULL(SUM(amount),0) AS totalMoney,
@@ -40,19 +47,81 @@
         LEFT JOIN record_charge ON charge_request.`patient_id`=charge_request.`patient_id`
         LEFT JOIN charge_pay ON record_charge.`id`=charge_pay.`charge_id`
         WHERE
+
         <if test="status != null and status != ''">
+
             record_charge.`status`=#{status}
+
         </if>
         <if test="data != null">
+
             AND
             record_charge.paid_time=#{data}
+
         </if>
         <if test="id != null and id != ''">
+
             AND
             record_charge.toll_collector_id=#{id}
+
         </if>
         <if test="hospitalizedDate != null and hospitalizedDate != ''">
+
             and record_charge.paid_time=#{hospitalizedDate}
+
+        </if>
+    </select>
+
+    <select id="queryInvoiceList" resultType="org.springblade.receipt.entity.InvoiceVo"
+            parameterType="org.springblade.receipt.entity.RequestDetailReceiptVo">
+
+        SELECT
+        charge_receipt.`receipt_number`,IFNULL(IFNULL(charge_pay.fee_paid,0)+IFNULL(charge_pay.fee_refund,0),0),
+        IFNULL(charge_pay.fee_paid,0),record_charge.toll_collector_id,charge_receipt.status,record_charge.paid_time,
+        charge_request.`doctor_id`
+        FROM `charge_receipt`
+        LEFT JOIN `record_charge` ON charge_receipt.`charge_id`=record_charge.`id`
+        LEFT JOIN `category` ON record_charge.`category_id`=category.`category_id`
+        LEFT JOIN `charge_request` ON record_charge.`patient_id`=charge_request.`patient_id`
+        LEFT JOIN `charge_pay` ON record_charge.`id` = charge_pay.`charge_id`
+        WHERE
+        1=1
+
+        <if test="data != null">
+
+            AND
+            record_charge.paid_time=#{data}
+
+        </if>
+        <if test="type != null and type != ''">
+
+            AND
+            category.`category_id`=#{type}
+
+        </if>
+        <if test="id != null and id != ''">
+
+            AND
+            record_charge.toll_collector_id=#{id}
+
+        </if>
+        <if test="dockerId != null and dockerId != ''">
+
+            AND
+            charge_request.`doctor_id`=#{dockerId}
+
+        </if>
+        <if test="invoiceId != null and invoiceId != ''">
+
+            AND
+            charge_receipt.`receipt_number`=#{invoiceId}
+
+        </if>
+        <if test="status != null and status != ''">
+
+            AND
+            charge_receipt.status=#{status}
+
         </if>
     </select>
 </mapper>
