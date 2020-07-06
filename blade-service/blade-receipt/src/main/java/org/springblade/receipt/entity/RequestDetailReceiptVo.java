@@ -11,7 +11,7 @@ public class RequestDetailReceiptVo {
 	@ApiModelProperty(value = "收费日期:默认不传")
 	private Date data;
 
-	@ApiModelProperty(value = "收费员:默认不传")
+	@ApiModelProperty(value = "收费员Id")
 	private String id;
 
 	@ApiModelProperty(value = "状态位:1全部,2有效,3作废")

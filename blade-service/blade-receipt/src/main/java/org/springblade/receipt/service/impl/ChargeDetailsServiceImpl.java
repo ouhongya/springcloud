@@ -5,10 +5,7 @@ import com.github.pagehelper.PageInfo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.core.mp.base.BaseServiceImpl;
-import org.springblade.receipt.entity.ChargeReceipt;
-import org.springblade.receipt.entity.HospitalizedVo;
-import org.springblade.receipt.entity.RequestDetailReceiptVo;
-import org.springblade.receipt.entity.RequestDetailsReceiptRes;
+import org.springblade.receipt.entity.*;
 import org.springblade.receipt.mapper.ChargeDetailsMapper;
 import org.springblade.receipt.service.ChargeDetailsService;
 import org.springframework.stereotype.Service;
@@ -57,6 +54,7 @@ public class ChargeDetailsServiceImpl extends BaseServiceImpl<ChargeDetailsMappe
 	@Override
 	public PageInfo queryInvoiceList(RequestDetailReceiptVo requestDetailReceiptVo) {
 		PageHelper.startPage(requestDetailReceiptVo.getPage(),requestDetailReceiptVo.getSize());
-		return null;
+		List<InvoiceVo> receiptResList= baseMapper.queryInvoiceList(requestDetailReceiptVo);
+		return new PageInfo<>(receiptResList);
 	}
 }
