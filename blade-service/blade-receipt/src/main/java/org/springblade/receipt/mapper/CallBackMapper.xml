@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.or g/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.receipt.mapper.CallBackMapper">
+
+    <insert id="createdAvailable" parameterType="org.springblade.receipt.entity.AvailableVo">
+        insert into invoice (id,receipt_type,receipt_number,status,created_time) values (#{id},#{receipt_type},#{receipt_number},0,now())
+    </insert>
+
+    <update id="updateAvailable" >
+        update invoice set status=1 ,last_update_time=now() where status=0
+    </update>
+</mapper>

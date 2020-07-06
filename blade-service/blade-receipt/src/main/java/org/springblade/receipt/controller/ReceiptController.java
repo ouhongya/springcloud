@@ -61,6 +61,4 @@ public class ReceiptController {
 		String username = "";
 		return R.data(receiptService.refund(refundVo,username,reason));
 	}
-
-
 }

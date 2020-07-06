@@ -65,4 +65,12 @@
     <select id="queryReceiptByIds" parameterType="java.lang.String" resultMap="receiptMap">
         select * from charge_receipt where receipt_number =#{id}
     </select>
+
+    <select id="queryReceiptByIdNew" resultType="java.lang.String">
+        select receipt_number from invoice where status=0
+    </select>
+
+    <update id="queryReceiptByIdNewStatus" parameterType="java.lang.String">
+        update invoice set status=2 where receipt_number=#{num}
+    </update>
 </mapper>
