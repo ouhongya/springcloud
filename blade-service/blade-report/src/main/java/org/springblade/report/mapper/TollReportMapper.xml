@@ -48,16 +48,29 @@
         GROUP BY request_id ) rci
         ON rci.request_id = rd.request_id
         WHERE 1 = 1
+        <if test="createTime != null">
+            AND
+            r.create_time  &gt;= #{createTime}
+        </if>
         <if test="paidTime != null">
             AND
             r.paid_time &lt;= #{paidTime}
         </if>
-        <if test="tollCollectorId != null and tollCollectorId != ''">
+        <if test="tollCollectorId != null">
             AND
             r.toll_collector_id=#{tollCollectorId}
         </if>
-        <if test="turnStatus != null and turnStatus != ''">
+        <if test="turnStatus != null">
             AND r.turn_status =#{turnStatus}
+        </if>
+        <if test="costCategory != null and costCategory != ''">
+            AND c.text =#{costCategory}
+        </if>
+        <if test="requestType != null and requestType != ''">
+            AND drt.text =#{requestType}
+        </if>
+        <if test="deptId != null">
+            AND cr.dept_id =#{deptId}
         </if>
         GROUP BY r.id
     </select>
