@@ -1,5 +1,6 @@
 package org.springblade.sysettings.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
@@ -8,7 +9,7 @@ import org.springblade.dictionary.DictChargeStatus;
 import org.springblade.sysettings.service.IChargeStatusService;
 import org.springframework.web.bind.annotation.*;
 
-
+@Api(value = "支付状态字典表", tags = "支付状态字典表")
 @RequestMapping("/api/chargeStatus")
 @RestController
 @AllArgsConstructor

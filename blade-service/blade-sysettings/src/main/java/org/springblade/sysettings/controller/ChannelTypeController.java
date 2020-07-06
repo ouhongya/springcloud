@@ -1,5 +1,6 @@
 package org.springblade.sysettings.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+@Api(value = "支付渠道字典表", tags = "支付渠道字典表")
 @RequestMapping("/api/channelType")
 @RestController
 @AllArgsConstructor

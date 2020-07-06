@@ -1,5 +1,6 @@
 package org.springblade.report.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springblade.core.tool.api.R;
@@ -17,6 +18,7 @@ import java.util.Date;
  * @Author create by
  * @date 2020/7/2-14:28
  */
+@Api(value = "统计报表---收费人员", tags = "统计报表---收费人员")
 @RequestMapping("/api/toll")
 @RestController
 @AllArgsConstructor
