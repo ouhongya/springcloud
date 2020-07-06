@@ -38,15 +38,15 @@
         select request_id,item_type_id,item_count,item_id,favor_id,favor_name,fee_favor,fee_item,fee_final,favor_channel_id,favor_channe,execute_dept_id,refund_reason,status from request_charge_info where request_id =  #{request_id}
     </select>
     <insert id="insertItemCount" parameterType="org.springblade.fee.entity.ItemCount">
-        INSERT INTO `request_charge_info`(`item_id`, `item_type_id`, `item_count`, `request_id`)
-        VALUES (#{item_id},#{item_type_id},#{item_count},#{request_id})
+        INSERT INTO `request_charge_info`(`item_id`, `item_type_id`, `item_count`, `request_id`,`status`)
+        VALUES (#{item_id},#{item_type_id},#{item_count},#{request_id},#{status})
     </insert>
     <insert id="insertRequestChargeInfo" parameterType="org.springblade.fee.entity.RequestChargeInfo">
         INSERT INTO `request_detail`(`request_id`, `patient_id`, `request_type_id`)
         VALUES (#{request_id},#{patient_id},#{request_type_id})
     </insert>
     <update id="updateItemCount" parameterType="org.springblade.fee.entity.ItemCount">
-        update request_charge_info SET item_id=#{item_id},item_type_id=#{item_type_id},item_count=#{item_count} where request_id=#{request_id}
+        update request_charge_info SET item_id=#{item_id},item_type_id=#{item_type_id},item_count=#{item_count},status=#{status} where request_id=#{request_id} and item_id = #{item_id}
     </update>
     <update id="updateRequestChargeInfo" parameterType="org.springblade.fee.entity.RequestChargeInfo">
         update request_detail SET patient_id=#{patient_id},request_type_id=#{request_type_id} where request_id=#{request_id}
@@ -71,6 +71,15 @@
     <update id="updateItemCountItemFavor" parameterType="org.springblade.fee.vo.ItemFavor">
         update request_charge_info SET favor_id=#{favor_id},favor_name=#{favor_name},fee_favor=#{fee_favor} where item_id=#{item_id}
     </update>
+    <update id="updateChargeRequestByChargeId" parameterType="org.springblade.fee.entity.ChargeRequest">
+        update charge_request SET charge_id=#{charge_id} where request_id=#{request_id}
+    </update>
+    <update id="updateRecordCharge">
+        update record_charge SET money=#{money},reason=#{money} where id=#{id}
+    </update>
+    <update id="updateItemCountByStatus" parameterType="org.springblade.fee.entity.ItemCount">
+        update request_charge_info SET status=#{status} where request_id=#{request_id} and item_id = #{item_id}
+    </update>
     <delete id="deleteChargeRequest" parameterType="java.lang.Long">
         delete from charge_request where request_id = #{request_id,jdbcType=BIGINT}
     </delete>
@@ -84,9 +93,12 @@
         select patient_id,request_type_id from request_detail where request_id =  #{request_id}
     </select>
     <select id="selectRecordCharge" resultType="org.springblade.fee.entity.RecordCharge" parameterType="java.lang.Long">
-        select patient_id,create_time,paid_time,refund_time,favor_channel_id,favor_channel,favor_fee,status,toll_collector_id  from record_charge where id =  #{id}
+        select id,patient_id,create_time,paid_time,refund_time,status,toll_collector_id  from record_charge where id =  #{id}
     </select>
     <select id="selectChargeRequestList" resultType="org.springblade.fee.entity.ChargeRequest" parameterType="java.lang.Long">
         select patient_id,request_id,request_type,dept_id,doctor_id from charge_request where charge_id =  #{charge_id}
+    </select>
+    <select id="selectItemCount" resultType="org.springblade.fee.entity.ItemCount">
+        select status from request_charge_info where item_id =  #{item_id} and request_id = #{request_id}
     </select>
 </mapper>

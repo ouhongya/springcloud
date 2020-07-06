@@ -27,6 +27,8 @@ public interface FeeMapper extends BaseMapper<RequestChargeInfo> {
 
 	int updateItemCount(ItemCount itemCount);
 
+	int updateItemCountByStatus(ItemCount itemCount);
+
 	int updateItemCountItemFavor(ItemFavor itemFavor);
 
 	int updateRequestChargeInfo(RequestChargeInfo requestChargeInfo);
@@ -39,6 +41,9 @@ public interface FeeMapper extends BaseMapper<RequestChargeInfo> {
 
 	int updateChargeRequest(ChargeRequest chargeRequest);
 
+	int updateChargeRequestByChargeId(ChargeRequest chargeRequest);
+
+
 	int deleteChargeRequest(Long request_id);
 
 	ChargeRequest selectChargeRequest(Long request_id);
@@ -49,8 +54,11 @@ public interface FeeMapper extends BaseMapper<RequestChargeInfo> {
 
 	RecordCharge selectRecordCharge(Long id);
 
+	int updateRecordCharge(RecordCharge recordCharge);
+
 	List<ChargeRequest> selectChargeRequestList(Long charge_id);
 
+	ItemCount selectItemCount(ItemCount itemCount);
 
 
 }

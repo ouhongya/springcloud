@@ -24,6 +24,12 @@ public class RequestChargeInfo extends TenantEntity implements Serializable {
 	//申请单类别id
 	private int request_type_id;
 
+	//开单科室id
+	private int dept_id;
+
+	//开单医生id
+	private int doctor_id;
+
 	//token
 	private String token;
 

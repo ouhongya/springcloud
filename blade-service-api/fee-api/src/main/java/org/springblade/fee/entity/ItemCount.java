@@ -34,12 +34,8 @@ public class ItemCount extends TenantEntity implements Serializable {
 	//优惠费用
 	private String fee_favor;
 
-
-
-
-
-
-
+//	//支付状态
+//	private byte status;
 
 }
 

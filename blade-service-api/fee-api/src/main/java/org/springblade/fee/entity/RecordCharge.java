@@ -16,8 +16,8 @@ public class RecordCharge extends TenantEntity implements Serializable {
 
 	private static final long serialVersionUID = -3233311081557697815L;
 
-	//收费记录id
-	private long id;
+//	//收费记录id
+//	private long id;
 
 	//患者id
 	private long patient_id;
@@ -43,11 +43,18 @@ public class RecordCharge extends TenantEntity implements Serializable {
 	//优惠费用
 	private BigDecimal favor_fee;
 
-	//支付状态
-	private byte status;
+//	//支付状态
+//	private byte status;
 
 	//收费员id
 	private long toll_collector_id;
+
+	//优惠金额
+	private double money;
+
+	//优惠原因
+	private String reason;
+
 }
 
 

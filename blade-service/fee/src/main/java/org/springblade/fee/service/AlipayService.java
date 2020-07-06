@@ -3,6 +3,8 @@ package org.springblade.fee.service;
 
 import com.alipay.api.AlipayApiException;
 
+import java.math.BigDecimal;
+
 public interface AlipayService{
 
 	/**
@@ -11,7 +13,7 @@ public interface AlipayService{
 	 * @param totalAmount   订单价格
 	 * @param subject       商品名称
 	 */
-	String webPagePay(String outTradeNo,Integer totalAmount,String subject) throws Exception;
+	String webPagePay(String outTradeNo, BigDecimal totalAmount, String subject) throws Exception;
 
 	/**
 	 * app端订单支付
@@ -38,7 +40,7 @@ public interface AlipayService{
 
 	/**
 	 * 交易关闭
-	 * @param outTradeNo订单编号（唯一）
+	 * @param （唯一）
 	 */
 	String close(String outTradeNo) throws AlipayApiException;
 
