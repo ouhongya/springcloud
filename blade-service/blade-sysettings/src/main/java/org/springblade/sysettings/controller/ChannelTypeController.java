@@ -24,7 +24,7 @@ public class ChannelTypeController {
 	 * @return
 	 */
 	@GetMapping("/selectAll")
-	@ApiOperation(value = "支付渠道字典表", notes = "支付渠道字典表")
+	@ApiOperation(value = "查询所有", notes = "支付渠道字典表")
 	public R selectAll() {
 		return R.data(iChannelTypeService.selectAll());
 	}
@@ -36,7 +36,7 @@ public class ChannelTypeController {
 	 * @return
 	 */
 	@GetMapping("/selectById")
-	@ApiOperation(value = "支付渠道字典表", notes = "支付渠道字典表")
+	@ApiOperation(value = "根据id查询", notes = "支付渠道字典表")
 	public R selectById(@ApiParam(value = "状态代码") Integer id) {
 		return R.data(iChannelTypeService.selectById(id));
 	}
@@ -48,7 +48,7 @@ public class ChannelTypeController {
 	 * @return
 	 */
 	@GetMapping("/updateById")
-	@ApiOperation(value = "支付渠道字典表", notes = "支付渠道字典表")
+	@ApiOperation(value = "根据id修改", notes = "支付渠道字典表")
 	public R updateById(@ApiParam(value = "状态代码") DictChannelType dictChannelType) {
 		return R.data(iChannelTypeService.updateByIds(dictChannelType));
 	}
@@ -60,7 +60,7 @@ public class ChannelTypeController {
 	 * @return
 	 */
 	@GetMapping("/save")
-	@ApiOperation(value = "支付渠道字典表", notes = "支付渠道字典表")
+	@ApiOperation(value = "新增数据", notes = "支付渠道字典表")
 	public R save(@ApiParam(value = "状态代码") DictChannelType dictChannelType) {
 		return R.data(iChannelTypeService.insert(dictChannelType));
 	}

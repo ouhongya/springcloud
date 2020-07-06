@@ -24,7 +24,7 @@ public class RequestTypeController {
 	 * @return
 	 */
 	@GetMapping("/selectAll")
-	@ApiOperation(value = "申请单类别字典表", notes = "申请单类别字典表")
+	@ApiOperation(value = "查询所有", notes = "申请单类别字典表")
 	public R selectAll() {
 		return R.data(iRequestTypeService.selectAll());
 	}
@@ -36,7 +36,7 @@ public class RequestTypeController {
 	 * @return
 	 */
 	@GetMapping("/selectById")
-	@ApiOperation(value = "申请单类别字典表", notes = "申请单类别字典表")
+	@ApiOperation(value = "根据id查询", notes = "申请单类别字典表")
 	public R selectById(@ApiParam(value = "状态代码") Integer id) {
 		return R.data(iRequestTypeService.selectById(id));
 	}
@@ -49,7 +49,7 @@ public class RequestTypeController {
 	 * @return
 	 */
 	@GetMapping("/updateById")
-	@ApiOperation(value = "申请单类别字典表", notes = "申请单类别字典表")
+	@ApiOperation(value = "根据id修改", notes = "申请单类别字典表")
 	public R updateById(@ApiParam(value = "状态代码") DictRequestType dictRequestType) {
 		return R.data(iRequestTypeService.updateByIds(dictRequestType));
 	}
@@ -61,7 +61,7 @@ public class RequestTypeController {
 	 * @return
 	 */
 	@GetMapping("/save")
-	@ApiOperation(value = "申请单类别字典表", notes = "申请单类别字典表")
+	@ApiOperation(value = "新增数据", notes = "申请单类别字典表")
 	public R save(@ApiParam(value = "状态代码") DictRequestType dictRequestType) {
 		return R.data(iRequestTypeService.insert(dictRequestType));
 	}

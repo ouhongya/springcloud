@@ -24,7 +24,7 @@ public class CategoryController {
 	 * @return
 	 */
 	@GetMapping("/selectAll")
-	@ApiOperation(value = "费用类别字典表", notes = "费用类别字典表")
+	@ApiOperation(value = "查询所有", notes = "费用类别字典表")
 	public R selectAll() {
 		return R.data(iCategoryService.selectAll());
 	}
@@ -36,7 +36,7 @@ public class CategoryController {
 	 * @return
 	 */
 	@GetMapping("/selectById")
-	@ApiOperation(value = "费用类别字典表", notes = "费用类别字典表")
+	@ApiOperation(value = "根据id查询", notes = "费用类别字典表")
 	public R selectById(@ApiParam(value = "费用类别id") Long categoryId) {
 		return R.data(iCategoryService.selectById(categoryId));
 	}
@@ -48,7 +48,7 @@ public class CategoryController {
 	 * @return
 	 */
 	@GetMapping("/save")
-	@ApiOperation(value = "费用类别字典表", notes = "费用类别字典表")
+	@ApiOperation(value = "新增数据", notes = "费用类别字典表")
 	public R save(@ApiParam(value = "费用类别") Category category) {
 		return R.data(iCategoryService.insert(category));
 	}

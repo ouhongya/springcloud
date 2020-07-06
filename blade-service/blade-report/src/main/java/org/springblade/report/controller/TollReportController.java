@@ -25,11 +25,6 @@ import java.util.Date;
 public class TollReportController {
 	private ITollReportService iTollReportService;
 
-	@GetMapping("info")
-	public String info(String name) {
-		return "Hello rptdetail ,My Name Is: " + name;
-	}
-
 	/**
 	 * [报表-明细数据]
 	 *
@@ -76,7 +71,7 @@ public class TollReportController {
 	 * @return
 	 */
 	@PostMapping("/updateTurnStatus")
-	@ApiOperation(value = "财务上交", notes = "财务上交")
+	@ApiOperation(value = "财务上交--根据id修改,多个id传数组", notes = "财务上交")
 	public R updateTurnStatus(Integer[] ids) {
 		String msg = iTollReportService.updateTurnStatus(ids);
 		return R.success(msg);

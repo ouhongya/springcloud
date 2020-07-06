@@ -24,7 +24,7 @@ public class ExpiryDateController {
 	 * @return
 	 */
 	@GetMapping("/selectAll")
-	@ApiOperation(value = "项目有效期天数字典表", notes = "项目有效期天数字典表")
+	@ApiOperation(value = "查询所有", notes = "项目有效期天数字典表")
 	public R selectAll() {
 		return R.data(iExpiryDateService.selectAll());
 	}
@@ -36,7 +36,7 @@ public class ExpiryDateController {
 	 * @return
 	 */
 	@GetMapping("/selectById")
-	@ApiOperation(value = "项目有效期天数字典表", notes = "项目有效期天数字典表")
+	@ApiOperation(value = "根据id查询", notes = "项目有效期天数字典表")
 	public R selectById(@ApiParam(value = "有效期主键") Integer id) {
 		return R.data(iExpiryDateService.selectById(id));
 	}
@@ -48,7 +48,7 @@ public class ExpiryDateController {
 	 * @return
 	 */
 	@GetMapping("/updateById")
-	@ApiOperation(value = "项目有效期天数字典表", notes = "项目有效期天数字典表")
+	@ApiOperation(value = "根据id修改", notes = "项目有效期天数字典表")
 	public R updateById(@ApiParam(value = "有效期主键") ExpiryDate expiryDate) {
 		return R.data(iExpiryDateService.updateByIds(expiryDate));
 	}
@@ -60,7 +60,7 @@ public class ExpiryDateController {
 	 * @return
 	 */
 	@GetMapping("/save")
-	@ApiOperation(value = "项目有效期天数字典表", notes = "项目有效期天数字典表")
+	@ApiOperation(value = "新增数据", notes = "项目有效期天数字典表")
 	public R save(@ApiParam(value = "有效期主键") ExpiryDate expiryDate) {
 		return R.data(iExpiryDateService.insert(expiryDate));
 	}

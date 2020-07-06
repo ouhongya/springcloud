@@ -22,7 +22,7 @@ public class ChargeStatusController {
 	 * @return
 	 */
 	@GetMapping("/selectAll")
-	@ApiOperation(value = "支付状态字典表", notes = "支付状态字典表")
+	@ApiOperation(value = "查询所有", notes = "支付状态字典表")
 	public R selectAll() {
 		return R.data(iChargeStatusService.selectAll());
 	}
@@ -34,7 +34,7 @@ public class ChargeStatusController {
 	 * @return
 	 */
 	@GetMapping("/selectById")
-	@ApiOperation(value = "支付状态字典表", notes = "支付状态字典表")
+	@ApiOperation(value = "根据id查询", notes = "支付状态字典表")
 	public R selectById(@ApiParam(value = "状态代码") Long id) {
 		return R.data(iChargeStatusService.selectById(id));
 	}
@@ -46,7 +46,7 @@ public class ChargeStatusController {
 	 * @return
 	 */
 	@GetMapping("/save")
-	@ApiOperation(value = "支付状态字典表", notes = "支付状态字典表")
+	@ApiOperation(value = "新增数据", notes = "支付状态字典表")
 	public R save(@ApiParam(value = "状态代码") DictChargeStatus dictChargeStatus) {
 		return R.data(iChargeStatusService.insert(dictChargeStatus));
 	}

@@ -28,11 +28,6 @@ import java.util.Date;
 public class FinanceReportController {
 	private ITollReportService iTollReportService;
 
-	@GetMapping("info")
-	public String info(String name) {
-		return "Hello finance ,My Name Is: " + name;
-	}
-
 	/**
 	 * [报表-明细数据]
 	 *
