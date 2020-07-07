@@ -40,13 +40,13 @@
             <version>2.9.0</version>
         </dependency>
         <dependency>
-            <groupId>com.alipay.sdk</groupId>
-            <artifactId>alipay-sdk-java</artifactId>
+            <groupId>com.alipay.org.springblade.receipt.sdk</groupId>
+            <artifactId>alipay-org.springblade.receipt.sdk-java</artifactId>
             <version>3.7.4.ALL</version>
         </dependency>
         <dependency>
             <groupId>com.github.wxpay</groupId>
-            <artifactId>wxpay-sdk</artifactId>
+            <artifactId>wxpay-org.springblade.receipt.sdk</artifactId>
             <version>0.0.3</version>
         </dependency>
     </dependencies>
