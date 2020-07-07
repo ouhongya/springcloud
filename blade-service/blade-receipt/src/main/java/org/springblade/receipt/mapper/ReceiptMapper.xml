@@ -3,10 +3,12 @@
 <mapper namespace="org.springblade.receipt.mapper.ReceiptMapper">
 
     <select id="queryReceipt" parameterType="java.lang.String" resultType="org.springblade.receipt.entity.ReceiptList">
-        SELECT charge_receipt.charge_id as id,dict_request_type.`text`,charge_request.dept_id as deptId,charge_request.doctor_id as doctorId
+        SELECT charge_receipt.charge_id as id,dict_request_type.`text`,charge_request.dept_id as
+        deptId,charge_request.doctor_id as doctorId
         FROM request_detail
         LEFT JOIN charge_request ON request_detail.`request_id`=charge_request.`request_id`
-        LEFT JOIN dict_request_type ON charge_request.`request_id`=dict_request_type.`id` AND dict_request_type.`enabled`=0
+        LEFT JOIN dict_request_type ON charge_request.`request_id`=dict_request_type.`id` AND
+        dict_request_type.`enabled`=0
         LEFT JOIN record_charge ON charge_request.`patient_id`=record_charge.`patient_id`
         LEFT JOIN charge_receipt ON record_charge.`id`=charge_receipt.`charge_id`
         where
@@ -22,13 +24,14 @@
     <select id="queryReceiptRequestDetail" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT * FROM request_detail
         LEFT JOIN charge_request ON request_detail.`request_id` = charge_request.`request_id`
-        LEFT JOIN record_charge ON charge_request.`patient_id`  = record_charge.`patient_id`
+        LEFT JOIN record_charge ON charge_request.`patient_id` = record_charge.`patient_id`
         LEFT JOIN charge_receipt ON record_charge.`id` = charge_receipt.`charge_id`
         WHERE
         charge_receipt.`charge_id`= #{receiptId}
     </select>
     <select id="queryRefundProject" resultType="org.springblade.receipt.entity.RefundProject">
-        SELECT request_detail.item_id,request_detail.item_type,request_detail.refund_reason,request_detail.item_count, charge_pay.channel_order,charge_pay.channel_account,charge_pay.fee_paid FROM `request_detail`
+        SELECT request_detail.item_id,request_detail.item_type,request_detail.refund_reason,request_detail.item_count,
+        charge_pay.channel_order,charge_pay.channel_account,charge_pay.fee_paid FROM `request_detail`
         LEFT JOIN charge_request ON request_detail.`request_id`=charge_request.`request_id`
         LEFT JOIN `record_charge` ON charge_request.`patient_id`=record_charge.`patient_id`
         LEFT JOIN `charge_pay` ON record_charge.`id`=charge_pay.`id`
@@ -44,10 +47,12 @@
         update charge_receipt set charge_receipt.status = 4 where charge_receipt.receipt_number = #{requestId}
     </update>
     <update id="updatePayStatus">
-       update record_charge set refund_time = #{date}, status=#{status}, toll_collector_id=#{userName}  where id =#{requestId}
+        update record_charge set refund_time = #{date}, status=#{status}, toll_collector_id=#{userName} where id
+        =#{requestId}
     </update>
     <update id="updateChargePay">
-        update charge_pay set refund_time = #{date},fee_paid=#{FeePaid}, fee_refund = #{money}, status=#{status}, toll_collector_id=#{userName}  where charge_id =#{requestId}
+        update charge_pay set refund_time = #{date}, fee_refund = #{money}, status=#{status},
+        toll_collector_id=#{userName} where charge_id =#{requestId}
     </update>
 
     <insert id="createdReceipt" parameterType="org.springblade.receipt.entity.ChargeReceipt">
@@ -68,6 +73,29 @@
 
     <select id="queryReceiptByIdNew" resultType="java.lang.String">
         select receipt_number from invoice where status=0
+    </select>
+    <select id="queryRefundPay" resultType="org.springblade.receipt.entity.RefundPay">
+        SELECT
+        request_charge_info.`fee_final`,
+        charge_pay.channel_order,
+        charge_pay.channel_account,
+        charge_pay.`status`,
+        charge_pay.`id`,
+        charge_pay.fee_paid
+        FROM
+        request_charge_info
+        LEFT JOIN charge_request
+        ON request_charge_info.`request_id` = charge_request.`request_id`
+        LEFT JOIN record_charge
+        ON charge_request.`patient_id` = record_charge.`patient_id`
+        LEFT JOIN charge_pay
+        ON record_charge.`id` = charge_pay.`charge_id`
+        WHERE 1 = 1
+        AND record_charge.`status` BETWEEN '1'
+        AND '2'
+        AND request_charge_info.`request_id` = #{requestId}
+        AND request_charge_info.`item_id` = #{itemId}
+        GROUP BY request_charge_info.`id`
     </select>
 
     <update id="queryReceiptByIdNewStatus" parameterType="java.lang.String">

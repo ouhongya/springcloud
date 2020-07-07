@@ -3,7 +3,6 @@ package org.springblade.receipt.entity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.math.BigDecimal;
 
 @Data
 public class RefundVo {
@@ -14,15 +13,15 @@ public class RefundVo {
 	@ApiModelProperty(value = "项目Id")
 	private String itemId;
 
-	@ApiModelProperty(value = "退费金额")
-	private BigDecimal money;
+	@ApiModelProperty(value = "项目名称")
+	private String itemName;
 
-	public BigDecimal getMoney() {
-		return money;
+	public String getItemName() {
+		return itemName;
 	}
 
-	public void setMoney(BigDecimal money) {
-		this.money = money;
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
 	}
 
 	public String getRequestId() {

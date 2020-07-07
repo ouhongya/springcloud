@@ -5,6 +5,4 @@ import org.springframework.web.bind.annotation.GetMapping;
 @FeignClient(name = "server")
 public interface ChargePayClient {
 
-	@GetMapping("/")
-	String refundService();
 }

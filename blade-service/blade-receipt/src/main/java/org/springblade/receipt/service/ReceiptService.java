@@ -17,4 +17,5 @@ public interface ReceiptService extends IService<ChargeReceipt> {
 	boolean printInvoice(List<ReceiptVo> receiptVo,String username);
 
 	String refund(List<RefundVo> refundVo, String userName, String reason);
+
 }

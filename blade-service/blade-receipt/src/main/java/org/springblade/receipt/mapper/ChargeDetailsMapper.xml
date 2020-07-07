@@ -3,37 +3,35 @@
 <mapper namespace="org.springblade.receipt.mapper.ChargeDetailsMapper">
     <select id="queryRequestDetailReceipt" parameterType="org.springblade.receipt.entity.RequestDetailReceiptVo"
             resultType="org.springblade.receipt.entity.RequestDetailsReceiptRes">
+            SELECT
+            request_detail.`request_id`,request_charge_info.item_id,request_charge_info.`item_type_id`,
+            request_charge_info.`item_count`,charge_receipt.`status`,
+            IFNULL(IFNULL(SUM(charge_pay.fee_paid),0)+IFNULL(SUM(fee_refund),0),0) AS totalMoney,
+            IFNULL(SUM(fee_refund),0) AS refundMoney,
+            IFNULL(SUM(charge_pay.fee_paid),0)AS payMoney
+            FROM request_detail
+            LEFT JOIN request_charge_info ON request_detail.`request_id`=request_charge_info.`request_id`
+            LEFT JOIN record_charge ON request_charge_info.`request_id`=record_charge.`id`
+            LEFT JOIN charge_receipt ON record_charge.id=charge_receipt.`charge_id`
+            LEFT JOIN `charge_pay` ON charge_pay.`charge_id`=record_charge.`id`
+            WHERE
+            <if test="status != null and status != ''">
 
-        SELECT
-        request_detail.`request_id`,request_charge_info.item_id,request_charge_info.`item_type_id`,
-        request_charge_info.`item_count`,charge_receipt.`status`,
-        IFNULL(IFNULL(SUM(charge_pay.fee_paid),0)+IFNULL(SUM(fee_refund),0),0) AS totalMoney,
-        IFNULL(SUM(fee_refund),0) AS refundMoney,
-        IFNULL(SUM(charge_pay.fee_paid),0)AS payMoney
-        FROM request_detail
-        LEFT JOIN request_charge_info ON request_detail.`request_id`=request_charge_info.`request_id`
-        LEFT JOIN record_charge ON request_charge_info.`request_id`=record_charge.`id`
-        LEFT JOIN charge_receipt ON record_charge.id=charge_receipt.`charge_id`
-        LEFT JOIN `charge_pay` ON charge_pay.`charge_id`=record_charge.`id`
-        WHERE
+                charge_receipt.`status`=#{status}
 
-        <if test="status != null and status != ''">
+            </if>
+            <if test="data != null">
 
-            charge_receipt.`status`=#{status}
+                AND
+                record_charge.paid_time=#{data}
 
-        </if>
-        <if test="data != null">
+            </if>
+            <if test="id != null and id != ''">
 
-            AND
-            record_charge.paid_time=#{data}
+                AND
+                record_charge.toll_collector_id=#{id}
 
-        </if>
-        <if test="id != null and id != ''">
-
-            AND
-            record_charge.toll_collector_id=#{id}
-
-        </if>
+            </if>
     </select>
     <select id="queryHospitalizedList" resultType="org.springblade.receipt.entity.HospitalizedVo">
 
