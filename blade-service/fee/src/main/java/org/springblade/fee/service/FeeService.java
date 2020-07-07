@@ -37,11 +37,11 @@ public interface FeeService extends BaseService<RequestChargeInfo> {
 
 	boolean updateRequestChargeInfo(ItemCount itemCount);
 
-	String getPagePay(Long charge_id, BigDecimal fee_paid);
+	String getPagePay(Long charge_id, BigDecimal fee_paid,List<FeeRequest> feeRequest,Integer checked);
 
-	String wxpay(Long charge_id, BigDecimal fee_paid);
+	String wxpay(Long charge_id, BigDecimal fee_paid,List<FeeRequest> feeRequest,Integer checked);
 
-	String moneypay(Long charge_id, List<FeeRequest> feeRequest, BigDecimal fee_paid);
+	String moneypay(Long charge_id, List<FeeRequest> feeRequest, BigDecimal fee_paid,Integer checked,Integer channel_id);
 
 
 }

@@ -1,10 +1,7 @@
 package org.springblade.fee.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.springblade.fee.entity.ChargeRequest;
-import org.springblade.fee.entity.ItemCount;
-import org.springblade.fee.entity.RecordCharge;
-import org.springblade.fee.entity.RequestChargeInfo;
+import org.springblade.fee.entity.*;
 import org.springblade.fee.vo.DicRequestType;
 import org.springblade.fee.vo.Fee;
 import org.springblade.fee.vo.Feedetail;
@@ -43,7 +40,6 @@ public interface FeeMapper extends BaseMapper<RequestChargeInfo> {
 
 	int updateChargeRequestByChargeId(ChargeRequest chargeRequest);
 
-
 	int deleteChargeRequest(Long request_id);
 
 	ChargeRequest selectChargeRequest(Long request_id);
@@ -56,9 +52,17 @@ public interface FeeMapper extends BaseMapper<RequestChargeInfo> {
 
 	int updateRecordCharge(RecordCharge recordCharge);
 
+	int updateRecordChargeByStatus(RecordCharge recordCharge);
+
 	List<ChargeRequest> selectChargeRequestList(Long charge_id);
 
 	ItemCount selectItemCount(ItemCount itemCount);
+
+	int insertChargePay(ChargePay chargePay);
+
+	ExpiryDate selectExpiryDate(Integer id);
+
+	int updateRecordChargeByCreateTime(Integer days);
 
 
 }

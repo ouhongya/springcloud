@@ -65,6 +65,10 @@
         INSERT INTO `record_charge`(`patient_id`, `create_time`, `paid_time`, `refund_time`,`favor_channel_id`,`favor_channel`,`favor_fee`,`status`,`toll_collector_id`)
         VALUES (#{patient_id},#{create_time},#{paid_time},#{refund_time},#{favor_channel_id},#{favor_channel},#{favor_fee},#{status},#{toll_collector_id})
     </insert>
+    <insert id="insertChargePay"   parameterType="org.springblade.fee.entity.ChargePay">
+        INSERT INTO `charge_pay`(`channel_type_id`, `channel_order`, `channel_account`, `charge_id`,`fee_paid`,`fee_refund`,`paid_time`,`refund_time`,`status`)
+        VALUES (#{channel_type_id},#{channel_order},#{channel_account},#{charge_id},#{fee_paid},#{fee_refund},#{paid_time},#{refund_time},#{status})
+    </insert>
     <update id="updateChargeRequest" parameterType="org.springblade.fee.entity.ChargeRequest">
         update charge_request SET patient_id=#{patient_id},request_type=#{request_type},charge_id=#{charge_id},dept_id=#{dept_id},doctor_id=#{doctor_id} where request_id=#{request_id}
     </update>
@@ -74,11 +78,17 @@
     <update id="updateChargeRequestByChargeId" parameterType="org.springblade.fee.entity.ChargeRequest">
         update charge_request SET charge_id=#{charge_id} where request_id=#{request_id}
     </update>
-    <update id="updateRecordCharge">
+    <update id="updateRecordCharge" parameterType="org.springblade.fee.entity.RecordCharge">
         update record_charge SET money=#{money},reason=#{money} where id=#{id}
+    </update>
+    <update id="updateRecordChargeByStatus" parameterType="org.springblade.fee.entity.RecordCharge">
+        update record_charge SET status=#{status} where id=#{id}
     </update>
     <update id="updateItemCountByStatus" parameterType="org.springblade.fee.entity.ItemCount">
         update request_charge_info SET status=#{status} where request_id=#{request_id} and item_id = #{item_id}
+    </update>
+    <update id="updateRecordChargeByCreateTime" parameterType="java.lang.Integer">
+        update request_charge_info SET status=5  where   date_format(now(),'%Y-%m-%d-%H-%i-%S') > date_format(date_add(create_time, interval #{days} day),'%Y-%m-%d-%H-%i-%S')
     </update>
     <delete id="deleteChargeRequest" parameterType="java.lang.Long">
         delete from charge_request where request_id = #{request_id,jdbcType=BIGINT}
@@ -100,5 +110,8 @@
     </select>
     <select id="selectItemCount" resultType="org.springblade.fee.entity.ItemCount">
         select status from request_charge_info where item_id =  #{item_id} and request_id = #{request_id}
+    </select>
+    <select id="selectExpiryDate" resultType="org.springblade.fee.entity.ExpiryDate" parameterType="java.lang.Integer">
+        select id,valid_quantum from expiry_date where id =  #{id}
     </select>
 </mapper>
