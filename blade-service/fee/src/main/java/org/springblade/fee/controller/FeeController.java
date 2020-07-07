@@ -9,26 +9,22 @@ import lombok.AllArgsConstructor;
 import org.springblade.common.utils.AlipayConfig;
 import org.springblade.core.tool.api.R;
 import org.springblade.fee.config.WXPayConfigImpl;
-import org.springblade.fee.entity.ItemCount;
-import org.springblade.fee.entity.RecordChargeRequest;
-import org.springblade.fee.entity.RequestChargeInfo;
+import org.springblade.fee.entity.*;
+import org.springblade.fee.mapper.FeeMapper;
 import org.springblade.fee.service.AlipayService;
 import org.springblade.fee.service.FeeService;
 import org.springblade.fee.service.WXPayService;
-import org.springblade.fee.vo.Favourable;
-import org.springblade.fee.vo.Fee;
-import org.springblade.fee.vo.FeeRequest;
-import org.springblade.fee.vo.Feedetail;
+import org.springblade.fee.vo.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @RestController
@@ -42,6 +38,9 @@ public class FeeController {
 
 	private WXPayService wXPayService;
 
+	private RedisTemplate redisTemplate;
+
+	private FeeMapper feeMapper;
 
 	/**
 	 * 获取患者申请单列表
@@ -135,20 +134,28 @@ public class FeeController {
 	 * 发起支付
 	 */
 	@ApiOperationSupport(order = 8)
-	@ApiOperation(value = "发起支付", notes = "传入收费记录charge_id ，支付方式 channel_id,申请单id加上对应收费项目ids FeeRequest,收费实际金额 fee_paid")
+	@ApiOperation(value = "发起支付", notes = "传入收费记录charge_id ，支付方式 channel_id,申请单id加上对应收费项目ids FeeRequest,收费实际金额 fee_paid，是否全选(0全选，1没有全选) checked")
 	@PostMapping("/createpay")
-	public R<String> createpay(Long charge_id, Integer channel_id, @RequestBody List<FeeRequest> feeRequest, BigDecimal fee_paid) {
-           String result=null;
+	public R<Map<Integer,String>> createpay(Long charge_id, Integer channel_id, @RequestBody List<FeeRequest> feeRequest, BigDecimal fee_paid,Integer checked) {
+          Map<Integer,String> map=null;
 		switch(channel_id){
 			case 1 :
-				feeService.moneypay(charge_id,feeRequest,fee_paid);
+				//现金
+				String money = feeService.moneypay(charge_id, feeRequest, fee_paid, checked, channel_id);
+				map=new HashMap<>();
+				map.put(channel_id,money);
 				break; //可选
 			case 2 :
 				//微信
-				result = feeService.wxpay(charge_id, fee_paid);
+				String wxmoney  = feeService.wxpay(charge_id, fee_paid,feeRequest,checked);
+				map=new HashMap<>();
+				map.put(channel_id,wxmoney);
 				break; //可选
 			case 3 :
-				result=feeService.getPagePay(charge_id,fee_paid);
+				//支付宝
+				String alimoney =feeService.getPagePay(charge_id,fee_paid,feeRequest,checked);
+				map=new HashMap<>();
+				map.put(channel_id,alimoney);
 				break; //可选
 			case 4 :
 				//社保
@@ -157,9 +164,7 @@ public class FeeController {
 				//银行卡
 				break; //可选
 		}
-
-		return  R.data(result);
-
+		return  R.data(map);
 	}
 
 
@@ -193,7 +198,7 @@ public class FeeController {
 	@PostMapping("/aLiOrderNotifyResult")
 	@ResponseBody
 	@Transactional(rollbackFor = Exception.class)
-	public synchronized String aLiOrderNotifyResult(HttpServletRequest request, String out_trade_no,String trade_no,String trade_status,HttpServletResponse response) throws AlipayApiException, IOException {
+	public synchronized String aLiOrderNotifyResult(HttpServletRequest request, String out_trade_no,String buyer_id) throws AlipayApiException, IOException {
 		Map<String, String> map = new HashMap<String, String>();
 		Map<String, String[]> requestParams = request.getParameterMap();
 		for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext();) {
@@ -219,6 +224,72 @@ public class FeeController {
 			if (signVerified)
 			{
 				System.out.println("支付宝支付回调验签成功");
+				//业务处理
+				WxResponse wxResponse = (WxResponse) redisTemplate.boundValueOps(out_trade_no).get();
+				if(wxResponse.getChecked() == 0){
+					try {
+						RecordCharge recordCharge=new RecordCharge();
+						recordCharge.setId(wxResponse.getCharge_id());
+						recordCharge.setStatus(1);
+						feeMapper.updateRecordChargeByStatus(recordCharge);
+						List<FeeRequest> feeRequest = wxResponse.getFeeRequest();
+						for(FeeRequest feerequest:feeRequest){
+							List<Integer> item_id = feerequest.getItem_id();
+							Long request_id = feerequest.getRequest_id();
+							for(Integer id:item_id){
+								ItemCount itemCount = new ItemCount();
+								itemCount.setItem_id(id);
+								itemCount.setRequest_id(request_id);
+								itemCount.setStatus(1);
+								feeMapper.updateItemCountByStatus(itemCount);
+							}
+						}
+						ChargePay chargePay = new ChargePay();
+						chargePay.setChannel_type_id(3);
+						chargePay.setChannel_order(out_trade_no);
+						chargePay.setChannel_account(buyer_id);
+						chargePay.setCharge_id(wxResponse.getCharge_id());
+						chargePay.setFee_paid(wxResponse.getFee_paid());
+						chargePay.setPaid_time(new Date());
+						byte status=1;
+						chargePay.setStatus(status);
+						feeMapper.insertChargePay(chargePay);
+					}catch (Exception e){
+						e.printStackTrace();
+					}
+				}else if(wxResponse.getChecked() == 1){
+					try {
+						RecordCharge recordCharge=new RecordCharge();
+						recordCharge.setId(wxResponse.getCharge_id());
+						recordCharge.setStatus(2);
+						feeMapper.updateRecordChargeByStatus(recordCharge);
+						List<FeeRequest> feeRequest = wxResponse.getFeeRequest();
+						for(FeeRequest feerequest:feeRequest){
+							List<Integer> item_id = feerequest.getItem_id();
+							Long request_id = feerequest.getRequest_id();
+							for(Integer id:item_id){
+								ItemCount itemCount = new ItemCount();
+								itemCount.setItem_id(id);
+								itemCount.setRequest_id(request_id);
+								itemCount.setStatus(1);
+								feeMapper.updateItemCountByStatus(itemCount);
+							}
+						}
+						ChargePay chargePay = new ChargePay();
+						chargePay.setChannel_type_id(3);
+						chargePay.setChannel_order(out_trade_no);
+						chargePay.setChannel_account(buyer_id);
+						chargePay.setCharge_id(wxResponse.getCharge_id());
+						chargePay.setFee_paid(wxResponse.getFee_paid());
+						chargePay.setPaid_time(new Date());
+						byte status=2;
+						chargePay.setStatus(status);
+						feeMapper.insertChargePay(chargePay);
+					}catch (Exception e){
+						e.printStackTrace();
+					}
+				}
+				//业务处理
 				return ("success");
 			}else {
 				System.out.println("支付宝支付回调验证失败");
@@ -231,8 +302,14 @@ public class FeeController {
 		}
 
 	}
+//0/2 * * * * *
 
-
+	@Scheduled(cron = "0/2 * * * * *")
+	public void timer(){
+		ExpiryDate expiryDate = feeMapper.selectExpiryDate(1);
+		int valid_quantum = expiryDate.getValid_quantum();
+		int i = feeMapper.updateRecordChargeByCreateTime(valid_quantum);
+	}
 
 	/**
 	 * 微信native支付回调
@@ -279,9 +356,70 @@ public class FeeController {
 		if (signatureValid) {
 			// 判断回调信息是否成功
 			if ("SUCCESS".equals(map.get("result_code"))) {
-				// todo 根据不同业务类型处理不同业务
-
-				// 通知微信订单处理成功
+				//业务处理
+				WxResponse wxResponse = (WxResponse) redisTemplate.boundValueOps(outTradeNo).get();
+				if(wxResponse.getChecked() == 0){
+					try {
+						RecordCharge recordCharge=new RecordCharge();
+						recordCharge.setId(wxResponse.getCharge_id());
+						recordCharge.setStatus(1);
+						feeMapper.updateRecordChargeByStatus(recordCharge);
+						List<FeeRequest> feeRequest = wxResponse.getFeeRequest();
+						for(FeeRequest feerequest:feeRequest){
+							List<Integer> item_id = feerequest.getItem_id();
+							Long request_id = feerequest.getRequest_id();
+							for(Integer id:item_id){
+								ItemCount itemCount = new ItemCount();
+								itemCount.setItem_id(id);
+								itemCount.setRequest_id(request_id);
+								itemCount.setStatus(1);
+								feeMapper.updateItemCountByStatus(itemCount);
+							}
+						}
+						ChargePay chargePay = new ChargePay();
+						chargePay.setChannel_type_id(2);
+						chargePay.setChannel_order(outTradeNo);
+						chargePay.setCharge_id(wxResponse.getCharge_id());
+						chargePay.setFee_paid(wxResponse.getFee_paid());
+						chargePay.setPaid_time(new Date());
+						byte status=1;
+						chargePay.setStatus(status);
+						feeMapper.insertChargePay(chargePay);
+					}catch (Exception e){
+						e.printStackTrace();
+					}
+				}else if(wxResponse.getChecked() == 1){
+					try {
+						RecordCharge recordCharge=new RecordCharge();
+						recordCharge.setId(wxResponse.getCharge_id());
+						recordCharge.setStatus(2);
+						feeMapper.updateRecordChargeByStatus(recordCharge);
+						List<FeeRequest> feeRequest = wxResponse.getFeeRequest();
+						for(FeeRequest feerequest:feeRequest){
+							List<Integer> item_id = feerequest.getItem_id();
+							Long request_id = feerequest.getRequest_id();
+							for(Integer id:item_id){
+								ItemCount itemCount = new ItemCount();
+								itemCount.setItem_id(id);
+								itemCount.setRequest_id(request_id);
+								itemCount.setStatus(1);
+								feeMapper.updateItemCountByStatus(itemCount);
+							}
+						}
+						ChargePay chargePay = new ChargePay();
+						chargePay.setChannel_type_id(2);
+						chargePay.setChannel_order(outTradeNo);
+						chargePay.setCharge_id(wxResponse.getCharge_id());
+						chargePay.setFee_paid(wxResponse.getFee_paid());
+						chargePay.setPaid_time(new Date());
+						byte status=2;
+						chargePay.setStatus(status);
+						feeMapper.insertChargePay(chargePay);
+					}catch (Exception e){
+						e.printStackTrace();
+					}
+				}
+				//业务处理
 				String noticeStr = setXML("SUCCESS", "");
 				writer.write(noticeStr);
 				writer.flush();
@@ -293,6 +431,7 @@ public class FeeController {
 			writer.flush();
 		}
 	}
+
 
 	private static String setXML(String return_code, String return_msg) {
 		return "<xml><return_code><![CDATA[" + return_code + "]]></return_code><return_msg><![CDATA[" + return_msg + "]]></return_msg></xml>";
@@ -308,6 +447,7 @@ public class FeeController {
 	 */
 	@RequestMapping("cashpay")
 	public R<String> cashpay(String outTradeNo) {
+
 
 		return R.data("现金收费成功!");
 	}

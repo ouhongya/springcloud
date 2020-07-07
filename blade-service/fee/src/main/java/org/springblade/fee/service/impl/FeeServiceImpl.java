@@ -45,11 +45,11 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 		//申请单列表
 		List<Fee> fees = baseMapper.selectFeeList(request_id_list);
 
-		//申请单详情
-		for(Fee fee:fees){
-			String RequestType = (String) redisTemplate.boundValueOps(String.valueOf(fee.getRequestId())).get();
-			fee.setRequestType(RequestType);
-		}
+//       //申请单详情
+//		for(Fee fee:fees){
+//			String RequestType = (String) redisTemplate.boundValueOps(String.valueOf(fee.getRequestId())).get();
+//			fee.setRequestType(RequestType);
+//		}
 		return fees;
 	}
 
@@ -258,12 +258,18 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 	}
 
 	@Override
-	public String getPagePay(Long charge_id, BigDecimal fee_paid) {
+	public String getPagePay(Long charge_id, BigDecimal fee_paid,List<FeeRequest> feeRequest,Integer checked) {
 
 		try {
 			Long id=charge_id;
 			RecordCharge recordCharge = baseMapper.selectRecordCharge(id);
 			String md5 = DigestUtils.md5DigestAsHex(String.valueOf(recordCharge.getId()).getBytes());
+			WxResponse wxResponse =new WxResponse();
+			wxResponse.setChecked(checked);
+			wxResponse.setFeeRequest(feeRequest);
+			wxResponse.setCharge_id(charge_id);
+			wxResponse.setFee_paid(fee_paid);
+			redisTemplate.opsForValue().set(md5,wxResponse);
 			String outTradeNo = md5;
 			String subject = String.valueOf(recordCharge.getId());
 			String pay = alipayService.webPagePay(outTradeNo, fee_paid, subject);
@@ -276,10 +282,16 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 	}
 
 	@Override
-	public String wxpay(Long charge_id, BigDecimal fee_paid) {
+	public String wxpay(Long charge_id, BigDecimal fee_paid,List<FeeRequest> feeRequest,Integer checked) {
 		Long id=charge_id;
 		RecordCharge recordCharge = baseMapper.selectRecordCharge(id);
 		String md5 = DigestUtils.md5DigestAsHex(String.valueOf(recordCharge.getId()).getBytes());
+		WxResponse wxResponse =new WxResponse();
+		wxResponse.setChecked(checked);
+		wxResponse.setFeeRequest(feeRequest);
+		wxResponse.setCharge_id(charge_id);
+		wxResponse.setFee_paid(fee_paid);
+		redisTemplate.opsForValue().set(md5,wxResponse);
 		WXPayConfigImpl config = null;
 		WXPay wxpay = null;
 		try {
@@ -321,23 +333,72 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 	}
 
 	@Override
-	public String moneypay(Long charge_id, List<FeeRequest> feeRequest, BigDecimal fee_paid) {
-//		List<ChargeRequest> chargeRequests = baseMapper.selectChargeRequestList(charge_id);
-//		List<FeeRequest> feeRequestother =new ArrayList<FeeRequest>();
-//		for(ChargeRequest  chargeRequest:chargeRequests){
-//			long request_id = chargeRequest.getRequest_id();
-//			List<Integer> ids=new ArrayList<>();
-//			List<Feedetail> feedetails = baseMapper.selectFeeDetail(request_id);
-//			for(Feedetail feedetail:feedetails){
-//				ids.add(feedetail.getItemId());
-//			}
-//			FeeRequest feerequest=new FeeRequest();
-//			feerequest.setRequest_id(request_id);
-//			feerequest.setItem_id(ids);
-//			feeRequestother.add(feerequest);
-//		}
+	public String moneypay(Long charge_id, List<FeeRequest> feeRequest, BigDecimal fee_paid,Integer checked,Integer channel_id) {
+		if(checked == 0){
+			try {
+				RecordCharge recordCharge=new RecordCharge();
+				recordCharge.setId(charge_id);
+				recordCharge.setStatus(1);
+				baseMapper.updateRecordChargeByStatus(recordCharge);
+				for(FeeRequest feerequest:feeRequest){
+					List<Integer> item_id = feerequest.getItem_id();
+					Long request_id = feerequest.getRequest_id();
+					for(Integer id:item_id){
+						ItemCount itemCount = new ItemCount();
+						itemCount.setItem_id(id);
+						itemCount.setRequest_id(request_id);
+						itemCount.setStatus(1);
+						baseMapper.updateItemCountByStatus(itemCount);
+					}
+				}
+				ChargePay chargePay = new ChargePay();
+				chargePay.setChannel_type_id(channel_id);
+				chargePay.setChannel_account("现金");
+				chargePay.setCharge_id(charge_id);
+				chargePay.setFee_paid(fee_paid);
+				chargePay.setPaid_time(new Date());
+				byte status=1;
+				chargePay.setStatus(status);
+				baseMapper.insertChargePay(chargePay);
+				return "success";
+			}catch (Exception e){
+				e.printStackTrace();
+				return "fail";
+			}
+		}else if(checked == 1){
+			try {
+				RecordCharge recordCharge=new RecordCharge();
+				recordCharge.setId(charge_id);
+				recordCharge.setStatus(2);
+				baseMapper.updateRecordChargeByStatus(recordCharge);
+				for(FeeRequest feerequest:feeRequest){
+					List<Integer> item_id = feerequest.getItem_id();
+					Long request_id = feerequest.getRequest_id();
+					for(Integer id:item_id){
+						ItemCount itemCount = new ItemCount();
+						itemCount.setItem_id(id);
+						itemCount.setRequest_id(request_id);
+						itemCount.setStatus(1);
+						baseMapper.updateItemCountByStatus(itemCount);
+					}
+				}
+				ChargePay chargePay = new ChargePay();
+				chargePay.setChannel_type_id(channel_id);
+				chargePay.setChannel_account("现金");
+				chargePay.setCharge_id(charge_id);
+				chargePay.setFee_paid(fee_paid);
+				chargePay.setPaid_time(new Date());
+				byte status=2;
+				chargePay.setStatus(status);
+				baseMapper.insertChargePay(chargePay);
+				return "success";
+			}catch (Exception e){
+				e.printStackTrace();
+				return "fail";
+			}
+		}
 
-		return null;
+		return "fail";
 	}
 
 }

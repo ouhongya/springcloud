@@ -20,6 +20,7 @@ import org.springblade.common.constant.CommonConstant;
 import org.springblade.core.cloud.feign.EnableBladeFeign;
 import org.springblade.core.launch.BladeApplication;
 import org.springframework.cloud.client.SpringCloudApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * 用户启动器
@@ -27,6 +28,7 @@ import org.springframework.cloud.client.SpringCloudApplication;
  * @author Chill
  */
 @EnableBladeFeign("org.springblade.system.user.service")
+@EnableScheduling
 @SpringCloudApplication
 public class FeeApplication {
 
