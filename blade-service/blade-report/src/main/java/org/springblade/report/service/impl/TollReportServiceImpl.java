@@ -48,13 +48,18 @@ public class TollReportServiceImpl implements ITollReportService {
 	}
 
 	@Override
-	public List<ChargestsList> chargeStatistics(Integer toll_collector_id) {
-		List<ChargestsList> list = tollReportMapper.chargeStatistics(toll_collector_id);
-		BigDecimal totalMoney = list.get(0).getTotalMoney();//实收总金额
-		BigDecimal refund = list.get(0).getRefund();
-		BigDecimal actuallyPay = totalMoney.subtract(refund); //实际上缴金额
-		list.get(0).setActuallyPay(actuallyPay);
-		return list;
+	public List<ChargestsList> chargeStatistics(Integer toll_collector_id, Integer turnStatus) {
+		List<ChargestsList> list = tollReportMapper.chargeStatistics(toll_collector_id, turnStatus);
+		if (list.size() > 0) {
+			BigDecimal totalMoney = list.get(0).getTotalMoney();//实收总金额
+			BigDecimal refund = list.get(0).getRefund();
+			BigDecimal actuallyPay = totalMoney.subtract(refund); //实际上缴金额
+			list.get(0).setActuallyPay(actuallyPay);
+			return list;
+		} else {
+			return null;
+		}
+
 	}
 
 	@Override

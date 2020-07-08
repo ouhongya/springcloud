@@ -14,7 +14,7 @@ public interface ITollReportService {
 
 	List<ReportDetail> rptdetail(ReportDetail reportDetail);
 
-	List<ChargestsList> chargeStatistics(Integer toll_collector_id);
+	List<ChargestsList> chargeStatistics(Integer toll_collector_id,Integer turnStatus);
 
 	RecordCharge selectById(Integer id);
 
