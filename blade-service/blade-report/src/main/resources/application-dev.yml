@@ -1,6 +1,6 @@
 #服务器端口
 server:
-  port: 8169
+  port: 9999
 
 #数据源配置
 spring:
@@ -8,4 +8,3 @@ spring:
     url: jdbc:mysql://192.168.1.80:3306/fee?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&tinyInt1isBit=false&allowMultiQueries=true&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
     username: root
     password: omy360
-

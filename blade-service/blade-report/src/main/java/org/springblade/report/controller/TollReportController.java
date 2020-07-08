@@ -33,22 +33,7 @@ public class TollReportController {
 	@PostMapping("/tolldetail")
 	@ApiOperation(value = "报表明细", notes = "报表明细")
 	public R rptDetail(ReportDetail reportDetail) {
-//		Integer toll_collector_id = "收费人员id";
-		reportDetail.setTollCollectorId(1);
-		reportDetail.setTurnStatus(0);
-		String times = "2020-06-30 15:33:41";
-		//获得SimpleDateFormat类，我们转换为yyyy-MM-dd的时间格式
-		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		//使用SimpleDateFormat的parse()方法生成Date
-		try {
-			Date date = sf.parse(times);
-			reportDetail.setPaidTime(date);
-			System.out.println(date);
-			System.out.println(reportDetail.getPaidTime());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
+		reportDetail.setTurnStatus(0); //是否统计上交
 		return R.data(iTollReportService.rptdetail(reportDetail));
 	}
 
@@ -59,9 +44,8 @@ public class TollReportController {
 	 */
 	@PostMapping("/chargeStatistics")
 	@ApiOperation(value = "收费统计", notes = "收费统计")
-	public R chargeStatistics() {
-//		Integer toll_collector_id = "收费人员id";
-		Integer toll_collector_id = 1;
+	public R chargeStatistics(Integer toll_collector_id) {
+//		toll_collector_id = 1;
 		return R.data(iTollReportService.chargeStatistics(toll_collector_id));
 	}
 
