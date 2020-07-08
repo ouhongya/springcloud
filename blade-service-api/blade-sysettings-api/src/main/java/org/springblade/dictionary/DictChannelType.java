@@ -29,5 +29,11 @@ public class DictChannelType extends BaseEntity implements Serializable {
 	/**
 	 * 是否启用
 	 */
+	@ApiModelProperty(value = "状态名称")
 	private Integer enabled = 0;
+	/**
+	 * 支付方式显示颜色
+	 */
+	@ApiModelProperty(value = "支付方式显示颜色")
+	private String color;
 }

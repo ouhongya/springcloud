@@ -5,7 +5,7 @@
     <select id="chargeStatistics" resultType="org.springblade.report.ChargestsList">
         SELECT * FROM
         (SELECT
-        p.channel_type_id AS channelTypeId, dct.text as text, sum( p.fee_paid ) payTypeMoney
+        p.channel_type_id AS channelTypeId, dct.text as text,dct.color, sum( p.fee_paid ) payTypeMoney
         FROM record_charge r
         LEFT JOIN charge_pay p ON p.charge_id = r.id
         LEFT JOIN dict_channel_type dct ON dct.id = p.channel_type_id
