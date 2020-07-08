@@ -46,7 +46,6 @@ public class FinanceReportController {
 	@PostMapping("/finaCharge")
 	@ApiOperation(value = "收费统计", notes = "收费统计")
 	public R finaCharge(Integer tollCollectorId) {
-//		tollCollectorId = 1;
 		return R.data(iTollReportService.chargeStatistics(tollCollectorId));
 	}
 

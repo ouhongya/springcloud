@@ -8,9 +8,6 @@ import org.springblade.report.ReportDetail;
 import org.springblade.report.service.ITollReportService;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * [统计报表--收费人员]
@@ -42,11 +39,10 @@ public class TollReportController {
 	 *
 	 * @return
 	 */
-	@PostMapping("/chargeStatistics")
+	@PostMapping("/finaCharge")
 	@ApiOperation(value = "收费统计", notes = "收费统计")
-	public R chargeStatistics(Integer toll_collector_id) {
-//		toll_collector_id = 1;
-		return R.data(iTollReportService.chargeStatistics(toll_collector_id));
+	public R chargeStatistics(Integer tollCollectorId) {
+		return R.data(iTollReportService.chargeStatistics(tollCollectorId));
 	}
 
 	/**
