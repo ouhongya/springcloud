@@ -8,8 +8,6 @@ import org.springblade.core.mp.base.BaseEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Data
-@TableName("charge_receipt")
 public class ChargeReceipt extends BaseEntity implements Serializable {
 
 	/**

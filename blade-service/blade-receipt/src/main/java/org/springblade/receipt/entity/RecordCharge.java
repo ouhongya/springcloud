@@ -9,10 +9,7 @@ import org.springblade.core.mp.base.BaseEntity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
 @Data
-@TableName("record_charge")
-@EqualsAndHashCode(callSuper = true)
 public class RecordCharge extends BaseEntity implements Serializable {
 
 	/**

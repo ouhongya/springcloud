@@ -1,9 +1,10 @@
 
 package org.springblade.receipt.entity;
 
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 import org.springblade.receipt.sdk.wxpay.IWXPayDomain;
 import org.springblade.receipt.sdk.wxpay.WXPayConfig;
+import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
 import java.net.InetAddress;

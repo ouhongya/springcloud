@@ -3,7 +3,6 @@ package org.springblade.receipt.entity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-@Data
 public class ReceiptVo {
 	/**
 	 * 旧发票号

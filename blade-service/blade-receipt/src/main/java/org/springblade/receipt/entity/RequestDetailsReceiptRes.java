@@ -5,7 +5,6 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
-@Data
 public class RequestDetailsReceiptRes {
 	@ApiModelProperty(value = "申请单号Id")
 	private String requestId;

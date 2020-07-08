@@ -18,8 +18,8 @@ public class ChargeDetailsController {
 
 	@GetMapping("/queryChargeDetailsList")
 	@ApiOperation(value = "费用明细查询", notes = "费用明细查询")
-	public R queryRequestDetailReceipt(RequestDetailReceiptVo requestDetailReceiptVo) {
-		return R.data(chargeDetailsService.queryRequestDetailReceipt(requestDetailReceiptVo));
+	public R queryChargeDetailsList(RequestDetailReceiptVo requestDetailReceiptVo) {
+		return R.data(chargeDetailsService.queryChargeDetailsList(requestDetailReceiptVo));
 	}
 
 	@GetMapping("/queryHospitalizedList")
