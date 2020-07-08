@@ -19,4 +19,6 @@ public interface ITollReportService {
 	RecordCharge selectById(Integer id);
 
 	String updateTurnStatus(Integer[] ids);
+
+	List<ReportDetail> viewReport(ReportDetail reportDetail);
 }

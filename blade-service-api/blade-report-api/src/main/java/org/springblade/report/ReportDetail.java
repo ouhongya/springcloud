@@ -78,4 +78,42 @@ public class ReportDetail {
 	@ApiModelProperty(value = "是否上交财务")
 	private Integer turnStatus = 0;
 
+
+	/**
+	 * 应收费用
+	 */
+	@ApiModelProperty(value = "应收费用")
+	private Integer totalChargeable;
+	/**
+	 * 优惠费用
+	 */
+	@ApiModelProperty(value = "优惠费用")
+	private Integer totalDiscountCost;
+	/**
+	 * 实收费用
+	 */
+	@ApiModelProperty(value = "实收费用")
+	private Integer totalActuallyPay;
+
+
+	/**
+	 * 预览统计申请单类别数量
+	 */
+	@ApiModelProperty(value = "预览统计申请单类别数量")
+	private Integer requestTypeCount;
+	/**
+	 * 预览统计应收费用
+	 */
+	@ApiModelProperty(value = "预览统计应收费用")
+	private Integer sumChargeable;
+	/**
+	 * 预览统计优惠费用
+	 */
+	@ApiModelProperty(value = "预览统计优惠费用")
+	private Integer sumDiscountCost;
+	/**
+	 * 预览统计实收费用
+	 */
+	@ApiModelProperty(value = "预览统计实收费用")
+	private Integer sumActuallyPay;
 }

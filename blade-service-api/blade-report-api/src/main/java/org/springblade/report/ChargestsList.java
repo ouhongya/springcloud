@@ -25,6 +25,13 @@ public class ChargestsList {
 	private String text;
 
 	/**
+	 * 支付方式显示颜色
+	 */
+	@ApiModelProperty(value = "支付方式显示颜色")
+	private String color;
+
+
+	/**
 	 * 分类统计-金额
 	 */
 	@ApiModelProperty(value = "分类统计-金额")
@@ -46,4 +53,6 @@ public class ChargestsList {
 	 */
 	@ApiModelProperty(value = "实收上缴总金额")
 	private BigDecimal actuallyPay;
+
+
 }

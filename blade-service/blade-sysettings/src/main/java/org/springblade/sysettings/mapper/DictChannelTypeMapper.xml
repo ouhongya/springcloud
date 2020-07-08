@@ -5,9 +5,10 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="text" jdbcType="VARCHAR" property="text"/>
         <result column="enabled" jdbcType="INTEGER" property="enabled"/>
+        <result column="color" jdbcType="VARCHAR" property="color"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, text, enabled
+        id, text, enabled,color
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -25,8 +26,8 @@
         where 1=1 and id = #{id,jdbcType=INTEGER}
     </update>
     <insert id="add" parameterType="org.springblade.dictionary.DictChannelType">
-        insert into dict_channel_type (id, text, enabled)
-        values (#{id,jdbcType=INTEGER}, #{text,jdbcType=VARCHAR}, #{enabled,jdbcType=INTEGER})
+        insert into dict_channel_type (id, text, enabled,color)
+        values (#{id,jdbcType=INTEGER}, #{text,jdbcType=VARCHAR}, #{enabled,jdbcType=INTEGER},#{color,jdbcType=VARCHAR})
     </insert>
 
 </mapper>

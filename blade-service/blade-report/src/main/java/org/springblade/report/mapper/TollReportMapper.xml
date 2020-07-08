@@ -5,7 +5,7 @@
     <select id="chargeStatistics" resultType="org.springblade.report.ChargestsList">
         SELECT * FROM
         (SELECT
-        p.channel_type_id AS channelTypeId, dct.text as text, sum( p.fee_paid ) payTypeMoney
+        p.channel_type_id AS channelTypeId, dct.text as text,dct.color as color, sum( p.fee_paid ) payTypeMoney
         FROM record_charge r
         LEFT JOIN charge_pay p ON p.charge_id = r.id
         LEFT JOIN dict_channel_type dct ON dct.id = p.channel_type_id
@@ -21,7 +21,7 @@
         LEFT JOIN charge_pay p ON p.charge_id = r.id
         LEFT JOIN dict_channel_type dct ON dct.id = p.channel_type_id
         WHERE 1 = 1
-        AND toll_collector_id = 1
+        AND toll_collector_id = #{toll_collector_id}
         AND p.charge_id = r.id
         AND p.STATUS = 1
         ) b
@@ -72,6 +72,9 @@
         <if test="deptId != null">
             AND cr.dept_id =#{deptId}
         </if>
+        <if test="paymentMethod != null and paymentMethod != ''">
+            AND dct.text =#{paymentMethod}
+        </if>
         GROUP BY r.id
     </select>
 
@@ -95,4 +98,63 @@
         update record_charge set turn_status = 1 where id=#{id}
     </update>
 
+    <select id="totalViewReport" resultType="org.springblade.report.ReportDetail">
+        SELECT a.requestType as requestType, count( a.requestType ) as requestTypeCount,
+        sum( chargeable ) as sumChargeable, sum( discountCost ) as sumDiscountCost, sum( actuallyPay ) as sumActuallyPay
+        FROM
+        ( SELECT
+        c.text AS costCategory, drt.text AS requestType, r.create_time AS createTime, r.paid_time AS paidTime,
+        rci.chargeable AS chargeable, rci.discountCost, rci.actuallyPay,
+        r.toll_collector_id AS tollCollectorId, cr.dept_id AS deptId,
+        GROUP_CONCAT( dct.text ) AS paymentMethod
+        FROM
+        record_charge r
+        LEFT JOIN category c ON c.category_id = r.category_id
+        LEFT JOIN charge_request cr ON cr.charge_id = r.id
+        LEFT JOIN dict_request_type drt ON drt.id = cr.request_type
+        LEFT JOIN charge_pay p ON p.charge_id = r.id
+        LEFT JOIN dict_channel_type dct ON dct.id = p.channel_type_id
+        LEFT JOIN request_detail rd ON rd.request_id = cr.request_id
+        LEFT JOIN (
+        SELECT
+        request_id, sum( fee_item ) AS chargeable, sum( fee_favor ) AS discountCost, sum( fee_final ) AS actuallyPay
+        FROM
+        request_charge_info
+        GROUP BY request_id
+        ) rci ON rci.request_id = rd.request_id
+
+        WHERE
+        1 = 1
+        <if test="createTime != null">
+            AND
+            r.create_time  &gt;= #{createTime}
+        </if>
+        <if test="paidTime != null">
+            AND
+            r.paid_time &lt;= #{paidTime}
+        </if>
+        <if test="tollCollectorId != null">
+            AND
+            r.toll_collector_id=#{tollCollectorId}
+        </if>
+        <if test="turnStatus != null">
+            AND r.turn_status =#{turnStatus}
+        </if>
+        <if test="costCategory != null and costCategory != ''">
+            AND c.text =#{costCategory}
+        </if>
+        <if test="requestType != null and requestType != ''">
+            AND drt.text =#{requestType}
+        </if>
+        <if test="deptId != null">
+            AND cr.dept_id =#{deptId}
+        </if>
+        <if test="paymentMethod != null and paymentMethod != ''">
+            AND dct.text =#{paymentMethod}
+        </if>
+        GROUP BY r.id ) a
+        WHERE 1 = 1
+        GROUP BY
+        a.requestType
+    </select>
 </mapper>

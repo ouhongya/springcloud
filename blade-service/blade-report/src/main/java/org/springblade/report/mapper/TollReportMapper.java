@@ -20,4 +20,6 @@ public interface TollReportMapper {
 	RecordCharge selectById(@Param("id") Integer id);
 
 	int updateTurnStatus(@Param("id")Integer id);
+
+    List<ReportDetail> totalViewReport(ReportDetail reportDetail);
 }
