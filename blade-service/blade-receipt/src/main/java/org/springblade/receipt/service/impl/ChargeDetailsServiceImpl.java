@@ -28,7 +28,7 @@ public class ChargeDetailsServiceImpl extends BaseServiceImpl<ChargeDetailsMappe
 	 * @return
 	 */
 	@Override
-	public PageInfo queryRequestDetailReceipt(RequestDetailReceiptVo requestDetailReceiptVo) {
+	public PageInfo queryChargeDetailsList(RequestDetailReceiptVo requestDetailReceiptVo) {
 		PageHelper.startPage(requestDetailReceiptVo.getPage(),requestDetailReceiptVo.getSize());
 		List<RequestDetailsReceiptRes> receiptResList= baseMapper.queryRequestDetailReceipt(requestDetailReceiptVo);
 		return new PageInfo<>(receiptResList);

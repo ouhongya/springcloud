@@ -78,7 +78,6 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 
 	/**
 	 * 打印发票
-	 *
 	 * @param receiptVo 发票列表
 	 * @param username  操作人名
 	 */
@@ -107,14 +106,13 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 
 	/**
 	 * 退款操作
-	 *
 	 * @param refundVo 退款Id
 	 * @param userName 操作人
 	 * @param reason   退款原因
 	 * @return
 	 */
 	@Override
-	@Transactional(rollbackFor = Exception.class)
+	@Transactional
 	public String refund(List<RefundVo> refundVo, String userName, String reason) {
 		List<Map<String,String>> list = new ArrayList<Map<String,String>>();
 		//循环进行退款
@@ -153,7 +151,6 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 			baseMapper.updatePayStatus(vo.getRequestId(), new Date(), 4, userName, reason);
 			baseMapper.updateChargePay(vo.getRequestId(), new Date(), decimal.getFeeRefund().add(pay.getFeeFinal()), 4, userName, reason);
 		}
-		//中途有退款失败的项目
 		if(list.size()!=0){
 			for (Map<String, String> stringMap : list) {
 				for (String key : stringMap.keySet()) {
@@ -164,6 +161,29 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 		}
 		//没有退款失败的项目
 		return "退款成功";
+	}
+
+	/**
+	 * 退款金额
+	 * @param requestIds
+	 * @return
+	 */
+	@Override
+	public InvoiceMoneyVo invoiceMoney(String[] requestIds) {
+		InvoiceMoneyVo invoiceMoney = new InvoiceMoneyVo();
+		BigDecimal cash = new BigDecimal("0.00");
+		BigDecimal wxPay = new BigDecimal("0.00");
+		BigDecimal aliPay = new BigDecimal("0.00");
+		for (String id : requestIds) {
+			InvoiceMoneyVo pojo = baseMapper.queryInvoiceMoney(id);
+			cash.add(pojo.getCash());
+			wxPay.add(pojo.getWxPay());
+			aliPay.add(pojo.getWxPay());
+		}
+		invoiceMoney.setCash(cash);
+		invoiceMoney.setWxPay(wxPay);
+		invoiceMoney.setAliPay(aliPay);
+		return invoiceMoney;
 	}
 
 	/**

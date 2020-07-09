@@ -97,6 +97,39 @@
         AND request_charge_info.`item_id` = #{itemId}
         GROUP BY request_charge_info.`id`
     </select>
+    <select id="queryInvoiceMoney" resultType="org.springblade.receipt.entity.InvoiceMoneyVo">
+                SELECT
+          SUM(
+            IF(
+              dict_channel_type.text = '现金',
+              charge_pay.fee_paid,
+              0
+            )
+          ) AS "cash",
+          SUM(
+            IF(
+              dict_channel_type.text = '微信',
+              charge_pay.fee_paid,
+              0
+            )
+          ) AS "wxPay",
+          SUM(
+            IF(
+              dict_channel_type.text = '支付宝',
+              charge_pay.fee_paid,
+              0
+            )
+          ) AS "aliPay"
+        FROM
+          charge_request
+          LEFT JOIN record_charge
+            ON charge_request.patient_id = record_charge.patient_id
+          LEFT JOIN charge_pay
+            ON record_charge.id = charge_pay.charge_id
+          LEFT JOIN dict_channel_type
+            ON charge_pay.channel_type_id = dict_channel_type.id
+        WHERE charge_request.request_id = #{id}
+    </select>
 
     <update id="queryReceiptByIdNewStatus" parameterType="java.lang.String">
         update invoice set status=2 where receipt_number=#{num}

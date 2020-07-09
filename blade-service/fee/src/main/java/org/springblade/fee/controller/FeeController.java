@@ -304,7 +304,7 @@ public class FeeController {
 	}
 //0/2 * * * * *
 
-	@Scheduled(cron = "0/2 * * * * *")
+	//@Scheduled(cron = "0/2 * * * * *")
 	public void timer(){
 		ExpiryDate expiryDate = feeMapper.selectExpiryDate(1);
 		int valid_quantum = expiryDate.getValid_quantum();

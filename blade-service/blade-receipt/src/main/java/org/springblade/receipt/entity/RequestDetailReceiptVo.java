@@ -5,7 +5,6 @@ import lombok.Data;
 
 import java.util.Date;
 
-@Data
 public class RequestDetailReceiptVo {
 
 	@ApiModelProperty(value = "收费日期:默认不传")

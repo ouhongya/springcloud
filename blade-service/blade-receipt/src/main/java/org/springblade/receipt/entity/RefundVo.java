@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 
-@Data
 public class RefundVo {
 
 	@ApiModelProperty(value = "申请单id")
