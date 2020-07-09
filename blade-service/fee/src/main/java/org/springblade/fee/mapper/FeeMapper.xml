@@ -38,8 +38,8 @@
         select request_id,item_type_id,item_count,item_id,favor_id,favor_name,fee_favor,fee_item,fee_final,favor_channel_id,favor_channe,execute_dept_id,refund_reason,status from request_charge_info where request_id =  #{request_id}
     </select>
     <insert id="insertItemCount" parameterType="org.springblade.fee.entity.ItemCount">
-        INSERT INTO `request_charge_info`(`item_id`, `item_type_id`, `item_count`, `request_id`,`status`)
-        VALUES (#{item_id},#{item_type_id},#{item_count},#{request_id},#{status})
+        INSERT INTO `request_charge_info`(`item_id`, `item_type_id`, `item_count`, `request_id`,`status`,`fee_item`)
+        VALUES (#{item_id},#{item_type_id},#{item_count},#{request_id},#{status},#{fee_item})
     </insert>
     <insert id="insertRequestChargeInfo" parameterType="org.springblade.fee.entity.RequestChargeInfo">
         INSERT INTO `request_detail`(`request_id`, `patient_id`, `request_type_id`)
@@ -73,7 +73,7 @@
         update charge_request SET patient_id=#{patient_id},request_type=#{request_type},charge_id=#{charge_id},dept_id=#{dept_id},doctor_id=#{doctor_id} where request_id=#{request_id}
     </update>
     <update id="updateItemCountItemFavor" parameterType="org.springblade.fee.vo.ItemFavor">
-        update request_charge_info SET favor_id=#{favor_id},favor_name=#{favor_name},fee_favor=#{fee_favor} where item_id=#{item_id}
+        update request_charge_info SET favor_id=#{favor_id},favor_name=#{favor_name},fee_favor=#{fee_favor},fee_final=#{fee_final} where item_id=#{item_id} and request_id=#{request_id}
     </update>
     <update id="updateChargeRequestByChargeId" parameterType="org.springblade.fee.entity.ChargeRequest">
         update charge_request SET charge_id=#{charge_id} where request_id=#{request_id}
@@ -85,10 +85,13 @@
         update record_charge SET status=#{status} where id=#{id}
     </update>
     <update id="updateItemCountByStatus" parameterType="org.springblade.fee.entity.ItemCount">
-        update request_charge_info SET status=#{status} where request_id=#{request_id} and item_id = #{item_id}
+        update request_charge_info SET status=#{status}, reason=#{reason} where request_id=#{request_id} and item_id = #{item_id}
     </update>
     <update id="updateRecordChargeByCreateTime" parameterType="java.lang.Integer">
-        update request_charge_info SET status=5  where   date_format(now(),'%Y-%m-%d-%H-%i-%S') > date_format(date_add(create_time, interval #{days} day),'%Y-%m-%d-%H-%i-%S')
+        update record_charge SET status=5  where id =  #{i}
+    </update>
+    <update id="updateChargePay" parameterType="org.springblade.fee.entity.ChargePay">
+        update charge_pay SET channel_order=#{channel_order}, channel_account=#{channel_account},fee_refund=#{fee_refund} where charge_id =  #{charge_id} and channel_type_id =  #{channel_type_id}
     </update>
     <delete id="deleteChargeRequest" parameterType="java.lang.Long">
         delete from charge_request where request_id = #{request_id,jdbcType=BIGINT}
@@ -111,7 +114,26 @@
     <select id="selectItemCount" resultType="org.springblade.fee.entity.ItemCount">
         select status from request_charge_info where item_id =  #{item_id} and request_id = #{request_id}
     </select>
-    <select id="selectExpiryDate" resultType="org.springblade.fee.entity.ExpiryDate" parameterType="java.lang.Integer">
-        select id,valid_quantum from expiry_date where id =  #{id}
+    <select id="selectExpiryDate" resultType="java.lang.Integer" >
+      select id  from record_charge where DATEDIFF(now(),create_time) > (select valid_quantum from expiry_date) and status = 1
+    </select>
+    <select id="selectItemCountByFEEITEM" resultType="org.springblade.fee.entity.ItemCount" parameterType="org.springblade.fee.vo.ItemFavor">
+        select fee_item from request_charge_info where item_id =  #{item_id} and request_id = #{request_id}
+    </select>
+    <select id="querycharge" resultType="org.springblade.fee.entity.RecordCharge" parameterType="org.springblade.fee.entity.RecordCharge">
+        select id, patient_id,create_time,paid_time,refund_time,status,toll_collector_id,turn_status,category_id,money,reason from record_charge where 1=1
+        <if test="patient_id != null and patient_id != ''">
+            AND patient_id = #{patient_id}
+        </if>
+        <if test="charge_id != null and charge_id != ''">
+            AND id = #{charge_id}
+        </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+        <if test="start_time != null and end_time != null">
+            AND create_time BETWEEN #{start_time}
+            AND #{end_time}
+        </if>
     </select>
 </mapper>

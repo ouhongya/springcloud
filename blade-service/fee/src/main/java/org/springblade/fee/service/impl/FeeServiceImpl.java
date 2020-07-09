@@ -29,7 +29,7 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 	@Autowired
 	private RedisTemplate redisTemplate;
 
-	//	@Autowired
+//	@Autowired
 	private IFeeClient iFeeClient;
 
 	@Autowired
@@ -45,11 +45,11 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 		//申请单列表
 		List<Fee> fees = baseMapper.selectFeeList(request_id_list);
 
-//       //申请单详情
-//		for(Fee fee:fees){
-//			String RequestType = (String) redisTemplate.boundValueOps(String.valueOf(fee.getRequestId())).get();
-//			fee.setRequestType(RequestType);
-//		}
+       //申请单详情
+		for(Fee fee:fees){
+			String RequestType = (String) redisTemplate.boundValueOps(String.valueOf(fee.getRequestId())).get();
+			fee.setRequestType(RequestType);
+		}
 		return fees;
 	}
 
@@ -99,6 +99,9 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 			List<ItemCount> item_list = requestChargeInfo.getItem_list();
 			for(ItemCount itemCount:item_list){
 				itemCount.setRequest_id(requestChargeInfo.getRequest_id());
+				R<ItemDetail> item_brief = iFeeClient.get_item_brief(itemCount.getItem_id());
+				ItemDetail data = item_brief.getData();
+				itemCount.setFee_item(data.getFee());
 				itemCount.setStatus(0);
 				item_ids.add(itemCount.getItem_id());
 				baseMapper.insertItemCount(itemCount);
@@ -109,6 +112,22 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 			FavorItemBrief data = favorItemBriefR.getData();
 			List<ItemFavor> favor_list = data.getFavor_list();
 			for(ItemFavor itemFavor:favor_list){
+				itemFavor.setRequest_id(requestChargeInfo.getRequest_id());
+
+				ItemCount itemCount = baseMapper.selectItemCountByFEEITEM(itemFavor);
+				BigDecimal fee_item = itemCount.getFee_item();
+
+				String fee_favor = itemFavor.getFee_favor();
+				BigDecimal bd=null;
+				if(fee_favor!=null && !"".equals(fee_favor))
+					bd=new BigDecimal(fee_favor);
+
+				BigDecimal subtract=null;
+				if(fee_item!=null && bd!=null)
+					subtract= fee_item.subtract(bd);
+
+				if(subtract!=null)
+					itemFavor.setFee_final(subtract);
 				baseMapper.updateItemCountItemFavor(itemFavor);
 			}
 			baseMapper.insertRequestChargeInfo(requestChargeInfo);
@@ -247,14 +266,15 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 
 	@Override
 	public boolean updateRequestChargeInfo(ItemCount itemCount) {
-		ItemCount itemCount1 = baseMapper.selectItemCount(itemCount);
-		Integer status = itemCount1.getStatus();
-		if(status == 1){
+		try {
 			itemCount.setStatus(3);
 			int i = baseMapper.updateItemCountByStatus(itemCount);
 			return true;
+		}catch (Exception e){
+			e.printStackTrace();
+			return false;
 		}
-		return false;
+
 	}
 
 	@Override
@@ -400,5 +420,25 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 
 		return "fail";
 	}
+
+	@Override
+	public boolean updatepay(ChargePay chargePay) {
+		try {
+			int i = baseMapper.updateChargePay(chargePay);
+			return true;
+		}catch (Exception e){
+			return false;
+		}
+
+	}
+
+	@Override
+	public List<RecordCharge>  querycharge(RecordCharge recordCharge) {
+
+		List<RecordCharge> querycharge = baseMapper.querycharge(recordCharge);
+
+		return querycharge;
+	}
+
 
 }

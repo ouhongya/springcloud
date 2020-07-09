@@ -21,6 +21,7 @@ package org.springblade.fee.feign;
 import org.springblade.core.tool.api.R;
 import org.springblade.fee.vo.FavorItemBrief;
 import org.springblade.fee.vo.FavorPatientBrief;
+import org.springblade.fee.vo.ItemDetail;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +37,7 @@ public interface IFeeClient {
 	String API_PREFIX = "/dept-market";
 	String PATIENT_FAVOR = API_PREFIX + "/get-patient-favor";
 	String ITEM_FAVOR = API_PREFIX + "/get-item-favor";
+	String GET_ITEM_BRIEF = "/charge-item/get-item-brief";
 
 	/**
 	 * 患者优惠信息请求接口
@@ -55,5 +57,13 @@ public interface IFeeClient {
 	 */
 	@GetMapping(ITEM_FAVOR)
 	R<FavorItemBrief> item_favor(@RequestParam("patient_id") Long patient_id, @RequestParam(value = "item_id[]") Integer[] item_id);
+
+	/**
+	 * 收费项目详情请求接口
+	 * @param item_id
+	 * @return
+	 */
+	@GetMapping(GET_ITEM_BRIEF)
+	R<ItemDetail> get_item_brief(@RequestParam("item_id") Integer item_id);
 
 }

@@ -15,7 +15,6 @@ import org.springblade.fee.service.AlipayService;
 import org.springblade.fee.service.FeeService;
 import org.springblade.fee.service.WXPayService;
 import org.springblade.fee.vo.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +40,6 @@ public class FeeController {
 	private RedisTemplate redisTemplate;
 
 	private FeeMapper feeMapper;
-
 	/**
 	 * 获取患者申请单列表
 	 */
@@ -137,7 +135,7 @@ public class FeeController {
 	@ApiOperation(value = "发起支付", notes = "传入收费记录charge_id ，支付方式 channel_id,申请单id加上对应收费项目ids FeeRequest,收费实际金额 fee_paid，是否全选(0全选，1没有全选) checked")
 	@PostMapping("/createpay")
 	public R<Map<Integer,String>> createpay(Long charge_id, Integer channel_id, @RequestBody List<FeeRequest> feeRequest, BigDecimal fee_paid,Integer checked) {
-          Map<Integer,String> map=null;
+		Map<Integer,String> map=null;
 		switch(channel_id){
 			case 1 :
 				//现金
@@ -196,7 +194,6 @@ public class FeeController {
 	 * 支付宝支付回调
 	 */
 	@PostMapping("/aLiOrderNotifyResult")
-	@ResponseBody
 	@Transactional(rollbackFor = Exception.class)
 	public synchronized String aLiOrderNotifyResult(HttpServletRequest request, String out_trade_no,String buyer_id) throws AlipayApiException, IOException {
 		Map<String, String> map = new HashMap<String, String>();
@@ -302,13 +299,16 @@ public class FeeController {
 		}
 
 	}
-//0/2 * * * * *
 
-	//@Scheduled(cron = "0/2 * * * * *")
+	/**
+	 * 定时改变收费记录过期记录状态
+	 */
+	@Scheduled(cron = "0 0 12 * * ?")
 	public void timer(){
-		ExpiryDate expiryDate = feeMapper.selectExpiryDate(1);
-		int valid_quantum = expiryDate.getValid_quantum();
-		int i = feeMapper.updateRecordChargeByCreateTime(valid_quantum);
+		List<Integer> valid_quantum = feeMapper.selectExpiryDate();
+		for (Integer i:valid_quantum){
+			feeMapper.updateRecordChargeByCreateTime(i);
+		}
 	}
 
 	/**
@@ -439,17 +439,44 @@ public class FeeController {
 
 
 
+
+
 	/**
-	 * 现金支付
+	 * 更新支付记录
 	 * @param
 	 * @param
 	 * @throws
 	 */
-	@RequestMapping("cashpay")
-	public R<String> cashpay(String outTradeNo) {
+	@ApiOperationSupport(order = 11)
+	@ApiOperation(value = "更新支付记录", notes = "传入charge_id收费记录ID,channel_type_id支付渠道id,channel_order支付订单号,channel_accoun支付账户,fee_refund已退款金额")
+	@PostMapping("/update-pay")
+	public R<String> updatepay(@RequestBody ChargePay chargePay) {
+		boolean updatepay = feeService.updatepay(chargePay);
+		if(updatepay){
+			return R.success("更新支付记录成功");
+		}else{
+			return R.fail("更新支付记录失败");
+		}
 
 
-		return R.data("现金收费成功!");
 	}
+
+
+	/**
+	 * 查询收费记录
+	 * @param
+	 * @param
+	 * @throws
+	 */
+	@ApiOperationSupport(order = 12)
+	@ApiOperation(value = "查询收费记录", notes = "传入患者ID patient_id,收费记录id charge_id,查询起始时间 start_time,查询截止时间 end_time,支付状态 status")
+	@PostMapping("/feeService")
+	public R<List<RecordCharge>> querycharge(@RequestBody RecordCharge recordCharge) {
+		 List<RecordCharge> querycharge = feeService.querycharge(recordCharge);
+		 return R.data(querycharge);
+	}
+
+
+
 
 }

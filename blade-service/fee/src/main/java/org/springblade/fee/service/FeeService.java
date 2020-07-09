@@ -3,9 +3,7 @@ package org.springblade.fee.service;
 
 
 import org.springblade.core.mp.base.BaseService;
-import org.springblade.fee.entity.ItemCount;
-import org.springblade.fee.entity.RecordChargeRequest;
-import org.springblade.fee.entity.RequestChargeInfo;
+import org.springblade.fee.entity.*;
 import org.springblade.fee.vo.Favourable;
 import org.springblade.fee.vo.Fee;
 import org.springblade.fee.vo.FeeRequest;
@@ -42,6 +40,12 @@ public interface FeeService extends BaseService<RequestChargeInfo> {
 	String wxpay(Long charge_id, BigDecimal fee_paid,List<FeeRequest> feeRequest,Integer checked);
 
 	String moneypay(Long charge_id, List<FeeRequest> feeRequest, BigDecimal fee_paid,Integer checked,Integer channel_id);
+
+	boolean updatepay(ChargePay chargePay);
+
+	List<RecordCharge> querycharge(RecordCharge recordCharge);
+
+
 
 
 }

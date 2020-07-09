@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springblade.core.tenant.mp.TenantEntity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 
 @Data
@@ -33,6 +34,12 @@ public class ItemCount extends TenantEntity implements Serializable {
 
 	//优惠费用
 	private String fee_favor;
+
+	//项目费用
+	private BigDecimal fee_item;
+
+	//可以退款
+	private String reason;
 
 //	//支付状态
 //	private byte status;

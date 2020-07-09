@@ -55,6 +55,24 @@ public class RecordCharge extends TenantEntity implements Serializable {
 	//优惠原因
 	private String reason;
 
+	//开始时间
+	private Date start_time;
+
+	//截至时间
+	private Date end_time;
+
+	//0  未上交 1  已上交
+	private int turn_status;
+
+	//费用类别
+	private byte category_id;
+
+
+	//收费记录id
+	private int charge_id;
+
+
+
 }
 
 
