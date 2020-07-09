@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springblade.report.entity.report.ChargestsList;
 import org.springblade.report.entity.report.ReportRecords;
 import org.springblade.report.entity.report.ReportDetail;
-import org.springblade.report.mapper.TollReportMapper;
+import org.springblade.report.mapper.report.TollReportMapper;
 import org.springblade.report.service.ITollReportService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;

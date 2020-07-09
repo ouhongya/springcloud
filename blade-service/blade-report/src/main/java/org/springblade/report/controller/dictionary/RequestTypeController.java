@@ -7,10 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springblade.core.tool.api.R;
 import org.springblade.report.entity.dictionary.DictRequestType;
 import org.springblade.report.service.IRequestTypeService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(value = "申请单类别字典表", tags = "申请单类别字典表")
 @RequestMapping("/api/requestType")
@@ -63,7 +60,7 @@ public class RequestTypeController {
 	 */
 	@PostMapping("/save")
 	@ApiOperation(value = "新增数据", notes = "申请单类别字典表")
-	public R save(@ApiParam(value = "状态代码") DictRequestType dictRequestType) {
+	public R save(@ApiParam(value = "状态代码") @RequestBody DictRequestType dictRequestType) {
 		return R.data(iRequestTypeService.insert(dictRequestType));
 	}
 

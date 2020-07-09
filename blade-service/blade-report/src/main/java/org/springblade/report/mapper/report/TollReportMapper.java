@@ -1,4 +1,4 @@
-package org.springblade.report.mapper;
+package org.springblade.report.mapper.report;
 
 import org.apache.ibatis.annotations.Param;
 import org.springblade.report.entity.report.ChargestsList;

@@ -7,10 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springblade.core.tool.api.R;
 import org.springblade.report.entity.dictionary.Category;
 import org.springblade.report.service.ICategoryService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(value = "费用类别字典表", tags = "费用类别字典表")
 @RequestMapping("/api/category")
@@ -50,7 +47,7 @@ public class CategoryController {
 	 */
 	@PostMapping("/save")
 	@ApiOperation(value = "新增数据", notes = "费用类别字典表")
-	public R save(@ApiParam(value = "费用类别") Category category) {
+	public R save(@ApiParam(value = "费用类别") @RequestBody Category category) {
 		return R.data(iCategoryService.insert(category));
 	}
 

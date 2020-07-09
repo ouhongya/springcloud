@@ -1,4 +1,4 @@
-package org.springblade.report.mapper;
+package org.springblade.report.mapper.dictionary;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springblade.report.entity.dictionary.DictChannelType;

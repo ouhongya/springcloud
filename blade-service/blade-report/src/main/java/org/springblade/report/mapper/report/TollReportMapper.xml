@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.or g/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.springblade.report.mapper.TollReportMapper">
+<mapper namespace="org.springblade.report.mapper.report.TollReportMapper">
 
     <select id="chargeStatistics" resultType="org.springblade.report.entity.report.ChargestsList">
         SELECT * FROM
@@ -30,7 +30,8 @@
     </select>
     <select id="rptdetail" resultType="org.springblade.report.entity.report.ReportDetail">
         SELECT
-        c.text AS costCategory, drt.text AS requestType,sum(p.fee_refund) as feeRefund , r.create_time AS createTime, r.paid_time AS paidTime,
+        c.text AS costCategory, drt.text AS requestType,ifnull(sum(p.fee_refund),0) as feeRefund , r.create_time AS
+        createTime, r.paid_time AS paidTime,
         rci.chargeable, rci.discountCost, rci.actuallyPay, r.toll_collector_id AS tollCollectorId,
         cr.dept_id AS deptId, GROUP_CONCAT( dct.text ) AS paymentMethod
         FROM
