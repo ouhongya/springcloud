@@ -2,7 +2,6 @@ package org.springblade.report.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springblade.dictionary.Category;
-import org.springblade.dictionary.DictChargeStatus;
 
 import java.util.List;
 
