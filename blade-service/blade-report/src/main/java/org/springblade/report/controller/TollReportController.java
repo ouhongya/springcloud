@@ -41,8 +41,8 @@ public class TollReportController {
 	 */
 	@PostMapping("/finaCharge")
 	@ApiOperation(value = "收费统计", notes = "收费统计")
-	public R chargeStatistics(Integer tollCollectorId) {
-		return R.data(iTollReportService.chargeStatistics(tollCollectorId));
+	public R chargeStatistics(Integer tollCollectorId, Integer turnStatus) {
+		return R.data(iTollReportService.chargeStatistics(tollCollectorId, turnStatus));
 	}
 
 	/**

@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface TollReportMapper {
 
-	List<ChargestsList> chargeStatistics(@Param("toll_collector_id") Integer toll_collector_id);
+	List<ChargestsList> chargeStatistics(@Param("toll_collector_id") Integer toll_collector_id,@Param("turnStatus")Integer turnStatus);
 
 	List<ReportDetail> rptdetail(ReportDetail reportDetail);
 

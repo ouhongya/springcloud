@@ -13,6 +13,7 @@
         AND toll_collector_id = #{toll_collector_id}
         AND p.charge_id = r.id
         AND p.STATUS = 1
+        AND r.turn_status=#{turnStatus}
         GROUP BY p.channel_type_id ) a,
         ( SELECT
         ifnull( sum( p.fee_refund ), 0 ) AS refund,
@@ -24,6 +25,7 @@
         AND toll_collector_id = #{toll_collector_id}
         AND p.charge_id = r.id
         AND p.STATUS = 1
+        AND r.turn_status=#{turnStatus}
         ) b
     </select>
     <select id="rptdetail" resultType="org.springblade.report.ReportDetail">
@@ -50,7 +52,7 @@
         WHERE 1 = 1
         <if test="createTime != null">
             AND
-            r.create_time  &gt;= #{createTime}
+            r.create_time &gt;= #{createTime}
         </if>
         <if test="paidTime != null">
             AND
@@ -127,7 +129,7 @@
         1 = 1
         <if test="createTime != null">
             AND
-            r.create_time  &gt;= #{createTime}
+            r.create_time &gt;= #{createTime}
         </if>
         <if test="paidTime != null">
             AND
