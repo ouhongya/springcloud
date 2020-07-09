@@ -1,4 +1,4 @@
-package org.springblade.report.report;
+package org.springblade.report.entity.report;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -56,6 +56,11 @@ public class ReportDetail {
 	 */
 	@ApiModelProperty(value = "实收费用")
 	private BigDecimal actuallyPay;
+	/**
+	 * 退费金额
+	 */
+	@ApiModelProperty(value = "退费金额")
+	private BigDecimal feeRefund;
 	/**
 	 * 收费人员id
 	 */

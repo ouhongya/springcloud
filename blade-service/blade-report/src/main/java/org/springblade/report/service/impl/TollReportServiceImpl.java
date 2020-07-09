@@ -2,10 +2,9 @@ package org.springblade.report.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springblade.report.report.ChargestsList;
-import org.springblade.report.report.RecordCharge;
-import org.springblade.report.report.ReportDetail;
+import org.springblade.report.entity.report.ChargestsList;
+import org.springblade.report.entity.report.ReportRecords;
+import org.springblade.report.entity.report.ReportDetail;
 import org.springblade.report.mapper.TollReportMapper;
 import org.springblade.report.service.ITollReportService;
 import org.springframework.stereotype.Service;
@@ -67,7 +66,7 @@ public class TollReportServiceImpl implements ITollReportService {
 		String str = "";
 		for (Integer id : ids) {
 			//根据id查询记录是否存在
-			RecordCharge recordCharge = tollReportMapper.selectById(id);
+			ReportRecords recordCharge = tollReportMapper.selectById(id);
 			if (!ObjectUtils.isEmpty(recordCharge)) {
 				tollReportMapper.updateTurnStatus(id);
 				str = "操作成功";
@@ -80,7 +79,7 @@ public class TollReportServiceImpl implements ITollReportService {
 
 
 	@Override
-	public RecordCharge selectById(Integer id) {
+	public ReportRecords selectById(Integer id) {
 		return tollReportMapper.selectById(id);
 	}
 

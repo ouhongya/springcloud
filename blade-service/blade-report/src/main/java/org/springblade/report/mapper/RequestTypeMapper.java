@@ -1,7 +1,8 @@
 package org.springblade.report.mapper;
 
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.springblade.report.dictionary.DictRequestType;
+import org.springblade.report.entity.dictionary.DictRequestType;
 
 import java.util.List;
 

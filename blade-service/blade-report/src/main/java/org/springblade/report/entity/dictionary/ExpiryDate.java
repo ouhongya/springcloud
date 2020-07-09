@@ -1,4 +1,4 @@
-package org.springblade.report.dictionary;
+package org.springblade.report.entity.dictionary;
 
 
 import com.baomidou.mybatisplus.annotation.TableName;

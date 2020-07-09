@@ -2,7 +2,7 @@
     "http://mybatis.or g/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.springblade.report.mapper.TollReportMapper">
 
-    <select id="chargeStatistics" resultType="org.springblade.report.report.ChargestsList">
+    <select id="chargeStatistics" resultType="org.springblade.report.entity.report.ChargestsList">
         SELECT * FROM
         (SELECT
         p.channel_type_id AS channelTypeId, dct.text as text,dct.color as color, sum( p.fee_paid ) payTypeMoney
@@ -28,9 +28,9 @@
         AND r.turn_status=#{turnStatus}
         ) b
     </select>
-    <select id="rptdetail" resultType="org.springblade.report.report.ReportDetail">
+    <select id="rptdetail" resultType="org.springblade.report.entity.report.ReportDetail">
         SELECT
-        c.text AS costCategory, drt.text AS requestType, r.create_time AS createTime, r.paid_time AS paidTime,
+        c.text AS costCategory, drt.text AS requestType,sum(p.fee_refund) as feeRefund , r.create_time AS createTime, r.paid_time AS paidTime,
         rci.chargeable, rci.discountCost, rci.actuallyPay, r.toll_collector_id AS tollCollectorId,
         cr.dept_id AS deptId, GROUP_CONCAT( dct.text ) AS paymentMethod
         FROM
@@ -65,9 +65,6 @@
         <if test="turnStatus != null">
             AND r.turn_status =#{turnStatus}
         </if>
-        <if test="costCategory != null and costCategory != ''">
-            AND c.text =#{costCategory}
-        </if>
         <if test="requestType != null and requestType != ''">
             AND drt.text =#{requestType}
         </if>
@@ -81,7 +78,7 @@
     </select>
 
 
-    <resultMap id="BaseResultMap" type="org.springblade.report.report.RecordCharge">
+    <resultMap id="BaseResultMap" type="org.springblade.report.entity.report.ReportRecords">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="patient_id" jdbcType="BIGINT" property="patientId"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -100,7 +97,7 @@
         update record_charge set turn_status = 1 where id=#{id}
     </update>
 
-    <select id="totalViewReport" resultType="org.springblade.report.report.ReportDetail">
+    <select id="totalViewReport" resultType="org.springblade.report.entity.report.ReportDetail">
         SELECT a.requestType as requestType, count( a.requestType ) as requestTypeCount,
         sum( chargeable ) as sumChargeable, sum( discountCost ) as sumDiscountCost, sum( actuallyPay ) as sumActuallyPay
         FROM
@@ -141,9 +138,6 @@
         </if>
         <if test="turnStatus != null">
             AND r.turn_status =#{turnStatus}
-        </if>
-        <if test="costCategory != null and costCategory != ''">
-            AND c.text =#{costCategory}
         </if>
         <if test="requestType != null and requestType != ''">
             AND drt.text =#{requestType}

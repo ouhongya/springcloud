@@ -4,7 +4,7 @@ package org.springblade.report.service.impl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.core.mp.base.BaseServiceImpl;
-import org.springblade.report.dictionary.DictRequestType;
+import org.springblade.report.entity.dictionary.DictRequestType;
 import org.springblade.report.mapper.RequestTypeMapper;
 import org.springblade.report.service.IRequestTypeService;
 import org.springframework.stereotype.Service;

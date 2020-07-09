@@ -1,6 +1,7 @@
 package org.springblade.report.mapper;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.springblade.report.dictionary.Category;
+import org.springblade.report.entity.dictionary.Category;
 
 import java.util.List;
 

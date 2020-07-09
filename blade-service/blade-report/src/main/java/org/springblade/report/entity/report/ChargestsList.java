@@ -1,4 +1,4 @@
-package org.springblade.report.report;
+package org.springblade.report.entity.report;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

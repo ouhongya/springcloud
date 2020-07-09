@@ -1,7 +1,7 @@
 package org.springblade.report.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.springblade.report.dictionary.DictChannelType;
+import org.springblade.report.entity.dictionary.DictChannelType;
 
 import java.util.List;
 

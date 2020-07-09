@@ -1,7 +1,7 @@
 package org.springblade.report.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.springblade.report.dictionary.DictRequestType;
+import org.springblade.report.entity.dictionary.DictRequestType;
 
 import java.util.List;
 

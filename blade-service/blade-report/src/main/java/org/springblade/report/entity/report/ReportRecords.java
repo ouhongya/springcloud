@@ -1,4 +1,4 @@
-package org.springblade.report.report;
+package org.springblade.report.entity.report;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 @TableName("record_charge")
-public class RecordCharge {
+public class ReportRecords {
 	/**
 	 * 收费记录id
 	 */
