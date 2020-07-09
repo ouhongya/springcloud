@@ -1,4 +1,4 @@
-package org.springblade.sysettings.mapper;
+package org.springblade.report.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springblade.dictionary.DictRequestType;

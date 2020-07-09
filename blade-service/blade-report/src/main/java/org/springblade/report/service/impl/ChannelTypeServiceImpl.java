@@ -1,12 +1,12 @@
-package org.springblade.sysettings.service.impl;
+package org.springblade.report.service.impl;
 
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.core.mp.base.BaseServiceImpl;
 import org.springblade.dictionary.DictChannelType;
-import org.springblade.sysettings.mapper.DictChannelTypeMapper;
-import org.springblade.sysettings.service.IChannelTypeService;
+import org.springblade.report.mapper.DictChannelTypeMapper;
+import org.springblade.report.service.IChannelTypeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +15,7 @@ import java.util.List;
  * @Author create by
  * @date 2020/7/1-16:24
  */
+
 /**
  * 服务实现类
  *
@@ -28,7 +29,7 @@ public class ChannelTypeServiceImpl extends BaseServiceImpl<DictChannelTypeMappe
 
 	@Override
 	public List<DictChannelType> selectAll() {
-		return  channelTypeMapper.selectAll();
+		return channelTypeMapper.selectAll();
 	}
 
 	@Override

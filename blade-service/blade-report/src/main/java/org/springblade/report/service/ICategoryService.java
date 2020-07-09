@@ -1,4 +1,4 @@
-package org.springblade.sysettings.service;
+package org.springblade.report.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springblade.dictionary.Category;

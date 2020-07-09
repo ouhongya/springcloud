@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.or g/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.springblade.sysettings.mapper.ExpiryDateMapper">
+<mapper namespace="org.springblade.report.mapper.ExpiryDateMapper">
     <resultMap id="BaseResultMap" type="org.springblade.dictionary.ExpiryDate">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="valid_quantum" jdbcType="INTEGER" property="validQuantum"/>

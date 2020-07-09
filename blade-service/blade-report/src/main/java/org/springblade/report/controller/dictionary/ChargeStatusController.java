@@ -1,4 +1,4 @@
-package org.springblade.sysettings.controller;
+package org.springblade.report.controller.dictionary;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springblade.core.tool.api.R;
 import org.springblade.dictionary.DictChargeStatus;
-import org.springblade.sysettings.service.IChargeStatusService;
+import org.springblade.report.service.IChargeStatusService;
 import org.springframework.web.bind.annotation.*;
 
 @Api(value = "支付状态字典表", tags = "支付状态字典表")
