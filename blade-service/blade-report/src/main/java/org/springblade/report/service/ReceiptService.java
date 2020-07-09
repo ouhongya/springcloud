@@ -15,5 +15,5 @@ public interface ReceiptService extends IService<ChargeReceipt> {
 
 	String refund(List<RefundVo> refundVo, String userName, String reason);
 
-	InvoiceMoneyVo invoiceMoney(String[] requestIds);
+	InvoiceMoneyVo invoiceMoney(List<String> requestIds);
 }

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradeRefundRequest;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.common.utils.AlipayConfig;
 import org.springblade.core.mp.base.BaseServiceImpl;
@@ -29,6 +30,7 @@ import java.util.*;
 public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeReceipt> implements ReceiptService {
 
 
+
 	private WXPayConfigImpl config = new WXPayConfigImpl();
 
 	/**
@@ -40,7 +42,6 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 
 	/**
 	 * 发票列表
-	 *
 	 * @param receiptId
 	 * @param requestId
 	 * @return
@@ -164,21 +165,34 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 	 * @return
 	 */
 	@Override
-	public InvoiceMoneyVo invoiceMoney(String[] requestIds) {
+	public InvoiceMoneyVo invoiceMoney(List<String> requestIds) {
 		InvoiceMoneyVo invoiceMoney = new InvoiceMoneyVo();
-		BigDecimal cash = new BigDecimal("0.00");
-		BigDecimal wxPay = new BigDecimal("0.00");
-		BigDecimal aliPay = new BigDecimal("0.00");
+		Integer cash = 0;
+		Integer wxPay = 0;
+		Integer aliPay = 0;
 		for (String id : requestIds) {
-			InvoiceMoneyVo pojo = baseMapper.queryInvoiceMoney(id);
-			cash.add(pojo.getCash());
-			wxPay.add(pojo.getWxPay());
-			aliPay.add(pojo.getWxPay());
+			List<Integer> money = baseMapper.queryInvoiceMoney(id);
+			if(money.size()>=1){
+				if(money.get(0)!=null){
+					cash+=money.get(0);
+				}
+
+			}
+			if(money.size()>=2){
+				if(money.get(1)!=null){
+					wxPay+=money.get(1);
+				}
+			}
+			if(money.size()>=3){
+				if(money.get(2)!=null){
+					aliPay+=money.get(2);
+				}
+			}
 		}
-		invoiceMoney.setCash(cash);
-		invoiceMoney.setWxPay(wxPay);
-		invoiceMoney.setAliPay(aliPay);
-		invoiceMoney.setTotalMoney(cash.add(wxPay).add(aliPay));
+		invoiceMoney.setCash(new BigDecimal(cash+""));
+		invoiceMoney.setWxPay(new BigDecimal(wxPay+""));
+		invoiceMoney.setAliPay(new BigDecimal(aliPay+""));
+		invoiceMoney.setTotalMoney(new BigDecimal((cash+wxPay+aliPay)+""));
 		return invoiceMoney;
 	}
 

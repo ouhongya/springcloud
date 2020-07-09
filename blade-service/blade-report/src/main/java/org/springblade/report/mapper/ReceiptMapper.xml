@@ -2,19 +2,47 @@
     "http://mybatis.or g/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.springblade.report.mapper.ReceiptMapper">
 
+
     <select id="queryReceipt" parameterType="java.lang.String" resultType="org.springblade.report.entity.ReceiptList">
-        SELECT charge_receipt.charge_id as id,dict_request_type.`text`,charge_request.dept_id as
-        deptId,charge_request.doctor_id as doctorId
-        FROM request_detail
-        LEFT JOIN charge_request ON request_detail.`request_id`=charge_request.`request_id`
-        LEFT JOIN dict_request_type ON charge_request.`request_id`=dict_request_type.`id` AND
-        dict_request_type.`enabled`=0
-        LEFT JOIN record_charge ON charge_request.`patient_id`=record_charge.`patient_id`
-        LEFT JOIN charge_receipt ON record_charge.`id`=charge_receipt.`charge_id`
-        where
-        charge_receipt.receipt_number=#{receiptId}
-        or
-        charge_request.request_id=#{requestId}
+        SELECT
+        p.receipt_number as id,detail_request.`text`,detail_request.dept_id asdeptId,
+        detail_request.doctor_id as doctorId ,detail_request.fee_item as feeItem,
+        detail_request.fee_final as feeFinal , detail_request.fee_favor as feeFavor
+        FROM
+          (SELECT
+            request_charge_info.fee_item,
+            request_charge_info.`request_id`,
+            request_charge_info.fee_final,
+            request_charge_info.fee_favor,
+            charge_request.patient_id,
+            charge_request.`doctor_id`,
+            charge_request.dept_id,
+            dict_request_type.`text`
+          FROM
+            request_detail
+            LEFT JOIN request_charge_info
+              ON request_detail.`request_id` = request_charge_info.`request_id`
+            LEFT JOIN charge_request
+              ON request_detail.`patient_id` = charge_request.`request_id`
+            LEFT JOIN dict_request_type
+              ON charge_request.`request_type` = dict_request_type.`id`) detail_request,
+          (SELECT
+            charge_receipt.receipt_number,
+            record_charge.`patient_id`
+          FROM
+            charge_receipt
+            LEFT JOIN record_charge
+              ON charge_receipt.`charge_id` = record_charge.`id`
+            LEFT JOIN charge_pay
+              ON record_charge.id = charge_pay.`charge_id`) p
+        WHERE detail_request.patient_id = p.patient_id
+        <if test="receiptId != null and receiptId != ''">
+            AND p.receipt_number = #{receiptId}
+        </if>
+        <if test="requestId != null and requestId != ''">
+            AND detail_request.request_id = #{requestId}
+        </if>
+        GROUP BY detail_request.request_id
     </select>
 
     <select id="queryReceiptById" parameterType="java.lang.String" resultType="java.lang.String">
@@ -97,29 +125,9 @@
         AND request_charge_info.`item_id` = #{itemId}
         GROUP BY request_charge_info.`id`
     </select>
-    <select id="queryInvoiceMoney" resultType="org.springblade.report.entity.InvoiceMoneyVo">
-                SELECT
-          SUM(
-            IF(
-              dict_channel_type.text = '现金',
-              charge_pay.fee_paid,
-              0
-            )
-          ) AS "cash",
-          SUM(
-            IF(
-              dict_channel_type.text = '微信',
-              charge_pay.fee_paid,
-              0
-            )
-          ) AS "wxPay",
-          SUM(
-            IF(
-              dict_channel_type.text = '支付宝',
-              charge_pay.fee_paid,
-              0
-            )
-          ) AS "aliPay"
+    <select id="queryInvoiceMoney" resultType="java.lang.Integer" parameterType="java.lang.String" >
+        SELECT
+          SUM(charge_pay.`fee_paid`) AS money
         FROM
           charge_request
           LEFT JOIN record_charge
@@ -128,7 +136,12 @@
             ON record_charge.id = charge_pay.charge_id
           LEFT JOIN dict_channel_type
             ON charge_pay.channel_type_id = dict_channel_type.id
-        WHERE charge_request.request_id = #{id}
+        WHERE charge_request.request_id = #{requestId}
+        GROUP BY
+        dict_channel_type.`id`
+        ORDER BY
+        dict_channel_type.`id` ASC
+
     </select>
 
     <update id="queryReceiptByIdNewStatus" parameterType="java.lang.String">

@@ -54,7 +54,7 @@ public class ReceiptController {
 
 	@PostMapping("/invoiceMoney")
 	@ApiOperation(value = "退款金额", notes = "退款金额")
-	public R invoiceMoney(@RequestBody  String[] requestIds){
+	public R invoiceMoney(@RequestBody  List<String> requestIds){
 		return R.data(receiptService.invoiceMoney(requestIds));
 	}
 

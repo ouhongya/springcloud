@@ -1,6 +1,7 @@
 package org.springblade.report.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springblade.report.entity.*;
 
 import java.math.BigDecimal;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public interface ReceiptMapper extends BaseMapper<ChargeReceipt> {
 
-	List<ReceiptList> queryReceipt(String receiptId, String requestId);
+	List<ReceiptList> queryReceipt(@Param("receiptId") String receiptId,@Param("requestId") String requestId);
 
 	String queryReceiptById(String id);
 
@@ -29,11 +30,11 @@ public interface ReceiptMapper extends BaseMapper<ChargeReceipt> {
 
 	DecimalMoney queryRefundMoey(String requestId);
 
-	RefundPay queryRefundPay(String requestId, String itemId);
+	RefundPay queryRefundPay(@Param("requestId")String requestId,@Param("itemId") String itemId);
 
-	void updatePayStatus(String requestId, Date date, Integer status, String userName, String reason);
+	void updatePayStatus(@Param("requestId") String requestId,@Param("date") Date date,@Param("status") Integer status,@Param("userName") String userName,@Param("reason") String reason);
 
-	InvoiceMoneyVo queryInvoiceMoney(String id);
+	List<Integer> queryInvoiceMoney(String requestId);
 
-	void updateChargePay(String requestId, Date date,BigDecimal money, Integer status, String userName, String reason);
+	void updateChargePay(@Param("requestId")String requestId,@Param("date") Date date,@Param("money") BigDecimal money,@Param("status")Integer status, @Param("userName")String userName, @Param("reason")String reason);
 }
