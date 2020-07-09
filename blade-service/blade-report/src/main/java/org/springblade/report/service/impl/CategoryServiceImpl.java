@@ -1,11 +1,11 @@
-package org.springblade.sysettings.service.impl;
+package org.springblade.report.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.core.mp.base.BaseServiceImpl;
 import org.springblade.dictionary.Category;
-import org.springblade.sysettings.mapper.CategoryMapper;
-import org.springblade.sysettings.service.ICategoryService;
+import org.springblade.report.mapper.CategoryMapper;
+import org.springblade.report.service.ICategoryService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

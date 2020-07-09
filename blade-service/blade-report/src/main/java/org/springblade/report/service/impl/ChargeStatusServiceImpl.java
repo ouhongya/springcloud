@@ -1,11 +1,11 @@
-package org.springblade.sysettings.service.impl;
+package org.springblade.report.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.core.mp.base.BaseServiceImpl;
 import org.springblade.dictionary.DictChargeStatus;
-import org.springblade.sysettings.mapper.ChargeStatusMapper;
-import org.springblade.sysettings.service.IChargeStatusService;
+import org.springblade.report.mapper.ChargeStatusMapper;
+import org.springblade.report.service.IChargeStatusService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

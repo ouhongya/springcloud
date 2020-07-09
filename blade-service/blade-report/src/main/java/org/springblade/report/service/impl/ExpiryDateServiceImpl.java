@@ -1,12 +1,12 @@
-package org.springblade.sysettings.service.impl;
+package org.springblade.report.service.impl;
 
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.core.mp.base.BaseServiceImpl;
 import org.springblade.dictionary.ExpiryDate;
-import org.springblade.sysettings.mapper.ExpiryDateMapper;
-import org.springblade.sysettings.service.IExpiryDateService;
+import org.springblade.report.mapper.ExpiryDateMapper;
+import org.springblade.report.service.IExpiryDateService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
