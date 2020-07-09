@@ -12,4 +12,6 @@ public class InvoiceMoneyVo {
 	private BigDecimal wxPay;
 
 	private BigDecimal aliPay;
+
+	private BigDecimal totalMoney;
 }

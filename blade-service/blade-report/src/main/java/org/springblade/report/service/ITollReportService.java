@@ -1,8 +1,8 @@
 package org.springblade.report.service;
 
-import org.springblade.report.ChargestsList;
-import org.springblade.report.RecordCharge;
-import org.springblade.report.ReportDetail;
+import org.springblade.report.report.ChargestsList;
+import org.springblade.report.report.RecordCharge;
+import org.springblade.report.report.ReportDetail;
 
 import java.util.List;
 

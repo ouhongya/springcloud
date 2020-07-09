@@ -1,9 +1,10 @@
 package org.springblade.report.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.springblade.dictionary.Category;
+import org.springblade.report.dictionary.Category;
 
 import java.util.List;
+
 
 /**
  * @Author create by

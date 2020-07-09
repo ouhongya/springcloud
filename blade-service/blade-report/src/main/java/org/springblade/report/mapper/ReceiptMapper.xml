@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.or g/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.springblade.report.mapper.ReceiptMapper">
+
+    <select id="queryReceipt" parameterType="java.lang.String" resultType="org.springblade.report.entity.ReceiptList">
+        SELECT charge_receipt.charge_id as id,dict_request_type.`text`,charge_request.dept_id as
+        deptId,charge_request.doctor_id as doctorId
+        FROM request_detail
+        LEFT JOIN charge_request ON request_detail.`request_id`=charge_request.`request_id`
+        LEFT JOIN dict_request_type ON charge_request.`request_id`=dict_request_type.`id` AND
+        dict_request_type.`enabled`=0
+        LEFT JOIN record_charge ON charge_request.`patient_id`=record_charge.`patient_id`
+        LEFT JOIN charge_receipt ON record_charge.`id`=charge_receipt.`charge_id`
+        where
+        charge_receipt.receipt_number=#{receiptId}
+        or
+        charge_request.request_id=#{requestId}
+    </select>
+
+    <select id="queryReceiptById" parameterType="java.lang.String" resultType="java.lang.String">
+        select receipt_number as id from charge_receipt where charge_id = #{id}
+    </select>
+
+    <select id="queryReceiptRequestDetail" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT * FROM request_detail
+        LEFT JOIN charge_request ON request_detail.`request_id` = charge_request.`request_id`
+        LEFT JOIN record_charge ON charge_request.`patient_id` = record_charge.`patient_id`
+        LEFT JOIN charge_receipt ON record_charge.`id` = charge_receipt.`charge_id`
+        WHERE
+        charge_receipt.`charge_id`= #{receiptId}
+    </select>
+    <select id="queryRefundProject" resultType="org.springblade.report.entity.RefundProject">
+        SELECT request_detail.item_id,request_detail.item_type,request_detail.refund_reason,request_detail.item_count,
+        charge_pay.channel_order,charge_pay.channel_account,charge_pay.fee_paid FROM `request_detail`
+        LEFT JOIN charge_request ON request_detail.`request_id`=charge_request.`request_id`
+        LEFT JOIN `record_charge` ON charge_request.`patient_id`=record_charge.`patient_id`
+        LEFT JOIN `charge_pay` ON record_charge.`id`=charge_pay.`id`
+        WHERE request_detail.`request_id`=#{requestId} and request_detail.`status` BETWEEN 1 and 3
+        GROUP BY record_charge.`id`
+    </select>
+
+    <select id="queryRefundMoey" resultType="org.springblade.report.entity.DecimalMoney">
+        select fee_refund,fee_paid from charge_pay where charge_id = #{requestId}
+    </select>
+
+    <update id="updateReceiptStatus" parameterType="java.lang.String">
+        update charge_receipt set charge_receipt.status = 4 where charge_receipt.receipt_number = #{requestId}
+    </update>
+    <update id="updatePayStatus">
+        update record_charge set refund_time = #{date}, status=#{status}, toll_collector_id=#{userName} where id
+        =#{requestId}
+    </update>
+    <update id="updateChargePay">
+        update charge_pay set refund_time = #{date}, fee_refund = #{money}, status=#{status},
+        toll_collector_id=#{userName} where charge_id =#{requestId}
+    </update>
+
+    <insert id="createdReceipt" parameterType="org.springblade.report.entity.ChargeReceipt">
+        insert into charge_receipt values (#{id},#{chargeId},#{receiptType},#{receiptNumber},#{fee},#{status})
+    </insert>
+
+    <resultMap id="receiptMap" type="org.springblade.report.entity.ChargeReceipt">
+        <result column="id" property="id"/>
+        <result column="charge_id" property="chargeId"/>
+        <result column="receipt_type" property="receiptType"/>
+        <result column="receipt_number" property="receiptNumber"/>
+        <result column="fee" property="fee"/>
+        <result column="status" property="status"/>
+    </resultMap>
+    <select id="queryReceiptByIds" parameterType="java.lang.String" resultMap="receiptMap">
+        select * from charge_receipt where receipt_number =#{id}
+    </select>
+
+    <select id="queryReceiptByIdNew" resultType="java.lang.String">
+        select receipt_number from invoice where status=0
+    </select>
+    <select id="queryRefundPay" resultType="org.springblade.report.entity.RefundPay">
+        SELECT
+        request_charge_info.`fee_final`,
+        charge_pay.channel_order,
+        charge_pay.channel_account,
+        charge_pay.`status`,
+        charge_pay.`id`,
+        charge_pay.fee_paid
+        FROM
+        request_charge_info
+        LEFT JOIN charge_request
+        ON request_charge_info.`request_id` = charge_request.`request_id`
+        LEFT JOIN record_charge
+        ON charge_request.`patient_id` = record_charge.`patient_id`
+        LEFT JOIN charge_pay
+        ON record_charge.`id` = charge_pay.`charge_id`
+        WHERE 1 = 1
+        AND record_charge.`status` BETWEEN '1'
+        AND '2'
+        AND request_charge_info.`request_id` = #{requestId}
+        AND request_charge_info.`item_id` = #{itemId}
+        GROUP BY request_charge_info.`id`
+    </select>
+    <select id="queryInvoiceMoney" resultType="org.springblade.report.entity.InvoiceMoneyVo">
+                SELECT
+          SUM(
+            IF(
+              dict_channel_type.text = '现金',
+              charge_pay.fee_paid,
+              0
+            )
+          ) AS "cash",
+          SUM(
+            IF(
+              dict_channel_type.text = '微信',
+              charge_pay.fee_paid,
+              0
+            )
+          ) AS "wxPay",
+          SUM(
+            IF(
+              dict_channel_type.text = '支付宝',
+              charge_pay.fee_paid,
+              0
+            )
+          ) AS "aliPay"
+        FROM
+          charge_request
+          LEFT JOIN record_charge
+            ON charge_request.patient_id = record_charge.patient_id
+          LEFT JOIN charge_pay
+            ON record_charge.id = charge_pay.charge_id
+          LEFT JOIN dict_channel_type
+            ON charge_pay.channel_type_id = dict_channel_type.id
+        WHERE charge_request.request_id = #{id}
+    </select>
+
+    <update id="queryReceiptByIdNewStatus" parameterType="java.lang.String">
+        update invoice set status=2 where receipt_number=#{num}
+    </update>
+</mapper>

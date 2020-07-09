@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springblade.core.tool.api.R;
-import org.springblade.report.ReportDetail;
+import org.springblade.report.report.ReportDetail;
 import org.springblade.report.service.ITollReportService;
 import org.springframework.web.bind.annotation.*;
 

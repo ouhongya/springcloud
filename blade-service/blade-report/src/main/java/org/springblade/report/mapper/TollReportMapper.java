@@ -1,9 +1,9 @@
 package org.springblade.report.mapper;
 
 import org.apache.ibatis.annotations.Param;
-import org.springblade.report.ChargestsList;
-import org.springblade.report.RecordCharge;
-import org.springblade.report.ReportDetail;
+import org.springblade.report.report.ChargestsList;
+import org.springblade.report.report.RecordCharge;
+import org.springblade.report.report.ReportDetail;
 
 import java.util.List;
 

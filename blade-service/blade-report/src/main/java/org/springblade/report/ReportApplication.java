@@ -4,6 +4,7 @@ import org.springblade.core.launch.BladeApplication;
 import org.springblade.core.launch.constant.AppConstant;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringCloudApplication
 @EnableFeignClients(AppConstant.BASE_PACKAGES)

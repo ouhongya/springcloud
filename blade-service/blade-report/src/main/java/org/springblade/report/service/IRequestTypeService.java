@@ -1,8 +1,7 @@
 package org.springblade.report.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.springblade.dictionary.DictChannelType;
-import org.springblade.dictionary.DictRequestType;
+import org.springblade.report.dictionary.DictRequestType;
 
 import java.util.List;
 

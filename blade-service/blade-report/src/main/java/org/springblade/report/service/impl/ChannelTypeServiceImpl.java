@@ -4,7 +4,7 @@ package org.springblade.report.service.impl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.core.mp.base.BaseServiceImpl;
-import org.springblade.dictionary.DictChannelType;
+import org.springblade.report.dictionary.DictChannelType;
 import org.springblade.report.mapper.DictChannelTypeMapper;
 import org.springblade.report.service.IChannelTypeService;
 import org.springframework.stereotype.Service;

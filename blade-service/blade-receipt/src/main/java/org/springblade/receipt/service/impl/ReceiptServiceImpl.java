@@ -183,6 +183,7 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 		invoiceMoney.setCash(cash);
 		invoiceMoney.setWxPay(wxPay);
 		invoiceMoney.setAliPay(aliPay);
+		invoiceMoney.setTotalMoney(cash.add(wxPay).add(aliPay));
 		return invoiceMoney;
 	}
 
