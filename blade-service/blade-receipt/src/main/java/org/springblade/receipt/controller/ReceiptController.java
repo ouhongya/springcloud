@@ -55,6 +55,11 @@ public class ReceiptController {
 		return R.status(receiptService.printInvoice(receiptVo,username));
 	}
 
+	@PostMapping("/invoiceMoney")
+	@ApiOperation(value = "退款金额", notes = "退款金额")
+	public R invoiceMoney(@RequestBody  String[] requestIds){
+		return R.data(receiptService.invoiceMoney(requestIds));
+	}
 	@PostMapping("/refund")
 	@ApiOperation(value = "退款",notes = "退款")
 	public R Refund(@RequestBody List<RefundVo> refundVo,String reason){

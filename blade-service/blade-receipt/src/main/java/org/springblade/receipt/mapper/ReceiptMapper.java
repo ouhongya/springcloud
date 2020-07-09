@@ -33,5 +33,7 @@ public interface ReceiptMapper extends BaseMapper<ChargeReceipt> {
 
 	void updatePayStatus(String requestId, Date date, Integer status, String userName, String reason);
 
+	InvoiceMoneyVo queryInvoiceMoney(String id);
+
 	void updateChargePay(String requestId, Date date,BigDecimal money, Integer status, String userName, String reason);
 }

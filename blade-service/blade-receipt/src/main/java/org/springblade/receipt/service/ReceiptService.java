@@ -1,10 +1,7 @@
 package org.springblade.receipt.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.springblade.receipt.entity.ChargeReceipt;
-import org.springblade.receipt.entity.ReceiptList;
-import org.springblade.receipt.entity.ReceiptVo;
-import org.springblade.receipt.entity.RefundVo;
+import org.springblade.receipt.entity.*;
 
 import java.util.List;
 
@@ -18,4 +15,5 @@ public interface ReceiptService extends IService<ChargeReceipt> {
 
 	String refund(List<RefundVo> refundVo, String userName, String reason);
 
+	InvoiceMoneyVo invoiceMoney(String[] requestIds);
 }
