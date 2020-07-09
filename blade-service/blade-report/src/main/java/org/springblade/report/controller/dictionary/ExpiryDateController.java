@@ -8,6 +8,7 @@ import org.springblade.core.tool.api.R;
 import org.springblade.report.entity.dictionary.ExpiryDate;
 import org.springblade.report.service.IExpiryDateService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,7 +48,7 @@ public class ExpiryDateController {
 	 * @param
 	 * @return
 	 */
-	@GetMapping("/updateById")
+	@PostMapping("/updateById")
 	@ApiOperation(value = "根据id修改", notes = "项目有效期天数字典表")
 	public R updateById(@ApiParam(value = "有效期主键") ExpiryDate expiryDate) {
 		return R.data(iExpiryDateService.updateByIds(expiryDate));
@@ -59,7 +60,7 @@ public class ExpiryDateController {
 	 * @param
 	 * @return
 	 */
-	@GetMapping("/save")
+	@PostMapping("/save")
 	@ApiOperation(value = "新增数据", notes = "项目有效期天数字典表")
 	public R save(@ApiParam(value = "有效期主键") ExpiryDate expiryDate) {
 		return R.data(iExpiryDateService.insert(expiryDate));

@@ -29,7 +29,7 @@ public class DictRequestType extends BaseEntity implements Serializable {
 	/**
 	 * 是否启用
 	 */
-	@ApiModelProperty(value = "是否启用")
+	@ApiModelProperty(value = "是否启用 1:停用,0:启用")
 	private Integer enabled=0;
 
 

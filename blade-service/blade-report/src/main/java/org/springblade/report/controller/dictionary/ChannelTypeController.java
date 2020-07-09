@@ -8,6 +8,7 @@ import org.springblade.core.tool.api.R;
 import org.springblade.report.entity.dictionary.DictChannelType;
 import org.springblade.report.service.IChannelTypeService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -59,7 +60,7 @@ public class ChannelTypeController {
 	 * @param
 	 * @return
 	 */
-	@GetMapping("/save")
+	@PostMapping("/save")
 	@ApiOperation(value = "新增数据", notes = "支付渠道字典表")
 	public R save(@ApiParam(value = "状态代码") DictChannelType dictChannelType) {
 		return R.data(iChannelTypeService.insert(dictChannelType));

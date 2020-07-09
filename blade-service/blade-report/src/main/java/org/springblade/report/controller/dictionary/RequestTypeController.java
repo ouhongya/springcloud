@@ -8,6 +8,7 @@ import org.springblade.core.tool.api.R;
 import org.springblade.report.entity.dictionary.DictRequestType;
 import org.springblade.report.service.IRequestTypeService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,7 +49,7 @@ public class RequestTypeController {
 	 * @param
 	 * @return
 	 */
-	@GetMapping("/updateById")
+	@PostMapping("/updateById")
 	@ApiOperation(value = "根据id修改", notes = "申请单类别字典表")
 	public R updateById(@ApiParam(value = "状态代码") DictRequestType dictRequestType) {
 		return R.data(iRequestTypeService.updateByIds(dictRequestType));
@@ -60,7 +61,7 @@ public class RequestTypeController {
 	 * @param
 	 * @return
 	 */
-	@GetMapping("/save")
+	@PostMapping("/save")
 	@ApiOperation(value = "新增数据", notes = "申请单类别字典表")
 	public R save(@ApiParam(value = "状态代码") DictRequestType dictRequestType) {
 		return R.data(iRequestTypeService.insert(dictRequestType));
