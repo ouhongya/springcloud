@@ -15,7 +15,7 @@ public interface IExpiryDateService extends IService<ExpiryDate> {
 
 	ExpiryDate selectById(Integer id);
 
-	int updateByIds(ExpiryDate expiryDate);
+	int updateByIds(Integer validQuantum);
 
 	int insert(ExpiryDate expiryDate);
 }

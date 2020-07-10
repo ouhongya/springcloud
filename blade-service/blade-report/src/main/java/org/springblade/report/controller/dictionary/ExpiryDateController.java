@@ -45,10 +45,10 @@ public class ExpiryDateController {
 	 * @param
 	 * @return
 	 */
-	@PostMapping("/updateById")
+	@GetMapping("/updateById")
 	@ApiOperation(value = "根据id修改", notes = "项目有效期天数字典表")
-	public R updateById(@ApiParam(value = "有效期主键") ExpiryDate expiryDate) {
-		return R.data(iExpiryDateService.updateByIds(expiryDate));
+	public R updateById(@ApiParam(value = "有效期主键") Integer validQuantum) {
+		return R.data(iExpiryDateService.updateByIds(validQuantum));
 	}
 
 	/**

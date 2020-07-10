@@ -1,6 +1,7 @@
 package org.springblade.report.mapper.dictionary;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springblade.report.entity.dictionary.ExpiryDate;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface ExpiryDateMapper extends BaseMapper<ExpiryDate> {
 
 	List<ExpiryDate> selectAll();
 
-	int updateByIds(ExpiryDate expiryDate);
+	int updateByIds(@Param("validQuantum") Integer validQuantum);
 
 	int add(ExpiryDate expiryDate);
 }

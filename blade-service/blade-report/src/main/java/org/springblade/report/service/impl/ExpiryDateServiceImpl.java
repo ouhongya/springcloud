@@ -38,8 +38,8 @@ public class ExpiryDateServiceImpl extends BaseServiceImpl<ExpiryDateMapper, Exp
 	}
 
 	@Override
-	public int updateByIds(ExpiryDate expiryDate) {
-		return expiryDateMapper.updateByIds(expiryDate);
+	public int updateByIds(Integer validQuantum) {
+		return expiryDateMapper.updateByIds(validQuantum);
 	}
 
 	@Override
