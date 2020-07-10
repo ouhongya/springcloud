@@ -9,10 +9,10 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 public class WXPayConfigImpl extends WXPayConfig {
-    private String appId ="wx5d4692d47c604421";
-    private String mchId = "1589840961";
-    private String key= "a0d0931cf6ee2bb11cad6fb5cd20dfc1";
-    private String body = "懒猫云商城VIP充值";
+    private String appId ="wx7dab551a32515a12";
+    private String mchId = "1563421801";
+    private String key= "b88ca14dd4c7ae911cb306e93f149af8";
+    private String body = "";
     private String notify = "http://heiha.easy.echosite.cn/api/v2/WxPay/callbackVip";
 
 
