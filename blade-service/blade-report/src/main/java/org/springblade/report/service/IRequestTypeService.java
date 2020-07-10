@@ -2,6 +2,7 @@ package org.springblade.report.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springblade.report.entity.dictionary.DictRequestType;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface IRequestTypeService extends IService<DictRequestType> {
 
 	DictRequestType selectById(Integer id);
 
-	int updateByIds(DictRequestType dictRequestType);
+	String updateByIds(@RequestBody List<Integer> ids);
 
 	int insert(DictRequestType dictRequestType);
 }

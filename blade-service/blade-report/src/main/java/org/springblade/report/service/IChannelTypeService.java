@@ -14,7 +14,7 @@ public interface IChannelTypeService extends IService<DictChannelType> {
 
 	DictChannelType selectById(Integer id);
 
-	int updateByIds(DictChannelType dictChannelType);
+	String updateByIds(List<Integer> ids);
 
 	int insert(DictChannelType dictChannelType);
 }

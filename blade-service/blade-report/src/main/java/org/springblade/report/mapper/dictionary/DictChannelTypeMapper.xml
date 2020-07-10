@@ -21,9 +21,13 @@
         select * from dict_channel_type
     </select>
 
-    <update id="updateByIds" parameterType="org.springblade.report.entity.dictionary.DictChannelType">
-        update dict_channel_type set enabled = #{enabled,jdbcType=INTEGER}
-        where 1=1 and id = #{id,jdbcType=INTEGER}
+    <update id="updateByIds" parameterType="java.lang.Integer">
+        update dict_channel_type set enabled = 0
+        where id=${id}
+    </update>
+
+    <update id="updateByIds1" parameterType="java.lang.Integer">
+        update dict_channel_type set enabled = 1
     </update>
     <insert id="add" parameterType="org.springblade.report.entity.dictionary.DictChannelType">
         insert into dict_channel_type (text, enabled,color)

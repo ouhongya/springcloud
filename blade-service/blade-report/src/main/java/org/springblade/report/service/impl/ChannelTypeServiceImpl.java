@@ -5,9 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.core.mp.base.BaseServiceImpl;
 import org.springblade.report.entity.dictionary.DictChannelType;
+import org.springblade.report.entity.report.ReportRecords;
 import org.springblade.report.mapper.dictionary.DictChannelTypeMapper;
 import org.springblade.report.service.IChannelTypeService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -38,8 +40,12 @@ public class ChannelTypeServiceImpl extends BaseServiceImpl<DictChannelTypeMappe
 	}
 
 	@Override
-	public int updateByIds(DictChannelType dictChannelType) {
-		return channelTypeMapper.updateByIds(dictChannelType);
+	public String updateByIds(List<Integer> ids) {
+		channelTypeMapper.updateByIds1();
+		for (Integer id : ids) {
+			channelTypeMapper.updateByIds(id);
+		}
+		return "操作成功";
 	}
 
 	@Override

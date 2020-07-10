@@ -8,6 +8,7 @@ import org.springblade.report.entity.dictionary.DictRequestType;
 import org.springblade.report.mapper.dictionary.RequestTypeMapper;
 import org.springblade.report.service.IRequestTypeService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -38,13 +39,17 @@ public class RequestTypeServiceImpl extends BaseServiceImpl<RequestTypeMapper, D
 	}
 
 	@Override
-	public int updateByIds(DictRequestType dictRequestType) {
-		return requestTypeMapper.updateByIds(dictRequestType);
+	public String updateByIds(@RequestBody List<Integer> ids) {
+		requestTypeMapper.updateByIds1();
+		for (Integer id : ids) {
+			requestTypeMapper.updateByIds(id);
+		}
+		return "操作成功";
 	}
 
-	@Override
-	public int insert(DictRequestType dictRequestType) {
-		return requestTypeMapper.add(dictRequestType);
-	}
+		@Override
+		public int insert (DictRequestType dictRequestType){
+			return requestTypeMapper.add(dictRequestType);
+		}
 
-}
+	}

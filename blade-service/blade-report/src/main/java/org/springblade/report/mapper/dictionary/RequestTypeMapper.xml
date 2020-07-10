@@ -19,10 +19,16 @@
     <select id="selectAll" resultType="org.springblade.report.entity.dictionary.DictRequestType">
         select * from dict_request_type
     </select>
-    <update id="updateByIds" parameterType="org.springblade.report.entity.dictionary.DictRequestType">
-        update dict_request_type set enabled = #{enabled,jdbcType=INTEGER}
-        where 1=1 and id = #{id,jdbcType=INTEGER}
+
+    <update id="updateByIds" parameterType="java.lang.Integer">
+        update dict_request_type set enabled = 0
+        where id=${id}
     </update>
+
+    <update id="updateByIds1" parameterType="java.lang.Integer">
+        update dict_request_type set enabled = 1
+    </update>
+
     <insert id="add" parameterType="org.springblade.report.entity.dictionary.DictRequestType">
         insert into dict_request_type (text, enabled)
         values ( #{text,jdbcType=VARCHAR}, #{enabled,jdbcType=INTEGER})

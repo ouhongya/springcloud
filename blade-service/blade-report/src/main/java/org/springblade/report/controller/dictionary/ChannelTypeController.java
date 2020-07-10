@@ -9,6 +9,9 @@ import org.springblade.report.entity.dictionary.DictChannelType;
 import org.springblade.report.service.IChannelTypeService;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
+import java.util.List;
+
 @Api(value = "支付渠道字典表", tags = "支付渠道字典表")
 @RequestMapping("/api/channelType")
 @RestController
@@ -45,11 +48,13 @@ public class ChannelTypeController {
 	 * @param
 	 * @return
 	 */
-	@GetMapping("/updateById")
-	@ApiOperation(value = "根据id修改", notes = "支付渠道字典表")
-	public R updateById(@ApiParam(value = "状态代码") DictChannelType dictChannelType) {
-		return R.data(iChannelTypeService.updateByIds(dictChannelType));
+	@PostMapping("/updateById")
+	@ApiOperation(value = "根据id修改", notes = "支付渠道字典表 批量修改时传ids 数组")
+	public R updateById(@RequestBody List<Integer> ids) {
+		String msg = iChannelTypeService.updateByIds(ids);
+		return R.success(msg);
 	}
+
 
 	/**
 	 * [新增数据]
