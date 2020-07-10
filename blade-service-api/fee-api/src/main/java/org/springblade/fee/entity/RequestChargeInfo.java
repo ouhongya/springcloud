@@ -16,19 +16,19 @@ public class RequestChargeInfo extends TenantEntity implements Serializable {
 	private static final long serialVersionUID = 4960906956349450003L;
 
 	//申请单id
-	private long request_id;
+	private long requestId;
 
 	//患者id
-	private long patient_id;
+	private long patientId;
 
 	//申请单类别id
-	private int request_type_id;
+	private int requestTypeId;
 
 	//开单科室id
-	private int dept_id;
+	private int deptId;
 
 	//开单医生id
-	private int doctor_id;
+	private int doctorId;
 
 	//token
 	private String token;

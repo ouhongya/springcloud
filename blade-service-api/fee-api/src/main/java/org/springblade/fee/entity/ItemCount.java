@@ -1,6 +1,7 @@
 package org.springblade.fee.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springblade.core.tenant.mp.TenantEntity;
 
@@ -36,7 +37,7 @@ public class ItemCount extends TenantEntity implements Serializable {
 	private String fee_favor;
 
 	//项目费用
-	private BigDecimal fee_item;
+	private String fee_item;
 
 	//可以退款
 	private String reason;

@@ -20,19 +20,19 @@ public class RecordCharge extends TenantEntity implements Serializable {
 //	private long id;
 
 	//患者id
-	private long patient_id;
+	private long patientId;
 
 	//申请单列表ids
 	private List<Long> request_id_list;
 
 	//收费记录创建时间
-	private Date create_time;
+	private Date createTime;
 
 	//支付完成时间
-	private Date paid_time;
+	private Date paidTime;
 
 	//退款时间
-	private Date refund_time;
+	private Date refundTime;
 
 	//优惠渠道id
 	private int favor_channel_id;
@@ -47,7 +47,7 @@ public class RecordCharge extends TenantEntity implements Serializable {
 //	private byte status;
 
 	//收费员id
-	private long toll_collector_id;
+	private long tollCollectorId;
 
 	//优惠金额
 	private double money;
@@ -62,14 +62,17 @@ public class RecordCharge extends TenantEntity implements Serializable {
 	private Date end_time;
 
 	//0  未上交 1  已上交
-	private int turn_status;
+	private int turnStatus;
 
 	//费用类别
-	private byte category_id;
+	private byte categoryId;
 
 
 	//收费记录id
 	private int charge_id;
+
+
+
 
 
 

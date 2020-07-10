@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 @Data
 public class Feedetail implements Serializable {
 
-
 	private static final long serialVersionUID = 3023425485816592252L;
 
 	//申请单id
