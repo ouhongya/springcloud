@@ -1,7 +1,6 @@
-package org.springblade.fee.mapper;
+package org.springblade.report.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import io.swagger.models.auth.In;
 import org.springblade.fee.entity.*;
 import org.springblade.fee.vo.DicRequestType;
 import org.springblade.fee.vo.Fee;

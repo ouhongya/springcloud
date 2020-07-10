@@ -1,37 +1,34 @@
 package org.springblade.fee.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-import org.springblade.core.tenant.mp.TenantEntity;
 
+import lombok.Data;
 import java.io.Serializable;
-import java.util.List;
+
 
 
 @Data
-@TableName("charge_request")
-public class ChargeRequest extends TenantEntity implements Serializable {
+public class ChargeRequest  implements Serializable {
 
 
 	private static final long serialVersionUID = 8114552837482809405L;
 
 	//申请单id
-	private long request_id;
+	private long requestId;
 
 	//患者id
-	private long patient_id;
+	private long patientId;
 
 	//申请单类别id
-	private int request_type;
+	private int requestType;
 
 	//收费记录id
-	private long charge_id;
+	private long chargeId;
 
 	//开单科室ID
-	private int dept_id;
+	private int deptId;
 
 	//开单医生id
-	private int doctor_id;
+	private int doctorId;
 
 }
 
