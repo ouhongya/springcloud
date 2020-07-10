@@ -33,7 +33,7 @@
         c.text AS costCategory, drt.text AS requestType,ifnull(sum(p.fee_refund),0) as feeRefund , r.create_time AS
         createTime, r.paid_time AS paidTime,
         rci.chargeable, rci.discountCost, rci.actuallyPay, r.toll_collector_id AS tollCollectorId,
-        cr.dept_id AS deptId, GROUP_CONCAT( dct.text ) AS paymentMethod
+        cr.dept_id AS deptId, GROUP_CONCAT(distinct dct.text ) AS paymentMethod
         FROM
         record_charge r
         LEFT JOIN category c ON c.category_id = r.category_id
@@ -106,7 +106,7 @@
         c.text AS costCategory, drt.text AS requestType, r.create_time AS createTime, r.paid_time AS paidTime,
         rci.chargeable AS chargeable, rci.discountCost, rci.actuallyPay,
         r.toll_collector_id AS tollCollectorId, cr.dept_id AS deptId,
-        GROUP_CONCAT( dct.text ) AS paymentMethod
+        GROUP_CONCAT(distinct dct.text ) AS paymentMethod
         FROM
         record_charge r
         LEFT JOIN category c ON c.category_id = r.category_id
