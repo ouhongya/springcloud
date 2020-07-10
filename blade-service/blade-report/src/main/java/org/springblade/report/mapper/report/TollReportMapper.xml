@@ -30,9 +30,13 @@
     </select>
     <select id="rptdetail" resultType="org.springblade.report.entity.report.ReportDetail">
         SELECT
+        r.id as id,
         c.text AS costCategory, drt.text AS requestType,ifnull(sum(p.fee_refund),0) as feeRefund , r.create_time AS
         createTime, r.paid_time AS paidTime,
-        rci.chargeable, rci.discountCost, rci.actuallyPay, r.toll_collector_id AS tollCollectorId,
+        ifnull(rci.chargeable, 0 ) as chargeable,
+        ifnull(rci.discountCost, 0 ) as discountCost,
+        ifnull(rci.actuallyPay, 0 ) as actuallyPay,
+        r.toll_collector_id AS tollCollectorId,
         cr.dept_id AS deptId, GROUP_CONCAT(distinct dct.text ) AS paymentMethod
         FROM
         record_charge r

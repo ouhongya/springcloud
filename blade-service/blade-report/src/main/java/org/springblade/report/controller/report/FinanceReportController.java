@@ -7,6 +7,7 @@ import org.springblade.core.tool.api.R;
 import org.springblade.report.entity.report.ReportDetail;
 import org.springblade.report.service.ITollReportService;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,7 +32,7 @@ public class FinanceReportController {
 	 */
 	@PostMapping("/rptDetail")
 	@ApiOperation(value = "报表明细", notes = "报表明细")
-	public R rptDetail(ReportDetail reportDetail) {
+	public R rptDetail(@RequestBody ReportDetail reportDetail) {
 		reportDetail.setTurnStatus(1); //是否统计上交
 		return R.data(iTollReportService.rptdetail(reportDetail));
 	}
