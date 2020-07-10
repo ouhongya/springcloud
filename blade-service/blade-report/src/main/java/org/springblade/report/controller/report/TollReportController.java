@@ -31,8 +31,7 @@ public class TollReportController {
 	 */
 	@PostMapping("/tolldetail")
 	@ApiOperation(value = "报表明细", notes = "报表明细")
-	public R rptDetail(ReportDetail reportDetail) {
-		reportDetail.setTurnStatus(0); //是否统计上交
+	public R rptDetail(@RequestBody ReportDetail reportDetail) {
 		return R.data(iTollReportService.rptdetail(reportDetail));
 	}
 
