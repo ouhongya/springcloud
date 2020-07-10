@@ -5,7 +5,7 @@
     <select id="chargeStatistics" resultType="org.springblade.report.entity.report.ChargestsList">
         SELECT * FROM
         (SELECT
-        p.channel_type_id AS channelTypeId, dct.text as text,dct.color as color, sum( p.fee_paid ) payTypeMoney
+        p.channel_type_id AS channelTypeId, dct.text as text,dct.color as color, ifnull(sum(p.fee_paid),0) payTypeMoney
         FROM record_charge r
         LEFT JOIN charge_pay p ON p.charge_id = r.id
         LEFT JOIN dict_channel_type dct ON dct.id = p.channel_type_id
@@ -15,9 +15,9 @@
         AND p.STATUS = 1
         AND r.turn_status=#{turnStatus}
         GROUP BY p.channel_type_id ) a,
-        ( SELECT
-        ifnull( sum( p.fee_refund ), 0 ) AS refund,
-        ifnull( sum( p.fee_paid ), 0 ) AS totalMoney
+        (SELECT
+        ifnull(sum( p.fee_refund), 0 ) AS refund,
+        ifnull(sum( p.fee_paid), 0 ) AS totalMoney
         FROM record_charge r
         LEFT JOIN charge_pay p ON p.charge_id = r.id
         LEFT JOIN dict_channel_type dct ON dct.id = p.channel_type_id
@@ -44,8 +44,8 @@
         LEFT JOIN request_detail rd ON rd.request_id = cr.request_id
         LEFT JOIN (
         SELECT
-        request_id, sum( fee_item ) AS chargeable,
-        sum( fee_favor ) AS discountCost, sum( fee_final ) AS actuallyPay
+        request_id, ifnull(sum(fee_item ),0) AS chargeable,
+        ifnull(sum( fee_favor ),0) AS discountCost, ifnull(sum( fee_final ),0) AS actuallyPay
         FROM
         request_charge_info
         GROUP BY request_id ) rci
@@ -100,7 +100,7 @@
 
     <select id="totalViewReport" resultType="org.springblade.report.entity.report.ReportDetail">
         SELECT a.requestType as requestType, count( a.requestType ) as requestTypeCount,
-        sum( chargeable ) as sumChargeable, sum( discountCost ) as sumDiscountCost, sum( actuallyPay ) as sumActuallyPay
+        ifnull(sum(chargeable ),0) as sumChargeable, ifnull(sum(discountCost ),0) as sumDiscountCost, ifnull(sum(actuallyPay ),0) as sumActuallyPay
         FROM
         ( SELECT
         c.text AS costCategory, drt.text AS requestType, r.create_time AS createTime, r.paid_time AS paidTime,
@@ -117,7 +117,7 @@
         LEFT JOIN request_detail rd ON rd.request_id = cr.request_id
         LEFT JOIN (
         SELECT
-        request_id, sum( fee_item ) AS chargeable, sum( fee_favor ) AS discountCost, sum( fee_final ) AS actuallyPay
+        request_id, ifnull(sum(fee_item ),0) AS chargeable, ifnull(sum(fee_favor ),0) AS discountCost, ifnull(sum(fee_final),0) AS actuallyPay
         FROM
         request_charge_info
         GROUP BY request_id
