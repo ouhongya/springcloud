@@ -50,7 +50,7 @@ public class RequestTypeController {
 	 */
 	@PostMapping("/updateById")
 	@ApiOperation(value = "根据id修改", notes = "申请单类别字典表")
-	public R updateById(@ApiParam(value = "状态代码") @RequestBody List<Integer> ids) {
+	public R updateById(@RequestBody List<Integer> ids) {
 		String msg = iRequestTypeService.updateByIds(ids);
 		return R.success(msg);
 	}

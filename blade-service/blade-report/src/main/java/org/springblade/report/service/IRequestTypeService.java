@@ -15,7 +15,7 @@ public interface IRequestTypeService extends IService<DictRequestType> {
 
 	DictRequestType selectById(Integer id);
 
-	String updateByIds(@RequestBody List<Integer> ids);
+	String updateByIds(List<Integer> ids);
 
 	int insert(DictRequestType dictRequestType);
 }

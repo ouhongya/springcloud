@@ -39,7 +39,7 @@ public class RequestTypeServiceImpl extends BaseServiceImpl<RequestTypeMapper, D
 	}
 
 	@Override
-	public String updateByIds(@RequestBody List<Integer> ids) {
+	public String updateByIds(List<Integer> ids) {
 		requestTypeMapper.updateByIds1();
 		for (Integer id : ids) {
 			requestTypeMapper.updateByIds(id);

@@ -8,6 +8,8 @@ import org.springblade.report.entity.report.ReportDetail;
 import org.springblade.report.service.ITollReportService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * [统计报表--收费人员]
@@ -52,7 +54,7 @@ public class TollReportController {
 	 */
 	@PostMapping("/updateTurnStatus")
 	@ApiOperation(value = "财务上交--根据id修改,多个id传数组", notes = "财务上交")
-	public R updateTurnStatus(Integer[] ids) {
+	public R updateTurnStatus(@RequestBody List<Integer> ids) {
 		String msg = iTollReportService.updateTurnStatus(ids);
 		return R.success(msg);
 	}

@@ -3,6 +3,7 @@ package org.springblade.report.service;
 import org.springblade.report.entity.report.ChargestsList;
 import org.springblade.report.entity.report.ReportRecords;
 import org.springblade.report.entity.report.ReportDetail;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface ITollReportService {
 
 	ReportRecords selectById(Integer id);
 
-	String updateTurnStatus(Integer[] ids);
+	String updateTurnStatus(List<Integer> ids);
 
 	List<ReportDetail> viewReport(ReportDetail reportDetail);
 }

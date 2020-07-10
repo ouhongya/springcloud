@@ -21,8 +21,7 @@
     </select>
 
     <update id="updateByIds" parameterType="java.lang.Integer">
-        update dict_request_type set enabled = 0
-        where id=${id}
+        update dict_request_type set enabled = 0 where id=${id}
     </update>
 
     <update id="updateByIds1" parameterType="java.lang.Integer">

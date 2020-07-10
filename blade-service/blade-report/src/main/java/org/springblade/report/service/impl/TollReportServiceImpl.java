@@ -9,6 +9,7 @@ import org.springblade.report.mapper.report.TollReportMapper;
 import org.springblade.report.service.ITollReportService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -62,7 +63,7 @@ public class TollReportServiceImpl implements ITollReportService {
 	}
 
 	@Override
-	public String updateTurnStatus(Integer[] ids) {
+	public String updateTurnStatus(List<Integer> ids) {
 		String str = "";
 		for (Integer id : ids) {
 			//根据id查询记录是否存在
