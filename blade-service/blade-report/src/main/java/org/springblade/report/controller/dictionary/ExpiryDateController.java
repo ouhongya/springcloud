@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springblade.core.tool.api.R;
-import org.springblade.report.entity.dictionary.ExpiryDate;
+import org.springblade.report.entity.dictionary.ExpiryDateVo;
 import org.springblade.report.service.IExpiryDateService;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,8 +59,8 @@ public class ExpiryDateController {
 	 */
 	@PostMapping("/save")
 	@ApiOperation(value = "新增数据", notes = "项目有效期天数字典表")
-	public R save(@ApiParam(value = "有效期主键") @RequestBody ExpiryDate expiryDate) {
-		return R.data(iExpiryDateService.insert(expiryDate));
+	public R save(@ApiParam(value = "有效期主键") @RequestBody ExpiryDateVo expiryDateVo) {
+		return R.data(iExpiryDateService.insert(expiryDateVo));
 	}
 
 }

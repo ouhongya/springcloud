@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-public class RecordCharge extends BaseEntity implements Serializable {
+public class RecordChargeVo extends BaseEntity implements Serializable {
 
 	/**
 	 * 收费记录id

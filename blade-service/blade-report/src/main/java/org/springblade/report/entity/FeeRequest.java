@@ -2,7 +2,7 @@ package org.springblade.report.entity;
 
 import org.springblade.core.mp.base.BaseEntity;
 
-public class Fee extends BaseEntity {
+public class FeeRequest extends BaseEntity {
 	/**
 	 * 标准响应
 	 */

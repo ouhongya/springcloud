@@ -4,7 +4,7 @@ package org.springblade.report.service.impl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.core.mp.base.BaseServiceImpl;
-import org.springblade.report.entity.dictionary.ExpiryDate;
+import org.springblade.report.entity.dictionary.ExpiryDateVo;
 import org.springblade.report.mapper.dictionary.ExpiryDateMapper;
 import org.springblade.report.service.IExpiryDateService;
 import org.springframework.stereotype.Service;
@@ -24,16 +24,16 @@ import java.util.List;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class ExpiryDateServiceImpl extends BaseServiceImpl<ExpiryDateMapper, ExpiryDate> implements IExpiryDateService {
+public class ExpiryDateServiceImpl extends BaseServiceImpl<ExpiryDateMapper, ExpiryDateVo> implements IExpiryDateService {
 	private ExpiryDateMapper expiryDateMapper;
 
 	@Override
-	public List<ExpiryDate> selectAll() {
+	public List<ExpiryDateVo> selectAll() {
 		return expiryDateMapper.selectAll();
 	}
 
 	@Override
-	public ExpiryDate selectById(Integer id) {
+	public ExpiryDateVo selectById(Integer id) {
 		return expiryDateMapper.selectByPrimaryKey(id);
 	}
 
@@ -43,8 +43,8 @@ public class ExpiryDateServiceImpl extends BaseServiceImpl<ExpiryDateMapper, Exp
 	}
 
 	@Override
-	public int insert(ExpiryDate expiryDate) {
-		return expiryDateMapper.add(expiryDate);
+	public int insert(ExpiryDateVo expiryDateVo) {
+		return expiryDateMapper.add(expiryDateVo);
 	}
 
 }
