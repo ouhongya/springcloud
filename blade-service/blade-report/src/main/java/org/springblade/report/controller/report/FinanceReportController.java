@@ -58,7 +58,7 @@ public class FinanceReportController {
 	 */
 	@PostMapping("/viewReport")
 	@ApiOperation(value = "预览报表", notes = "预览报表")
-	public R viewReport(ReportDetail reportDetail) {
+	public R viewReport(@RequestBody ReportDetail reportDetail) {
 		return R.data(iTollReportService.viewReport(reportDetail));
 	}
 
