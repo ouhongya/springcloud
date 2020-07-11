@@ -30,7 +30,7 @@
     </select>
     <select id="rptdetail" resultType="org.springblade.report.entity.report.ReportDetail">
         SELECT
-        r.id as id,
+        r.id as id, r.turn_status as turnStatus,
         c.text AS costCategory, drt.text AS requestType,ifnull(sum(p.fee_refund),0) as feeRefund , r.create_time AS
         createTime, r.paid_time AS paidTime,
         ifnull(rci.chargeable, 0 ) as chargeable,
@@ -104,7 +104,8 @@
 
     <select id="totalViewReport" resultType="org.springblade.report.entity.report.ReportDetail">
         SELECT a.requestType as requestType, count( a.requestType ) as requestTypeCount,
-        ifnull(sum(chargeable ),0) as sumChargeable, ifnull(sum(discountCost ),0) as sumDiscountCost, ifnull(sum(actuallyPay ),0) as sumActuallyPay
+        ifnull(sum(chargeable ),0) as sumChargeable, ifnull(sum(discountCost ),0) as sumDiscountCost,
+        ifnull(sum(actuallyPay ),0) as sumActuallyPay
         FROM
         ( SELECT
         c.text AS costCategory, drt.text AS requestType, r.create_time AS createTime, r.paid_time AS paidTime,
@@ -121,7 +122,8 @@
         LEFT JOIN request_detail rd ON rd.request_id = cr.request_id
         LEFT JOIN (
         SELECT
-        request_id, ifnull(sum(fee_item ),0) AS chargeable, ifnull(sum(fee_favor ),0) AS discountCost, ifnull(sum(fee_final),0) AS actuallyPay
+        request_id, ifnull(sum(fee_item ),0) AS chargeable, ifnull(sum(fee_favor ),0) AS discountCost,
+        ifnull(sum(fee_final),0) AS actuallyPay
         FROM
         request_charge_info
         GROUP BY request_id
