@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springblade.core.tool.api.R;
 import org.springblade.report.entity.AvailableVo;
-import org.springblade.report.service.CallBackService;
+import org.springblade.report.service.CallBackReceiptService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,9 +16,9 @@ import java.util.List;
 @RequestMapping("/api")
 @RestController
 @AllArgsConstructor
-public class CallBackController {
+public class CallBackReceiptController {
 
-	private CallBackService callBackService;
+	private CallBackReceiptService callBackService;
 
 	@GetMapping("/receipt/get-available")
 	@ApiOperation(value = "发票回调", notes = "发票回调")

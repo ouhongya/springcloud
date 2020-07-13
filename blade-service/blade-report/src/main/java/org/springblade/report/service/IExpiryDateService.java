@@ -1,7 +1,7 @@
 package org.springblade.report.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.springblade.report.entity.dictionary.ExpiryDate;
+import org.springblade.report.entity.dictionary.ExpiryDateVo;
 
 import java.util.List;
 
@@ -10,12 +10,12 @@ import java.util.List;
  * @Author create by
  * @date 2020/7/1-10:56
  */
-public interface IExpiryDateService extends IService<ExpiryDate> {
-	List<ExpiryDate> selectAll();
+public interface IExpiryDateService extends IService<ExpiryDateVo> {
+	List<ExpiryDateVo> selectAll();
 
-	ExpiryDate selectById(Integer id);
+	ExpiryDateVo selectById(Integer id);
 
 	int updateByIds(Integer validQuantum);
 
-	int insert(ExpiryDate expiryDate);
+	int insert(ExpiryDateVo expiryDateVo);
 }

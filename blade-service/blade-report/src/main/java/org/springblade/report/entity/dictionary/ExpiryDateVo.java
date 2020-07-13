@@ -16,12 +16,12 @@ import java.io.Serializable;
  */
 @Data
 @TableName("expiry_date")
-public class ExpiryDate extends BaseEntity implements Serializable {
-	/**
-	 * 有效期主键
-	 */
-	@ApiModelProperty(value = "有效期主键")
-	private Long id;
+public class ExpiryDateVo extends BaseEntity implements Serializable {
+//	/**
+//	 * 有效期主键
+//	 */
+//	@ApiModelProperty(value = "有效期主键")
+//	private Long id;
 
 	/**
 	 * 项目有效期天数，过期作废

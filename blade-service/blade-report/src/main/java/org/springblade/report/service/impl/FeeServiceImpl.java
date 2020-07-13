@@ -176,16 +176,21 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 	@Override
 	public Long submitrecordcharge(RecordChargeRequest recordChargeRequest) {
 		try{
-			Claims claims;
-			try {
-				claims = Jwts.parser()
-					.setSigningKey(recordChargeRequest.getSecret())
-					.parseClaimsJws(recordChargeRequest.getToken())
-					.getBody();
-			} catch (Exception e) {
-				claims = null;
-			}
-			Long id = Long.valueOf(claims.get("id").toString());
+			//now
+//			Claims claims;
+//			try {
+//				claims = Jwts.parser()
+//					.setSigningKey(recordChargeRequest.getSecret())
+//					.parseClaimsJws(recordChargeRequest.getToken())
+//					.getBody();
+//			} catch (Exception e) {
+//				claims = null;
+//			}
+//			Long id = Long.valueOf(claims.get("id").toString());
+			//now
+			//test
+			Long id=1l;
+			//test
 			RecordCharge recordCharge = recordChargeRequest.getRecordCharge();
 			recordCharge.setTollCollectorId(id);
 			recordCharge.setStatus(0);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.or g/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.springblade.report.mapper.dictionary.ExpiryDateMapper">
-    <resultMap id="BaseResultMap" type="org.springblade.report.entity.dictionary.ExpiryDate">
+    <resultMap id="BaseResultMap" type="org.springblade.report.entity.dictionary.ExpiryDateVo">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="valid_quantum" jdbcType="INTEGER" property="validQuantum"/>
     </resultMap>
@@ -15,15 +15,15 @@
         from expiry_date
         where id = #{id,jdbcType=INTEGER}
     </select>
-    <select id="selectAll" resultType="org.springblade.report.entity.dictionary.ExpiryDate">
+    <select id="selectAll" resultType="org.springblade.report.entity.dictionary.ExpiryDateVo">
         select * from expiry_date
     </select>
 
-    <update id="updateByIds" parameterType="org.springblade.report.entity.dictionary.ExpiryDate">
+    <update id="updateByIds" parameterType="org.springblade.report.entity.dictionary.ExpiryDateVo">
         update expiry_date set valid_quantum = #{validQuantum,jdbcType=INTEGER}
         where 1=1 and id = 1
     </update>
-    <insert id="add" parameterType="org.springblade.report.entity.dictionary.ExpiryDate">
+    <insert id="add" parameterType="org.springblade.report.entity.dictionary.ExpiryDateVo">
         insert into expiry_date (valid_quantum)
         values ( #{validQuantum,jdbcType=INTEGER})
     </insert>
