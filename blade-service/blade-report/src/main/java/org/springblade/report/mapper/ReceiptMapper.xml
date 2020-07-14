@@ -46,7 +46,7 @@
     </select>
 
     <select id="queryReceiptById" parameterType="java.lang.String" resultType="java.lang.String">
-        select receipt_number as id from charge_receipt where charge_id = #{id}
+        select receipt_number as id from charge_receipt where receipt_number = #{id}
     </select>
 
     <select id="queryReceiptRequestDetail" parameterType="java.lang.String" resultType="java.lang.String">
@@ -99,8 +99,8 @@
         select * from charge_receipt where receipt_number =#{id}
     </select>
 
-    <select id="queryReceiptByIdNew" resultType="java.lang.String">
-        select receipt_number from invoice where status=0
+    <select id="queryReceiptByIdNew" resultType="java.lang.String" parameterType="java.lang.String">
+        select receipt_number from invoice where status=0 LIMIT 1
     </select>
     <select id="queryRefundPay" resultType="org.springblade.report.entity.RefundPay">
         SELECT
@@ -142,6 +142,54 @@
         ORDER BY
         dict_channel_type.`id` ASC
 
+    </select>
+    <select id="queryRequestDetails" resultType="org.springblade.report.entity.RequestDetailsVo">
+        SELECT
+        detail.`request_id` as requestId,
+        detail.item_id as itemId,
+        detail.`item_count` as num,
+        detail.fee_final as payMoney,
+        detail.fee_item,
+        detail.request_type,
+        detail.dept_id as ,
+        record.payStatus as ,
+        record.`receipt_number`
+        FROM
+        (SELECT
+        charge_request.`request_id`,
+        request_charge_info.`item_id`,
+        request_charge_info.`item_type_id`,
+        request_charge_info.`item_count`,
+        charge_request.`patient_id`,
+        request_charge_info.`fee_final`,
+        request_charge_info.`fee_favor`,
+        request_charge_info.fee_item,
+        charge_request.`doctor_id`,
+        charge_request.request_type,
+        charge_request.dept_id
+        FROM
+        request_detail
+        LEFT JOIN request_charge_info
+        ON request_detail.`request_id` = request_charge_info.`request_id`
+        LEFT JOIN charge_request
+        ON charge_request.`request_id` = request_charge_info.`request_id`) AS detail
+        LEFT JOIN
+        (SELECT
+        record_charge.`id`,
+        record_charge.patient_id,
+        record_charge.toll_collector_id,
+        record_charge.`paid_time`,
+        record_charge.`status` AS payStatus,
+        IFNULL(record_charge.`refund_money`, 0) AS refund_money,
+        charge_receipt.`receipt_number`
+        FROM
+        charge_receipt,
+        record_charge
+        WHERE charge_receipt.`charge_id` = record_charge.`id`) AS record
+        ON detail.patient_id = record.patient_id
+        WHERE 1 = 1
+        AND record.`receipt_number` = #{id}
+        GROUP BY record.`receipt_number`
     </select>
 
     <update id="queryReceiptByIdNewStatus" parameterType="java.lang.String">

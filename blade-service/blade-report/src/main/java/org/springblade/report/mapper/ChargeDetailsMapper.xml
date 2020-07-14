@@ -4,47 +4,94 @@
     <select id="queryRequestDetailReceipt" parameterType="org.springblade.report.entity.RequestDetailReceiptVo"
             resultType="org.springblade.report.entity.RequestDetailsReceiptRes">
         SELECT
-        request_detail.`request_id`,request_charge_info.item_id,request_charge_info.`item_type_id`,
-        request_charge_info.`item_count`,charge_receipt.`status`,
-        IFNULL(IFNULL(SUM(charge_pay.fee_paid),0)+IFNULL(SUM(fee_refund),0),0) AS totalMoney,
-        IFNULL(SUM(fee_refund),0) AS refundMoney,
-        IFNULL(SUM(charge_pay.fee_paid),0)AS payMoney
-        FROM request_detail
-        LEFT JOIN request_charge_info ON request_detail.`request_id`=request_charge_info.`request_id`
-        LEFT JOIN record_charge ON request_charge_info.`request_id`=record_charge.`id`
-        LEFT JOIN charge_receipt ON record_charge.id=charge_receipt.`charge_id`
-        LEFT JOIN `charge_pay` ON charge_pay.`charge_id`=record_charge.`id`
-        WHERE
+        detail.`request_id`,
+        detail.item_id,
+        detail.`item_type_id`,
+        detail.`item_count`,
+        record.`status`,
+        detail.fee_final,
+        detail.fee_favor,
+        detail.fee_item,
+        detail.`doctor_id`,
+        detail.request_type,
+        detail.dept_id,
+        record.payStatus,
+        record.refund_money
+        FROM
+        (SELECT
+        charge_request.`request_id`,
+        request_charge_info.`item_id`,
+        request_charge_info.`item_type_id`,
+        request_charge_info.`item_count`,
+        charge_request.`patient_id`,
+        request_charge_info.`fee_final`,
+        request_charge_info.`fee_favor`,
+        request_charge_info.fee_item,
+        charge_request.`doctor_id`,
+        charge_request.request_type,
+        charge_request.dept_id
+        FROM
+        request_detail
+        LEFT JOIN request_charge_info
+        ON request_detail.`request_id` = request_charge_info.`request_id`
+        LEFT JOIN charge_request
+        ON charge_request.`request_id` = request_charge_info.`request_id`) AS detail
+        LEFT JOIN
+        (SELECT
+        record_charge.`id`,
+        charge_receipt.`status`,
+        record_charge.patient_id,
+        record_charge.toll_collector_id,
+        record_charge.`paid_time`,
+        record_charge.`status` AS payStatus,
+        IFNULL(record_charge.`refund_money`,0) AS refund_money
+        FROM
+        charge_receipt,
+        record_charge
+        WHERE charge_receipt.`charge_id` = record_charge.`id`) AS record
+        ON detail.patient_id = record.patient_id
+        WHERE 1 = 1
         <if test="status != null and status != ''">
-
-            charge_receipt.`status`=#{status}
-
-        </if>
-        <if test="data != null">
-
-            AND
-            record_charge.paid_time=#{data}
-
-        </if>
-        <if test="id != null and id != ''">
-
-            AND
-            record_charge.toll_collector_id=#{id}
-
-        </if>
+                and
+                record.`status`=#{status}
+            </if>
+            <if test="data != null and data != ''">
+                AND
+                record.paid_time=#{data}
+            </if>
+            <if test="id != null and id != ''">
+                AND
+                record.toll_collector_id=#{id}
+            </if>
+        GROUP BY detail.item_type_id
     </select>
     <select id="queryHospitalizedList" resultType="org.springblade.report.entity.HospitalizedVo">
         SELECT
-        charge_request.request_id,charge_pay.fee_paid, record_charge.paid_time,
-        IFNULL(SUM(amount),0) AS totalMoney,
-        IFNULL(SUM(input_advance_pay.consumed),0) AS payMoney,
-        IFNULL(IFNULL(SUM(amount),0)-IFNULL(SUM(input_advance_pay.consumed),0),0) AS remainingMoney
-        FROM input_advance_pay
-        LEFT JOIN charge_request ON input_advance_pay.`patient_id`=charge_request.`patient_id`
-        LEFT JOIN record_charge ON charge_request.`patient_id`=charge_request.`patient_id`
-        LEFT JOIN charge_pay ON record_charge.`id`=charge_pay.`charge_id`
-        WHERE
+        charge_request.request_id,
+        amount AS fee_paid,
+        charge_request.dept_id,
+        record_charge.paid_time,
+        IFNULL(SUM(amount), 0) AS totalMoney,
+        IFNULL(
+        SUM(input_advance_pay.consumed),
+        0
+        ) AS payMoney,
+        IFNULL(
+        IFNULL(SUM(amount), 0) - IFNULL(
+        SUM(input_advance_pay.consumed),
+        0
+        ),
+        0
+        ) AS remainingMoney
+        FROM
+        input_advance_pay
+        LEFT JOIN charge_request
+        ON input_advance_pay.`patient_id` = charge_request.`patient_id`
+        LEFT JOIN record_charge
+        ON charge_request.`patient_id` = charge_request.`patient_id`
+        WHERE 1=1
         <if test="status != null and status != ''">
+            AND
             record_charge.`status`=#{status}
         </if>
         <if test="data != null">
@@ -62,54 +109,57 @@
 
     <select id="queryInvoiceList" resultType="org.springblade.report.entity.InvoiceVo"
             parameterType="org.springblade.report.entity.RequestDetailReceiptVo">
-
         SELECT
-        charge_receipt.`receipt_number`,IFNULL(IFNULL(charge_pay.fee_paid,0)+IFNULL(charge_pay.fee_refund,0),0),
-        IFNULL(charge_pay.fee_paid,0),record_charge.toll_collector_id,charge_receipt.status,record_charge.paid_time,
+        charge_receipt.`receipt_number`,
+        IFNULL(
+        IFNULL(charge_pay.fee_paid, 0) + IFNULL(charge_pay.fee_refund, 0),
+        0
+        ) AS totalMoney,
+        IFNULL(charge_pay.fee_paid, 0) AS payMoney,
+        IFNULL(charge_pay.`fee_refund`,0) AS  refundMoney,
+
+        record.toll_collector_id ,
+        charge_receipt.status,
+        record.paid_time,
+        record.`doctor_id`
+        FROM
+        charge_receipt
+        LEFT JOIN
+        (SELECT
+        record_charge.*,
         charge_request.`doctor_id`
-        FROM `charge_receipt`
-        LEFT JOIN `record_charge` ON charge_receipt.`charge_id`=record_charge.`id`
-        LEFT JOIN `category` ON record_charge.`category_id`=category.`category_id`
-        LEFT JOIN `charge_request` ON record_charge.`patient_id`=charge_request.`patient_id`
-        LEFT JOIN `charge_pay` ON record_charge.`id` = charge_pay.`charge_id`
-        WHERE
-        1=1
-
+        FROM
+        charge_request
+        LEFT JOIN record_charge
+        ON record_charge.`patient_id` = charge_request.`patient_id`
+        GROUP BY charge_request.`patient_id`) record
+        ON record.id = charge_receipt.`charge_id`
+        LEFT JOIN `charge_pay`
+        ON record.`id` = charge_pay.`charge_id`
+        WHERE 1 = 1
         <if test="data != null">
-
             AND
-            record_charge.paid_time=#{data}
-
+            record.paid_time=#{data}
         </if>
         <if test="type != null and type != ''">
-
             AND
-            category.`category_id`=#{type}
-
+            record.`category_id`=#{type}
         </if>
         <if test="id != null and id != ''">
-
             AND
-            record_charge.toll_collector_id=#{id}
-
+            record.toll_collector_id=#{id}
         </if>
         <if test="dockerId != null and dockerId != ''">
-
             AND
-            charge_request.`doctor_id`=#{dockerId}
-
+            record.`doctor_id`=#{dockerId}
         </if>
         <if test="invoiceId != null and invoiceId != ''">
-
             AND
             charge_receipt.`receipt_number`=#{invoiceId}
-
         </if>
         <if test="status != null and status != ''">
-
             AND
             charge_receipt.status=#{status}
-
         </if>
     </select>
 </mapper>

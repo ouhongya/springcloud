@@ -53,14 +53,15 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 
 	/**
 	 * 发票号列表
-	 *
 	 * @param requestIds
 	 * @return
 	 */
 	@Override
-	public List<ReceiptVo> queryRequestDetailReceipt(List<String> requestIds) {
+	public RequestDetailReceiptRes queryRequestDetailReceipt(List<String> requestIds) {
+		RequestDetailReceiptRes requestDetailReceiptRes  = new RequestDetailReceiptRes();
 		//查询当前的发票号
 		List<ReceiptVo> receipt = new ArrayList<ReceiptVo>();
+		List<List<RequestDetailsVo>> r = new ArrayList<>();
 		ReceiptVo receiptVo = new ReceiptVo();
 		for (String id : requestIds) {
 			receiptVo.setOldReceipt(baseMapper.queryReceiptById(id));
@@ -68,8 +69,11 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 			receiptVo.setNewReceipt(num);
 			receipt.add(receiptVo);
 			baseMapper.queryReceiptByIdNewStatus(num);
+			r.add(baseMapper.queryRequestDetails(id));
 		}
-		return receipt;
+		requestDetailReceiptRes.setReceiptVo(receipt);
+		requestDetailReceiptRes.setRequestDetailsVo(r);
+		return requestDetailReceiptRes;
 	}
 
 	/**

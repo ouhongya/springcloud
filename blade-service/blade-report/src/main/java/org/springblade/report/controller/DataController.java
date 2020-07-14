@@ -1,10 +1,8 @@
 package org.springblade.report.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -101,7 +99,7 @@ public class DataController {
 		return octorData.get(id);
 	}
 	/**
-	 *    医生
+	 医生
 	 * @param id
 	 * @return
 	 */
@@ -133,7 +131,7 @@ public class DataController {
 		return patientData.get(id);
 	}
 	/**
-	 *         患者
+	 * 患者
 	 * @param id
 	 * @return
 	 */
@@ -144,7 +142,10 @@ public class DataController {
 		return patientBrief.getId();
 	}
 
+
 }
+
+
 @Data
 @AllArgsConstructor
 /**

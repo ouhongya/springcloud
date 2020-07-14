@@ -9,7 +9,7 @@ public interface ReceiptService extends IService<ChargeReceipt> {
 
 	List<ReceiptList> receiptList(String receiptId, String requestId);
 
-	List<ReceiptVo> queryRequestDetailReceipt(List<String> requestIds);
+	RequestDetailReceiptRes queryRequestDetailReceipt(List<String> requestIds);
 
 	boolean printInvoice(List<ReceiptVo> receiptVo,String username);
 

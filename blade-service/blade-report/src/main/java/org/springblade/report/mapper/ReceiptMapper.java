@@ -14,6 +14,8 @@ public interface ReceiptMapper extends BaseMapper<ChargeReceipt> {
 
 	String queryReceiptById(String id);
 
+	List<RequestDetailsVo> queryRequestDetails(String id);
+
 	String queryReceiptByIdNew();
 
 	void queryReceiptByIdNewStatus(String num);
