@@ -3,7 +3,6 @@ package org.springblade.report.service;
 import org.springblade.report.entity.report.ChargestsList;
 import org.springblade.report.entity.report.ReportRecords;
 import org.springblade.report.entity.report.ReportDetail;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
