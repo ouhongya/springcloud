@@ -19,10 +19,7 @@ import org.springblade.report.service.FeeService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -126,8 +123,8 @@ public class FeeController {
 	 */
 	@ApiOperationSupport(order = 7)
 	@ApiOperation(value = "收费列表", notes = "传入收费记录id")
-	@PostMapping("/querychargefeedetail")
-	public R<Map<Long, List<Feedetail>>> querychargefeedetail(Long charge_id) {
+	@GetMapping("/querychargefeedetail")
+	public R<Map<Long, List<Feedetail>>> querychargefeedetail( Long charge_id) {
 		Map<Long, List<Feedetail>> querychargefeedetail = feeService.querychargefeedetail(charge_id);
 		return R.data(querychargefeedetail);
 	}
