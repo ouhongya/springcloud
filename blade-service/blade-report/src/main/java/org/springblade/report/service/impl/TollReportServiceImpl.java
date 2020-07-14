@@ -9,12 +9,8 @@ import org.springblade.report.mapper.report.TollReportMapper;
 import org.springblade.report.service.ITollReportService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**

@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author create by
@@ -123,4 +124,10 @@ public class ReportDetail {
 	 */
 	@ApiModelProperty(value = "预览统计实收费用")
 	private Integer sumActuallyPay;
+
+	/**
+	 * 收费日期范围查询
+	 */
+	@ApiModelProperty(value = "收费日期范围查询")
+	private List<Date> times;
 }

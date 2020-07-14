@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+import java.util.List;
+
 
 /**
  * [统计报表---财务人员]
@@ -34,6 +37,11 @@ public class FinanceReportController {
 	@ApiOperation(value = "报表明细", notes = "报表明细")
 	public R rptDetail(@RequestBody ReportDetail reportDetail) {
 		reportDetail.setTurnStatus(1); //是否统计上交
+		if (reportDetail.getTimes() != null) {
+			List<Date> times = reportDetail.getTimes();
+			reportDetail.setCreateTime(times.get(0)); //收费创建时间
+			reportDetail.setPaidTime(times.get(1));//支付完成时间
+		}
 		return R.data(iTollReportService.rptdetail(reportDetail));
 	}
 
