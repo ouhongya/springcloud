@@ -52,6 +52,8 @@ public interface FeeMapper extends BaseMapper<RequestChargeInfo> {
 
 	int updateRecordCharge(RecordCharge recordCharge);
 
+	int updateRecordChargebyid(RecordCharge recordCharge);
+
 	int updateRecordChargeByStatus(RecordCharge recordCharge);
 
 	List<ChargeRequest> selectChargeRequestList(Long charge_id);

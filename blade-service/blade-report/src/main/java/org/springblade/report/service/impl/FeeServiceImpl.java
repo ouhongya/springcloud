@@ -192,6 +192,20 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 			Long id=1l;
 			//test
 			RecordCharge recordCharge = recordChargeRequest.getRecordCharge();
+			Long reordid=recordCharge.getId();
+			RecordCharge recordCharge1 = baseMapper.selectRecordCharge(reordid);
+			if(recordCharge1!=null){
+				recordCharge.setTollCollectorId(id);
+				baseMapper.updateRecordChargebyid(recordCharge);
+				List<Long> request_id_list = recordCharge.getRequest_id_list();
+				for(Long request_id:request_id_list){
+					ChargeRequest chargeRequest=new ChargeRequest();
+					chargeRequest.setRequestId(request_id);
+					chargeRequest.setChargeId(reordid);
+					baseMapper.updateChargeRequestByChargeId(chargeRequest);
+				}
+               return reordid;
+			}
 			recordCharge.setTollCollectorId(id);
 			recordCharge.setStatus(0);
 			recordCharge.setCreateTime(new Date());
