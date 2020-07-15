@@ -66,7 +66,6 @@ public class FeeController {
 			map.put(id,queryapplication);
 		}
 		return R.data(map);
-
 	}
 
 
@@ -473,6 +472,7 @@ public class FeeController {
 	}
 
 
+
 	/**
 	 * 查询收费记录
 	 * @param
@@ -483,8 +483,8 @@ public class FeeController {
 	@ApiOperation(value = "查询收费记录", notes = "传入患者ID patient_id,收费记录id charge_id,查询起始时间 start_time,查询截止时间 end_time,支付状态 status")
 	@PostMapping("/feeService")
 	public R<List<RecordCharge>> querycharge(@RequestBody RecordCharge recordCharge) {
-		 List<RecordCharge> querycharge = feeService.querycharge(recordCharge);
-		 return R.data(querycharge);
+		List<RecordCharge> querycharge = feeService.querycharge(recordCharge);
+		return R.data(querycharge);
 	}
 
 
