@@ -340,6 +340,7 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 
 	}
 
+
 	@Override
 	public String wxpay(Long charge_id, BigDecimal fee_paid,List<FeeRequest> feeRequest,Integer checked) {
 		Long id=charge_id;
