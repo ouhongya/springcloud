@@ -58,7 +58,7 @@ public class WXPayConfigImpl implements WXPayConfig {
 	}
 	// 异步通知地址
 	public String getNotifyUrl() {
-		return "http://192.168.1.27:8186/api/wxNotify";
+		return "http://192.168.1.27:8168/api/wxNotify";
 	}
 
 	public int getHttpConnectTimeoutMs() {

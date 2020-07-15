@@ -15,7 +15,7 @@ public class AlipayConfig {
 	public static String ALIPAY_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgobsMz0UshNpEA4tswdjbR4Qb0LRBhS09mCb8ta6zmxsmcAZ7N5GWXY7g0Cab2Tzhkr3G3U0/fORrDObBDf328AQESu/NjvRiqQ4V0rEipz9BvesnV11Fe3dLyfDSW/+J107XRfEZUfm7tIBlDKLYLHWWzqMvYOGX234qm1e58xNfYNXZSuA6oBjDBoFLGIDIsHqkOyYdCWszFIAAc1pakAbcJOwE0Mhtx4jJVVTgbFldyhg+nW55yXusuNjkfrHPOEDnWC//UPoCJ9sZYVe4wCCfbKTaGLlcGriAYONxkjnRPpGnrkU+ZE1a6KRnAjDngbEwSp5o5XffIoUQW0fGQIDAQAB";
 
 	//异步通知，再这里我们设计自己的后台代码
-	public static String notify_url = "http://192.168.1.27:8186/api/aLiOrderNotifyResult";
+	public static String notify_url = "http://192.168.1.27:8168/api/aLiOrderNotifyResult";
 
 	// 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
 	public static String return_url = "http://localhost:8080/alipay.trade.page.pay-JAVA-UTF-8/return_url.jsp";
