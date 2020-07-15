@@ -80,6 +80,7 @@
             AND dct.text =#{paymentMethod}
         </if>
         GROUP BY r.id
+        ORDER BY r.id DESC
     </select>
 
 
