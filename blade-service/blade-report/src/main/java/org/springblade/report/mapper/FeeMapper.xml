@@ -65,6 +65,10 @@
         INSERT INTO `record_charge`(`patient_id`, `create_time`, `paid_time`, `refund_time`,`status`,`toll_collector_id`)
         VALUES (#{patientId},#{createTime},#{paidTime},#{refundTime},#{status},#{tollCollectorId})
     </insert>
+    <update id="updateRecordChargebyid" parameterType="org.springblade.fee.entity.RecordCharge">
+        update record_charge set  toll_collector_id = #{tollCollectorId} where id=#{id}
+    </update>
+
     <insert id="insertChargePay"   parameterType="org.springblade.fee.entity.ChargePay">
         INSERT INTO `charge_pay`(`channel_type_id`, `channel_order`, `channel_account`, `charge_id`,`fee_paid`,`fee_refund`,`paid_time`,`refund_time`,`status`)
         VALUES (#{channel_type_id},#{channel_order},#{channel_account},#{charge_id},#{fee_paid},#{fee_refund},#{paid_time},#{refund_time},#{status})
