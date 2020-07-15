@@ -83,7 +83,7 @@
         update charge_request SET charge_id=#{chargeId} where request_id=#{requestId}
     </update>
     <update id="updateRecordCharge" parameterType="org.springblade.fee.entity.RecordCharge">
-        update record_charge SET money=#{money},reason=#{money} where id=#{id}
+        update record_charge SET money=#{money},reason=#{reason} where id=#{id}
     </update>
     <update id="updateRecordChargeByStatus" parameterType="org.springblade.fee.entity.RecordCharge">
         update record_charge SET status=#{status} where id=#{id}

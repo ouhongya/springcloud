@@ -20,7 +20,7 @@ public interface FeeService extends BaseService<RequestChargeInfo> {
 
 	List<Feedetail> queryapplication(Long request_id);
 
-	Map<Long,List<Feedetail>> querychargefeedetail(Long charge_id);
+	List<Feedetail> querychargefeedetail(Long charge_id);
 
 	boolean submit(RequestChargeInfo requestChargeInfo);
 

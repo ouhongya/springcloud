@@ -14,6 +14,8 @@ import org.springblade.fee.entity.*;
 
 import org.springblade.fee.vo.*;
 import org.springblade.report.config.WXPayConfigImpl;
+import org.springblade.report.entity.Msi;
+import org.springblade.report.entity.PayEntity;
 import org.springblade.report.mapper.FeeMapper;
 import org.springblade.report.service.FeeService;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -124,8 +126,9 @@ public class FeeController {
 	@ApiOperationSupport(order = 7)
 	@ApiOperation(value = "收费列表", notes = "传入收费记录id")
 	@GetMapping("/querychargefeedetail")
-	public R<Map<Long, List<Feedetail>>> querychargefeedetail( Long charge_id) {
-		Map<Long, List<Feedetail>> querychargefeedetail = feeService.querychargefeedetail(charge_id);
+	public R<List<Feedetail>> querychargefeedetail( Long charge_id) {
+		List<Feedetail> querychargefeedetail = feeService.querychargefeedetail(charge_id);
+
 		return R.data(querychargefeedetail);
 	}
 
@@ -138,26 +141,26 @@ public class FeeController {
 	@ApiOperationSupport(order = 8)
 	@ApiOperation(value = "发起支付", notes = "传入收费记录charge_id ，支付方式 channel_id,申请单id加上对应收费项目ids FeeRequest,收费实际金额 fee_paid，是否全选(0全选，1没有全选) checked")
 	@PostMapping("/createpay")
-	public R<Map<Integer,String>> createpay(Long charge_id, Integer channel_id, @RequestBody List<FeeRequest> feeRequest, BigDecimal fee_paid,Integer checked) {
+	public R<Map<Integer,String>> createpay(@RequestBody  PayEntity payEntity) {
 		Map<Integer,String> map=null;
-		switch(channel_id){
+		switch(payEntity.getChannel_id()){
 			case 1 :
 				//现金
-				String money = feeService.moneypay(charge_id, feeRequest, fee_paid, checked, channel_id);
+				String money = feeService.moneypay(payEntity.getCharge_id(), payEntity.getFeeRequest(), payEntity.getFee_paid(),payEntity.getChecked() , payEntity.getChannel_id());
 				map=new HashMap<>();
-				map.put(channel_id,money);
+				map.put(payEntity.getChannel_id(),money);
 				break; //可选
 			case 2 :
 				//微信
-				String wxmoney  = feeService.wxpay(charge_id, fee_paid,feeRequest,checked);
+				String wxmoney  = feeService.wxpay(payEntity.getCharge_id(), payEntity.getFee_paid(),payEntity.getFeeRequest(),payEntity.getChecked());
 				map=new HashMap<>();
-				map.put(channel_id,wxmoney);
+				map.put(payEntity.getChannel_id(),wxmoney);
 				break; //可选
 			case 3 :
 				//支付宝
-				String alimoney =feeService.getPagePay(charge_id,fee_paid,feeRequest,checked);
+				String alimoney =feeService.getPagePay(payEntity.getCharge_id(),payEntity.getFee_paid(),payEntity.getFeeRequest(),payEntity.getChecked());
 				map=new HashMap<>();
-				map.put(channel_id,alimoney);
+				map.put(payEntity.getChannel_id(),alimoney);
 				break; //可选
 			case 4 :
 				//社保
@@ -177,8 +180,8 @@ public class FeeController {
 	@ApiOperationSupport(order = 9)
 	@ApiOperation(value = "手动优惠", notes = "传入手动优惠金额money ，手动优惠原因reason,收费记录表id")
 	@PostMapping("/createfavourable")
-	public R<Favourable> createfavourable(Double money,String reason,Long id) {
-		Favourable createfavourable = feeService.createfavourable(money, reason, id);
+	public R<Favourable> createfavourable(@RequestBody  Msi msi) {
+		Favourable createfavourable = feeService.createfavourable(msi.getMoney(), msi.getReason(), msi.getId());
 		return R.data(createfavourable);
 	}
 
