@@ -29,7 +29,6 @@ import java.util.*;
 public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeReceipt> implements ReceiptService {
 
 
-
 	private WXPayConfigImpl config = new WXPayConfigImpl();
 
 	/**
@@ -41,6 +40,7 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 
 	/**
 	 * 发票列表
+	 *
 	 * @param receiptId
 	 * @param requestId
 	 * @return
@@ -51,13 +51,52 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 	}
 
 	/**
+	 * 未退费用清单
+	 *
+	 * @param requestId
+	 * @return
+	 */
+	@Override
+	public QueryNotRefundedRes notRefunded(List<String> requestId) {
+		QueryNotRefundedRes queryNotRefundedRes = new QueryNotRefundedRes();
+		List<List<QueryNotRefundedVo>> notRefund = new ArrayList<>();
+		List<ReceiptVo> receipt = new ArrayList<ReceiptVo>();
+		//查询未退费的清单
+		for (String id : requestId) {
+			notRefund.add(baseMapper.queryNotRefunded(id));
+		}
+		//查询发票号码
+		for (String id : requestId) {
+			ReceiptVo receiptVo = new ReceiptVo();
+			receiptVo.setOldReceipt(baseMapper.queryReceiptNum(id));
+			receipt.add(receiptVo);
+		}
+		//添加新的发票
+		List<String> num = baseMapper.queryReceiptByIdNew(requestId.size());
+		if (num.size() != 0) {
+			for (int i = 0; i < receipt.size(); i++) {
+				if (i <= num.size() && num.size() != 0) {
+					String s = num.get(i);
+					receipt.get(i).setNewReceipt(s);
+					baseMapper.queryReceiptByIdNewStatus(s);
+				}
+			}
+		}
+		//返回
+		queryNotRefundedRes.setReceiptVo(receipt);
+		queryNotRefundedRes.setNotRefund(notRefund);
+		return queryNotRefundedRes;
+	}
+
+	/**
 	 * 发票号列表
+	 *
 	 * @param requestIds
 	 * @return
 	 */
 	@Override
 	public RequestDetailReceiptRes queryRequestDetailReceipt(List<String> requestIds) {
-		RequestDetailReceiptRes requestDetailReceiptRes  = new RequestDetailReceiptRes();
+		RequestDetailReceiptRes requestDetailReceiptRes = new RequestDetailReceiptRes();
 		//查询当前的发票号
 		List<ReceiptVo> receipt = new ArrayList<ReceiptVo>();
 		List<List<RequestDetailsVo>> r = new ArrayList<>();
@@ -69,11 +108,13 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 		}
 
 		List<String> num = baseMapper.queryReceiptByIdNew(requestIds.size());
-		for (int i = 0; i < receipt.size(); i++) {
-			if(i<=num.size()&&num.size()!=0) {
-				String s = num.get(i);
-				receipt.get(i).setNewReceipt(s);
-				baseMapper.queryReceiptByIdNewStatus(s);
+		if (num.size() != 0) {
+			for (int i = 0; i < receipt.size(); i++) {
+				if (i <= num.size() && num.size() != 0) {
+					String s = num.get(i);
+					receipt.get(i).setNewReceipt(s);
+					baseMapper.queryReceiptByIdNewStatus(s);
+				}
 			}
 		}
 		requestDetailReceiptRes.setReceiptVo(receipt);
@@ -85,13 +126,14 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 	 * 更新发票状态
 	 */
 	@Override
-	public boolean updateStatue(){
+	public boolean updateStatue() {
 		baseMapper.updateStatue();
 		return true;
 	}
 
 	/**
 	 * 打印发票
+	 *
 	 * @param receiptVo 发票列表
 	 * @param username  操作人名
 	 */
@@ -120,6 +162,7 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 
 	/**
 	 * 退款操作
+	 *
 	 * @param refundVo 退款Id
 	 * @param userName 操作人
 	 * @param reason   退款原因
@@ -128,7 +171,7 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 	@Override
 	@Transactional
 	public String refund(List<RefundVo> refundVo, String userName, String reason) {
-		List<Map<String,String>> list = new ArrayList<Map<String,String>>();
+		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 		//循环进行退款
 		for (RefundVo vo : refundVo) {
 			RefundPay pay = baseMapper.queryRefundPay(vo.getRequestId(), vo.getItemId());
@@ -148,15 +191,15 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 					payResponse = WXPayRefund(wxPayRefund);
 				} else if (pay.getStatus().equals("3")) {
 					//支付宝进行退款
-					payResponse = AiliPayRefund(pay.getChannelOrder(),pay.getFeeFinal(),vo.getItemId(),vo.getItemName(),pay.getItemCount(),pay.getFeeItem(),pay.getChannelAccount());
+					payResponse = AiliPayRefund(pay.getChannelOrder(), pay.getFeeFinal(), vo.getItemId(), vo.getItemName(), pay.getItemCount(), pay.getFeeItem(), pay.getChannelAccount());
 				}
 			}
 			//判断是否退款成功
-			if(!payResponse.equals("success")){
-				Map<String,String> error = new HashMap<String,String>();
-				error.put("requestId",vo.getItemId());
-				error.put("itemId",vo.getItemId());
-				error.put("message",payResponse);
+			if (!payResponse.equals("success")) {
+				Map<String, String> error = new HashMap<String, String>();
+				error.put("requestId", vo.getItemId());
+				error.put("itemId", vo.getItemId());
+				error.put("message", payResponse);
 				list.add(error);
 				break;
 			}
@@ -165,7 +208,7 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 			baseMapper.updatePayStatus(vo.getRequestId(), new Date(), 4, userName, reason);
 			baseMapper.updateChargePay(vo.getRequestId(), new Date(), decimal.getFeeRefund().add(pay.getFeeFinal()), 4, userName, reason);
 		}
-		if(list.size()!=0){
+		if (list.size() != 0) {
 			for (Map<String, String> stringMap : list) {
 				for (String key : stringMap.keySet()) {
 					String value = stringMap.get(key);
@@ -179,6 +222,7 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 
 	/**
 	 * 退款金额
+	 *
 	 * @param requestIds
 	 * @return
 	 */
@@ -190,27 +234,27 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 		Integer aliPay = 0;
 		for (String id : requestIds) {
 			List<Integer> money = baseMapper.queryInvoiceMoney(id);
-			if(money.size()>=1){
-				if(money.get(0)!=null){
-					cash+=money.get(0);
+			if (money.size() >= 1) {
+				if (money.get(0) != null) {
+					cash += money.get(0);
 				}
 
 			}
-			if(money.size()>=2){
-				if(money.get(1)!=null){
-					wxPay+=money.get(1);
+			if (money.size() >= 2) {
+				if (money.get(1) != null) {
+					wxPay += money.get(1);
 				}
 			}
-			if(money.size()>=3){
-				if(money.get(2)!=null){
-					aliPay+=money.get(2);
+			if (money.size() >= 3) {
+				if (money.get(2) != null) {
+					aliPay += money.get(2);
 				}
 			}
 		}
-		invoiceMoney.setCash(new BigDecimal(cash+""));
-		invoiceMoney.setWxPay(new BigDecimal(wxPay+""));
-		invoiceMoney.setAliPay(new BigDecimal(aliPay+""));
-		invoiceMoney.setTotalMoney(new BigDecimal((cash+wxPay+aliPay)+""));
+		invoiceMoney.setCash(new BigDecimal(cash + ""));
+		invoiceMoney.setWxPay(new BigDecimal(wxPay + ""));
+		invoiceMoney.setAliPay(new BigDecimal(aliPay + ""));
+		invoiceMoney.setTotalMoney(new BigDecimal((cash + wxPay + aliPay) + ""));
 		return invoiceMoney;
 	}
 

@@ -32,22 +32,23 @@ public class ChargeDetailsServiceImpl extends BaseServiceImpl<ChargeDetailsMappe
 	public PageInfo queryChargeDetailsList(RequestDetailReceiptVo requestDetailReceiptVo) {
 		PageHelper.startPage(requestDetailReceiptVo.getPage(),requestDetailReceiptVo.getSize());
 		List<RequestDetailsReceiptRes> receiptResList= baseMapper.queryRequestDetailReceipt(requestDetailReceiptVo);
-		//总金额
-		BigDecimal totalMoney = new BigDecimal("0.00");
-		//退费金额
-		BigDecimal refundMoney = new BigDecimal("0.00");
-		//支付金额
-		BigDecimal payMoney = new BigDecimal("0.00");
-		for (RequestDetailsReceiptRes detailsReceiptRes : receiptResList) {
-			BigDecimal multiply = detailsReceiptRes.getFeeItem().multiply(new BigDecimal(detailsReceiptRes.getItemCount()));
-			detailsReceiptRes.setFeeItem(multiply);
-			totalMoney.add(detailsReceiptRes.getFeeItem().subtract(detailsReceiptRes.getFeeFavor()));
-			refundMoney.add(detailsReceiptRes.getRefundMoney());
-			payMoney.add(detailsReceiptRes.getFeeFinal().subtract(detailsReceiptRes.getRefundMoney()));
+		if(receiptResList.size()!=0){
+			//总金额
+			BigDecimal totalMoney = new BigDecimal("0.00");
+			//退费金额
+			BigDecimal refundMoney = new BigDecimal("0.00");
+			//支付金额
+			BigDecimal payMoney = new BigDecimal("0.00");
+			//fee_favor优惠fee_item项目费用fee_final实收
+			for (RequestDetailsReceiptRes detailsReceiptRes : receiptResList) {
+				totalMoney=totalMoney.add(detailsReceiptRes.getFeeItem().multiply(new BigDecimal(detailsReceiptRes.getItemCount())));
+				refundMoney=refundMoney.add(detailsReceiptRes.getRefundMoney());
+				payMoney=payMoney.add(detailsReceiptRes.getFeeFinal().multiply(new BigDecimal(detailsReceiptRes.getItemCount())));
+			}
+			receiptResList.get(0).setTotalMoney(totalMoney);
+			receiptResList.get(0).setRefundMoney(refundMoney);
+			receiptResList.get(0).setPayMoney(payMoney);
 		}
-		receiptResList.get(0).setTotalMoney(totalMoney);
-		receiptResList.get(0).setRefundMoney(refundMoney);
-		receiptResList.get(0).setPayMoney(payMoney);
 		return new PageInfo<>(receiptResList);
 	}
 
@@ -75,14 +76,16 @@ public class ChargeDetailsServiceImpl extends BaseServiceImpl<ChargeDetailsMappe
 		BigDecimal refundMoney = new BigDecimal("0.00");
 		BigDecimal totalAccoutMoney = new BigDecimal("0.00");
 		BigDecimal payAccoutMoney = new BigDecimal("0.00");
-		for (InvoiceVo invoiceVo : receiptResList) {
-			refundMoney=refundMoney.add(invoiceVo.getRefundMoney());
-			totalAccoutMoney=totalAccoutMoney.add(invoiceVo.getTotalMoney());
-			payAccoutMoney=payAccoutMoney.add(invoiceVo.getPayMoney());
+		if(receiptResList.size()!=0){
+			for (InvoiceVo invoiceVo : receiptResList) {
+				refundMoney=refundMoney.add(invoiceVo.getRefundMoney());
+				totalAccoutMoney=totalAccoutMoney.add(invoiceVo.getTotalMoney());
+				payAccoutMoney=payAccoutMoney.add(invoiceVo.getPayMoney());
+			}
+			receiptResList.get(0).setRefundAccoutMoney(refundMoney);
+			receiptResList.get(0).setTotalAccoutMoney(totalAccoutMoney);
+			receiptResList.get(0).setPayAccoutMoney(payAccoutMoney);
 		}
-		receiptResList.get(0).setRefundAccoutMoney(refundMoney);
-		receiptResList.get(0).setTotalAccoutMoney(totalAccoutMoney);
-		receiptResList.get(0).setPayAccoutMoney(payAccoutMoney);
 		return new PageInfo<>(receiptResList);
 	}
 }

@@ -14,6 +14,10 @@ public interface ReceiptMapper extends BaseMapper<ChargeReceipt> {
 
 	String queryReceiptById(String id);
 
+	List<QueryNotRefundedVo> queryNotRefunded(String id);
+
+	String queryReceiptNum(String id);
+
 	List<RequestDetailsVo> queryRequestDetails(String id);
 
 	List<String> queryReceiptByIdNew(@Param("size") int size);

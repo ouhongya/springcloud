@@ -1,12 +1,15 @@
 package org.springblade.report.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.util.Date;
-
+@Data
 public class RequestDetailReceiptVo {
 
 	@ApiModelProperty(value = "收费日期:默认不传")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private Date data;
 
 	@ApiModelProperty(value = "收费员Id")
@@ -34,77 +37,7 @@ public class RequestDetailReceiptVo {
 	private String invoiceId;
 
 	@ApiModelProperty(value = "住院时间")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private String hospitalizedDate;
 
-	public Date getData() {
-		return data;
-	}
-
-	public void setData(Date data) {
-		this.data = data;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public Integer getPage() {
-		return page;
-	}
-
-	public void setPage(Integer page) {
-		this.page = page;
-	}
-
-	public Integer getSize() {
-		return size;
-	}
-
-	public void setSize(Integer size) {
-		this.size = size;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getMedicalId() {
-		return MedicalId;
-	}
-
-	public void setMedicalId(String medicalId) {
-		MedicalId = medicalId;
-	}
-
-	public String getDockerId() {
-		return dockerId;
-	}
-
-	public void setDockerId(String dockerId) {
-		this.dockerId = dockerId;
-	}
-
-	public String getInvoiceId() {
-		return invoiceId;
-	}
-
-	public void setInvoiceId(String invoiceId) {
-		this.invoiceId = invoiceId;
-	}
 }

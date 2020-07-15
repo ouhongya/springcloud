@@ -47,7 +47,7 @@ public class ChargeDetailsControllerFee {
 		ChargeDetailsList detailsList = new ChargeDetailsList();
 		detailsList.setName("江中牌健胃消食片");
 		detailsList.setBilling("儿科");
-		detailsList.setCarried("暂无");
+		detailsList.setCarried("前台");
 		detailsList.setUnit("盒");
 		return detailsList;
 	}
@@ -56,7 +56,7 @@ public class ChargeDetailsControllerFee {
 	public queryHospitalizedList1 queryHospitalizedList1(String id){
 		queryHospitalizedList1 queryHospitalizedList = new queryHospitalizedList1();
 		queryHospitalizedList.setName("这是一个科室");
-		queryHospitalizedList.setDocker("这是一个医生");
+		queryHospitalizedList.setDocker("刘德华");
 		return queryHospitalizedList;
 	}
 

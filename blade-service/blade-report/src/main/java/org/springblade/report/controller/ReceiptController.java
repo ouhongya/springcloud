@@ -44,7 +44,11 @@ public class ReceiptController {
 	public R queryReceipt(@ApiParam(value = "发票号") @RequestParam String receiptId,@ApiParam(value = "申请单号") @RequestParam  String requestId){
 		return R.data(receiptService.receiptList(receiptId,requestId));
 	}
-
+	@PostMapping("/notRefunded")
+	@ApiOperation(value = "未退费用清单", notes = "未退费用清单")
+	public R notRefunded(List<String> requestId){
+		return R.data(receiptService.notRefunded(requestId));
+	}
 	@PostMapping("/printInvoice")
 	@ApiOperation(value = "保存并打印发票", notes = "发票打印")
 	public R printInvoice(@RequestBody  List<ReceiptVo> receiptVo){
