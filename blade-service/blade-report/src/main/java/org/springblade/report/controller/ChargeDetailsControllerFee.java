@@ -43,7 +43,7 @@ public class ChargeDetailsControllerFee {
 	}
 
 	@GetMapping("/getChargeDetailsList")
-	public ChargeDetailsList getChargeDetailsList(String id){
+	public ChargeDetailsList getChargeDetailsList(String id) {
 		ChargeDetailsList detailsList = new ChargeDetailsList();
 		detailsList.setName("江中牌健胃消食片");
 		detailsList.setBilling("儿科");
@@ -53,7 +53,7 @@ public class ChargeDetailsControllerFee {
 	}
 
 	@GetMapping("/queryHospitalizedList1")
-	public queryHospitalizedList1 queryHospitalizedList1(String id){
+	public queryHospitalizedList1 queryHospitalizedList1(String id) {
 		queryHospitalizedList1 queryHospitalizedList = new queryHospitalizedList1();
 		queryHospitalizedList.setName("这是一个科室");
 		queryHospitalizedList.setDocker("刘德华");
@@ -61,7 +61,7 @@ public class ChargeDetailsControllerFee {
 	}
 
 	@GetMapping("/queryInvoiceList1")
-	public queryInvoiceList1 queryInvoiceList1(String id){
+	public queryInvoiceList1 queryInvoiceList1(String id) {
 		queryInvoiceList1 c = new queryInvoiceList1();
 		c.setName("这是一个名字");
 		c.setDockName("这是一个医生");
@@ -69,28 +69,28 @@ public class ChargeDetailsControllerFee {
 	}
 
 	@GetMapping("/refund")
-	public List<rfundMoney> refund(){
+	public List<rfundMoney> refund() {
 		List<rfundMoney> r = new ArrayList<>();
 		for (int i = 0; i < 10; i++) {
 			rfundMoney rr = new rfundMoney();
-			rr.setId("1234568321"+i);
-			rr.setItemId("5145448123"+i);
-			rr.setName("小葵花妈妈课堂开课了"+i);
+			rr.setId("1234568321" + i);
+			rr.setItemId("5145448123" + i);
+			rr.setName("小葵花妈妈课堂开课了" + i);
 			rr.setSpecification("6mg:200ug*24");
-			rr.setPrice("10.2"+i);
+			rr.setPrice("10.2" + i);
 			rr.setUnit("盒");
 			rr.setJijia("250.00");
-			if(i%2==0){
+			if (i % 2 == 0) {
 				rr.setPayMoney("250.00");
-			}else{
+			} else {
 				rr.setPayMoney("150.00");
 			}
-			if(i%2==0){
+			if (i % 2 == 0) {
 				rr.setRefund("没钱买药,不敢感冒");
 			}
-			if(i%2==0){
+			if (i % 2 == 0) {
 				rr.setMoney("250.00");
-			}else{
+			} else {
 				rr.setMoney("150.00");
 			}
 			r.add(rr);
@@ -99,7 +99,7 @@ public class ChargeDetailsControllerFee {
 	}
 
 	@GetMapping("/receipt")
-	public receipt a (){
+	public receipt a() {
 		receipt r = new receipt();
 		r.setName("小葵花妈妈课堂开课了!");
 		r.setSpecification("6mg:200ug*24");
@@ -109,15 +109,17 @@ public class ChargeDetailsControllerFee {
 	}
 
 }
+
 @Data
-class receipt{
+class receipt {
 	private String name;
 	private String specification;
 	private String negative;
 	private String carried;
 }
+
 @Data
-class rfundMoney{
+class rfundMoney {
 	private String id;
 	private String itemId;
 	private String name;
@@ -130,8 +132,9 @@ class rfundMoney{
 	private String refund;
 	private String money;
 }
+
 @Data
-class ChargeDetailsList{
+class ChargeDetailsList {
 	//项目名
 	private String name;
 	//开单科室
@@ -143,13 +146,13 @@ class ChargeDetailsList{
 }
 
 @Data
-class queryHospitalizedList1{
+class queryHospitalizedList1 {
 	private String name;
 	private String docker;
 }
 
 @Data
-class queryInvoiceList1{
+class queryInvoiceList1 {
 	private String dockName;
 	private String name;
 }

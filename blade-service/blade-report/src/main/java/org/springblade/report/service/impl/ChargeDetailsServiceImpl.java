@@ -25,14 +25,15 @@ public class ChargeDetailsServiceImpl extends BaseServiceImpl<ChargeDetailsMappe
 
 	/**
 	 * 费用明细查询
+	 *
 	 * @param requestDetailReceiptVo
 	 * @return
 	 */
 	@Override
 	public PageInfo queryChargeDetailsList(RequestDetailReceiptVo requestDetailReceiptVo) {
-		PageHelper.startPage(requestDetailReceiptVo.getPage(),requestDetailReceiptVo.getSize());
-		List<RequestDetailsReceiptRes> receiptResList= baseMapper.queryRequestDetailReceipt(requestDetailReceiptVo);
-		if(receiptResList.size()!=0){
+		PageHelper.startPage(requestDetailReceiptVo.getPage(), requestDetailReceiptVo.getSize());
+		List<RequestDetailsReceiptRes> receiptResList = baseMapper.queryRequestDetailReceipt(requestDetailReceiptVo);
+		if (receiptResList.size() != 0) {
 			//总金额
 			BigDecimal totalMoney = new BigDecimal("0.00");
 			//退费金额
@@ -41,9 +42,9 @@ public class ChargeDetailsServiceImpl extends BaseServiceImpl<ChargeDetailsMappe
 			BigDecimal payMoney = new BigDecimal("0.00");
 			//fee_favor优惠fee_item项目费用fee_final实收
 			for (RequestDetailsReceiptRes detailsReceiptRes : receiptResList) {
-				totalMoney=totalMoney.add(detailsReceiptRes.getFeeItem().multiply(new BigDecimal(detailsReceiptRes.getItemCount())));
-				refundMoney=refundMoney.add(detailsReceiptRes.getRefundMoney());
-				payMoney=payMoney.add(detailsReceiptRes.getFeeFinal().multiply(new BigDecimal(detailsReceiptRes.getItemCount())));
+				totalMoney = totalMoney.add(detailsReceiptRes.getFeeItem().multiply(new BigDecimal(detailsReceiptRes.getItemCount())));
+				refundMoney = refundMoney.add(detailsReceiptRes.getRefundMoney());
+				payMoney = payMoney.add(detailsReceiptRes.getFeeFinal().multiply(new BigDecimal(detailsReceiptRes.getItemCount())));
 			}
 			receiptResList.get(0).setTotalMoney(totalMoney);
 			receiptResList.get(0).setRefundMoney(refundMoney);
@@ -54,33 +55,35 @@ public class ChargeDetailsServiceImpl extends BaseServiceImpl<ChargeDetailsMappe
 
 	/**
 	 * 住院预交金
+	 *
 	 * @param requestDetailReceiptVo
 	 * @return
 	 */
 	@Override
 	public PageInfo queryHospitalizedList(RequestDetailReceiptVo requestDetailReceiptVo) {
-		PageHelper.startPage(requestDetailReceiptVo.getPage(),requestDetailReceiptVo.getSize());
-		List<HospitalizedVo> receiptResList= baseMapper.queryHospitalizedList(requestDetailReceiptVo);
+		PageHelper.startPage(requestDetailReceiptVo.getPage(), requestDetailReceiptVo.getSize());
+		List<HospitalizedVo> receiptResList = baseMapper.queryHospitalizedList(requestDetailReceiptVo);
 		return new PageInfo<>(receiptResList);
 	}
 
 	/**
 	 * 发票列表
+	 *
 	 * @param requestDetailReceiptVo
 	 * @return
 	 */
 	@Override
 	public PageInfo queryInvoiceList(RequestDetailReceiptVo requestDetailReceiptVo) {
-		PageHelper.startPage(requestDetailReceiptVo.getPage(),requestDetailReceiptVo.getSize());
-		List<InvoiceVo> receiptResList= baseMapper.queryInvoiceList(requestDetailReceiptVo);
+		PageHelper.startPage(requestDetailReceiptVo.getPage(), requestDetailReceiptVo.getSize());
+		List<InvoiceVo> receiptResList = baseMapper.queryInvoiceList(requestDetailReceiptVo);
 		BigDecimal refundMoney = new BigDecimal("0.00");
 		BigDecimal totalAccoutMoney = new BigDecimal("0.00");
 		BigDecimal payAccoutMoney = new BigDecimal("0.00");
-		if(receiptResList.size()!=0){
+		if (receiptResList.size() != 0) {
 			for (InvoiceVo invoiceVo : receiptResList) {
-				refundMoney=refundMoney.add(invoiceVo.getRefundMoney());
-				totalAccoutMoney=totalAccoutMoney.add(invoiceVo.getTotalMoney());
-				payAccoutMoney=payAccoutMoney.add(invoiceVo.getPayMoney());
+				refundMoney = refundMoney.add(invoiceVo.getRefundMoney());
+				totalAccoutMoney = totalAccoutMoney.add(invoiceVo.getTotalMoney());
+				payAccoutMoney = payAccoutMoney.add(invoiceVo.getPayMoney());
 			}
 			receiptResList.get(0).setRefundAccoutMoney(refundMoney);
 			receiptResList.get(0).setTotalAccoutMoney(totalAccoutMoney);
