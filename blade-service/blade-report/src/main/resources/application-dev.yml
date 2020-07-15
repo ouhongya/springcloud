@@ -1,6 +1,6 @@
 #服务器端口
 server:
-  port: 8188
+  port: 8186
 
 #数据源配置
 spring:

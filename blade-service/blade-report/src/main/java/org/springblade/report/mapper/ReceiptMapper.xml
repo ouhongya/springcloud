@@ -98,9 +98,11 @@
     <select id="queryReceiptByIds" parameterType="java.lang.String" resultMap="receiptMap">
         select * from charge_receipt where receipt_number =#{id}
     </select>
-
-    <select id="queryReceiptByIdNew" resultType="java.lang.String" parameterType="java.lang.String">
-        select receipt_number from invoice where status=0 LIMIT 1
+    <update id="updateStatue">
+        UPDATE invoice SET STATUS=0 WHERE STATUS=3
+    </update>
+    <select id="queryReceiptByIdNew" resultType="java.lang.String">
+        select `receipt_number` from `invoice` where `status`=0 LIMIT 1, #{size}
     </select>
     <select id="queryRefundPay" resultType="org.springblade.report.entity.RefundPay">
         SELECT
@@ -145,14 +147,14 @@
     </select>
     <select id="queryRequestDetails" resultType="org.springblade.report.entity.RequestDetailsVo">
         SELECT
-        detail.`request_id` as requestId,
-        detail.item_id as itemId,
-        detail.`item_count` as num,
-        detail.fee_final as payMoney,
+        detail.`request_id` AS requestId,
+        detail.item_id AS itemId,
+        detail.`item_count` AS num,
+        detail.fee_final AS payMoney,
         detail.fee_item,
         detail.request_type,
-        detail.dept_id as ,
-        record.payStatus as ,
+        detail.dept_id AS dockerId ,
+        record.payStatus AS STATUS,
         record.`receipt_number`
         FROM
         (SELECT
@@ -193,6 +195,6 @@
     </select>
 
     <update id="queryReceiptByIdNewStatus" parameterType="java.lang.String">
-        update invoice set status=2 where receipt_number=#{num}
+        update invoice set status=3 where receipt_number=#{num}
     </update>
 </mapper>

@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradeRefundRequest;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springblade.common.utils.AlipayConfig;
 import org.springblade.core.mp.base.BaseServiceImpl;
@@ -62,18 +61,33 @@ public class ReceiptServiceImpl extends BaseServiceImpl<ReceiptMapper, ChargeRec
 		//查询当前的发票号
 		List<ReceiptVo> receipt = new ArrayList<ReceiptVo>();
 		List<List<RequestDetailsVo>> r = new ArrayList<>();
-		ReceiptVo receiptVo = new ReceiptVo();
 		for (String id : requestIds) {
+			ReceiptVo receiptVo = new ReceiptVo();
 			receiptVo.setOldReceipt(baseMapper.queryReceiptById(id));
-			String num = baseMapper.queryReceiptByIdNew();
-			receiptVo.setNewReceipt(num);
 			receipt.add(receiptVo);
-			baseMapper.queryReceiptByIdNewStatus(num);
 			r.add(baseMapper.queryRequestDetails(id));
+		}
+
+		List<String> num = baseMapper.queryReceiptByIdNew(requestIds.size());
+		for (int i = 0; i < receipt.size(); i++) {
+			if(i<=num.size()&&num.size()!=0) {
+				String s = num.get(i);
+				receipt.get(i).setNewReceipt(s);
+				baseMapper.queryReceiptByIdNewStatus(s);
+			}
 		}
 		requestDetailReceiptRes.setReceiptVo(receipt);
 		requestDetailReceiptRes.setRequestDetailsVo(r);
 		return requestDetailReceiptRes;
+	}
+
+	/**
+	 * 更新发票状态
+	 */
+	@Override
+	public boolean updateStatue(){
+		baseMapper.updateStatue();
+		return true;
 	}
 
 	/**

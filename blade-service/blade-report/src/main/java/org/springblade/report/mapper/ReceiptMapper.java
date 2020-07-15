@@ -16,7 +16,7 @@ public interface ReceiptMapper extends BaseMapper<ChargeReceipt> {
 
 	List<RequestDetailsVo> queryRequestDetails(String id);
 
-	String queryReceiptByIdNew();
+	List<String> queryReceiptByIdNew(@Param("size") int size);
 
 	void queryReceiptByIdNewStatus(String num);
 
@@ -27,6 +27,8 @@ public interface ReceiptMapper extends BaseMapper<ChargeReceipt> {
 	void createdReceipt(ChargeReceipt createdReceipt);
 
 	ChargeReceipt queryReceiptByIds(String id);
+
+	void updateStatue();
 
  	RefundProject queryRefundProject(String requestId);
 

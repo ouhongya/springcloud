@@ -59,6 +59,12 @@ public class ReceiptController {
 	}
 
 
+	@GetMapping("/updateStatue")
+	@ApiOperation(value = "发票状态更新", notes = "发票状态更新")
+	public R updateStatue(){
+		return R.status(receiptService.updateStatue());
+	}
+
 	@PostMapping("/refund")
 	@ApiOperation(value = "退款",notes = "退款")
 	public R Refund(@RequestBody List<RefundVo> refundVo,String reason){
