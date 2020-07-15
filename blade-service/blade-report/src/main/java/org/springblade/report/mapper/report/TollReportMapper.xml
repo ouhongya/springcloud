@@ -32,7 +32,7 @@
         SELECT
         r.id as id, r.turn_status as turnStatus,
         c.text AS costCategory, drt.text AS requestType,ifnull(sum(p.fee_refund),0) as feeRefund , r.create_time AS
-        createTime, r.paid_time AS paidTime,
+        createTime, p.paid_time AS paidTime,
         ifnull(rci.chargeable, 0 ) as chargeable,
         ifnull(rci.discountCost, 0 ) as discountCost,
         ifnull(rci.actuallyPay, 0 ) as actuallyPay,
