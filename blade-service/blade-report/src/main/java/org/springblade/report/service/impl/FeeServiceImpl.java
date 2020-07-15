@@ -76,15 +76,16 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 	 */
 
 	@Override
-	public Map<Long,List<Feedetail>> querychargefeedetail(Long charge_id) {
+	public List<Feedetail> querychargefeedetail(Long charge_id) {
 		List<ChargeRequest> chargeRequests = baseMapper.selectChargeRequestList(charge_id);
-		Map<Long,List<Feedetail>> result=new HashMap<>();
+//		Map<Long,List<Feedetail>> result=new HashMap<>();
+		List<Feedetail> array=new ArrayList<>();
 		for(ChargeRequest chargeRequest:chargeRequests){
 			long request_id = chargeRequest.getRequestId();
 			List<Feedetail> feedetails = baseMapper.selectFeeDetail(request_id);
-			result.put(request_id,feedetails);
+			array.addAll(feedetails);
 		}
-		return result;
+		return array;
 	}
 
 	/**
