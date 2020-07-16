@@ -329,6 +329,7 @@ public class FeeController {
 	 * @throws Exception
 	 */
 	@RequestMapping("wxNotify")
+	@Transactional(rollbackFor = {Exception.class,RuntimeException.class} )
 	public void notify(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// 拿到微信回调信息
 		InputStream inputStream = request.getInputStream();

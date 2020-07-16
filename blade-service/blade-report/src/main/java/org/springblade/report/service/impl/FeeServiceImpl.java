@@ -17,8 +17,11 @@ import org.springblade.report.service.FeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -393,6 +396,7 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 	}
 
 	@Override
+	@Transactional(rollbackFor = {Exception.class,RuntimeException.class} )
 	public String moneypay(Long charge_id, List<FeeRequest> feeRequest, BigDecimal fee_paid,Integer checked,Integer channel_id) {
 		if(checked == 0){
 			try {
