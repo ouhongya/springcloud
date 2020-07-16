@@ -196,6 +196,8 @@ public class FeeController {
 	}
 
 
+
+
 	/**
 	 * 支付宝支付回调
 	 */
@@ -487,6 +489,16 @@ public class FeeController {
 		return R.data(querycharge);
 	}
 
+
+	/**
+	 * 查询支付记录状态
+	 */
+	@GetMapping("/queryAliPayStatue")
+	@ApiOperationSupport(order = 13)
+	@ApiOperation(value = "查询支付记录状态", notes = "传入支付记录id")
+	public R queryAliPayStatue(Long id) {
+		return R.status(feeService.queryAliPayStatue(id));
+	}
 
 
 

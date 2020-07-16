@@ -44,6 +44,7 @@ public interface FeeService extends BaseService<RequestChargeInfo> {
 
 	List<RecordCharge> querycharge(RecordCharge recordCharge);
 
+	boolean queryAliPayStatue(Long id);
 
 
 

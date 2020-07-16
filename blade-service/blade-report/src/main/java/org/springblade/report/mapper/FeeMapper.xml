@@ -140,4 +140,7 @@
             AND #{end_time}
         </if>
     </select>
+    <select id="selectChargePay" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        select status from charge_pay where charge_id = #{id}
+    </select>
 </mapper>

@@ -66,6 +66,8 @@ public interface FeeMapper extends BaseMapper<RequestChargeInfo> {
 
 	int updateChargePay(ChargePay chargePay);
 
+	Integer selectChargePay(Long id);
+
 	List<Integer> selectExpiryDate();
 
 	int updateRecordChargeByCreateTime(Integer i);

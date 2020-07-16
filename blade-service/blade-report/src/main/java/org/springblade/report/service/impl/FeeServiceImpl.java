@@ -480,5 +480,14 @@ public class FeeServiceImpl extends BaseServiceImpl<FeeMapper, RequestChargeInfo
 		return querycharge;
 	}
 
+	@Override
+	public boolean queryAliPayStatue(Long id) {
+		Integer integer = baseMapper.selectChargePay(id);
+		if(integer!=null && integer==1){
+			return true;
+		}
+		return false;
+	}
+
 
 }

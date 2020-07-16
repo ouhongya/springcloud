@@ -26,7 +26,7 @@ public class DataController {
  private static  List< StaffInfo> staffInfoData  = new ArrayList<>();
  //科室
  private static  List< dept> deptDatas  = new ArrayList<>();
-	//患者信息检索
+ //患者信息检索
  private static PatientBrief patientBrief = new PatientBrief(1l, "lucy", "0101010101010101");
  {
 	 //科室
